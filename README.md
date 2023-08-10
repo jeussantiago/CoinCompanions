@@ -8,9 +8,12 @@ This app is similar to Splitwise. Users can create groups for their different tr
 
 ## TO DO:
 
--   [ ] user registration
--   [ ] user login
--   [ ] user logout
+-   [x] JWT atuhorization
+-   [x] user registration backend
+-   [x] user login backend
+-   [ ] user registration frontend
+-   [ ] user login frontend
+-   [ ] user logout frontend
 
 ## BUILD:
 
