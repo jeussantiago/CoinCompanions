@@ -12,8 +12,22 @@ This app is similar to Splitwise. Users can create groups for their different tr
 -   [x] user registration backend
 -   [x] user login backend
 -   [ ] user registration frontend
+    -   email
+    -   name
+    -   password
 -   [ ] user login frontend
+    -   email
+    -   password
 -   [ ] user logout frontend
+
+-   [ ] can search users by email
+-   [x] friend request (backend)
+    -   [x] user sends a pending friend request
+    -   [x] other user has the option to accept or decline
+    -   [x] do not let user the user send multiple friend requests to the same user
+    -   [x] if user accepts, they become friends: delete friend request
+    -   [x] if user declines, delete friend request (maybe notify user but probably not)
+-   [x] remove friend
 
 ## BUILD:
 

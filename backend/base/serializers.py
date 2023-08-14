@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Trip
+from .models import Trip, FriendRequest, UserFriends
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -34,6 +34,20 @@ class UserSerializerWithToken(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+        fields = ['id', 'from_user', 'to_user', 'created_at', 'accepted']
+
+
+class UserFriendsSerializer(serializers.ModelSerializer):
+    friends = UserSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = UserFriends
+        fields = ['friends']
 
 
 class TripSerializer(serializers.ModelSerializer):
