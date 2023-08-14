@@ -2,15 +2,24 @@
 
 This app is similar to Splitwise. Users can create groups for their different trips. Other users are added to the group with a code or an invitation is sent to other users. Once part of a groups, users can add expenses such as car rental, hotel cost, food cost, etc. When the trip is all said and done, users can pay whoever they owe. The app will try to minimize the amount of people the user will have to pay in order to reduce hassles between sending money to each other.
 
+One issue with splitwise, which many users, even myself, have encountered is that if a trip is already in progress wherein expenses already exist, if a new user is added, the cost per user will not be recalculated. This becomes rather annoying as trips can have tens or even hundreds of expenses. Do you really expect users to manually update each expense? This app tries to solve that issue
+
 ## USERS:
 
 -   jeus ; jeus@email.com ; hellofresh (admin)
 
 ## TO DO:
 
+#### USER AUTHORIZATION & AUTHENTICATION
+
+Backend
+
 -   [x] JWT atuhorization
 -   [x] user registration backend
 -   [x] user login backend
+
+Frontend
+
 -   [ ] user registration frontend
     -   email
     -   name
@@ -20,7 +29,10 @@ This app is similar to Splitwise. Users can create groups for their different tr
     -   password
 -   [ ] user logout frontend
 
--   [ ] can search users by email
+#### USER FRIENDS
+
+Backend
+
 -   [x] friend request (backend)
     -   [x] user sends a pending friend request
     -   [x] other user has the option to accept or decline
@@ -28,6 +40,53 @@ This app is similar to Splitwise. Users can create groups for their different tr
     -   [x] if user accepts, they become friends: delete friend request
     -   [x] if user declines, delete friend request (maybe notify user but probably not)
 -   [x] remove friend
+
+Frontend
+
+-   [ ] can search users by email frontend
+    -   will be able to see if can add user as friend or 'pending' if friend request sent already
+        (could also just not make the pending user visible)
+-   [ ] other user sees all friend request each with a button to accept or decline
+    -   [ ] on accept, both users become friend
+    -   [ ] on decline, friend request deleted
+-   [ ] view to see all user's friends
+-   [ ] delete friend: 3 dots then popup that confirms if user wants to delete the friend
+
+#### TRIP & EXPENSES
+
+Backend
+
+-   [ ] user can create a trip
+-   [ ] see all users on the trip
+-   [ ] user can invite users to the trip (any user can invite to the trip if they are part of the trip already)
+-   [ ] user can join the trip once they accept
+
+-   [ ] see all expenses
+-   [ ] create expense (defaultted to 'even split' upon creation but user can specify)
+    -   can split evenly: can specify who to include or not include (all include and all not included are is seen as same thing)
+    -   can split with raw numbers (can only add expense if total is properly added to total. If total=10, can't have user1 pay 3 and user2 pay 4. Has to add up to total(10))
+    -   can split using percentage ( same conecept as above)
+-   [ ] modify expense
+    -   spliting same concept as above
+-   [ ] recalculate total amount everyone owes
+
+-   when a user accepts the trip, they are redirected straight to the trip itself.
+-   if there are expenses already in the trip, the user can select which expenses to want to add themselves into.
+
+    -   if the expenses is not evenly distributed (this means that someone manually change who owes how much) then a red box in the same expense row saying "unable to include self"
+    -   if the expense is evenly distributed, then a user can add themselves
+
+    -   once we get a list of all the expenses a user wants to add themselves into, the the expenses will get modified to now include the new person/tranasction and the other existing people/transactions will be modified. split expense will be recalculated.
+
+    (some people are going to settle prematurely, so they will be in the expenses, don't include these expenses - filter it out in backend and remove from frontend)
+
+-   because of this constant changing expenses. I don't think i will add the recalculating process every time theres a update to the expense. I'll keep it seperate and just call them when I need it.
+    -   if a person is in the trip already and they create a new expense of update an existing expense. We recalculate how much everyone owes after that
+    -   if a person just joined the trip and did the thing where they specify which expenses to add themselves into. We are going to update all the expenses first, then recalculate.
+
+Frontend
+
+-   [ ] can search people to add to trip from friends list and email (exclude the people who are already in the trip)
 
 ## BUILD:
 
