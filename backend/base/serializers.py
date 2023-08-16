@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Trip, FriendRequest, UserFriends
+from .models import FriendRequest, UserFriends, Group, GroupInvitation, Expense, ExpenseDetail
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -50,9 +50,36 @@ class UserFriendsSerializer(serializers.ModelSerializer):
         fields = ['friends']
 
 
-class TripSerializer(serializers.ModelSerializer):
-    members = UserSerializer(many=True, read_only=True)
+# class TripSerializer(serializers.ModelSerializer):
+#     members = UserSerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = Trip
+#         fields = ['id', 'name', 'members']
+
+class GroupSerializer(serializers.ModelSerializer):
+    members = UserSerializer(many=True)
 
     class Meta:
-        model = Trip
-        fields = ['id', 'name', 'members']
+        model = Group
+        fields = '__all__'
+
+
+class GroupInvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupInvitation
+        fields = ['id', 'group', 'inviter', 'invitee', 'accepted']
+
+
+class ExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+
+class ExpenseDetailSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = ExpenseDetail
+        fields = ['user', 'amount_owed']

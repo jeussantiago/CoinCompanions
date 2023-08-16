@@ -56,10 +56,11 @@ Frontend
 
 Backend
 
--   [ ] user can create a trip
--   [ ] see all users on the trip
--   [ ] user can invite users to the trip (any user can invite to the trip if they are part of the trip already)
--   [ ] user can join the trip once they accept
+-   [x] user can create a trip
+-   [x] see all users on the trip
+-   [x] user can invite users to the trip (any user can invite to the trip if they are part of the trip already)
+-   [x] user can join the trip once they accept
+-   [x] create basic expense
 
 -   [ ] see all expenses
 -   [ ] create expense (defaultted to 'even split' upon creation but user can specify)
