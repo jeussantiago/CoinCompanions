@@ -50,12 +50,11 @@ class Expense(models.Model):
     description = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payer = models.ForeignKey(User, on_delete=models.CASCADE)
-    participants = models.ManyToManyField(
-        User, related_name='expenses_participated')
+    # participants = models.ManyToManyField(User, related_name='expenses_participated')
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.payer.username} payed ${self.amount}"
+        return f"{self.group.name} => {self.description} => {self.payer.username} payed ${self.amount}"
 
 
 class ExpenseDetail(models.Model):

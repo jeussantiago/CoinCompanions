@@ -15,9 +15,17 @@ urlpatterns = [
          views.getGroupDetails, name='get-group-details'),
     path('<int:group_id>/update-name/',
          views.updateGroupName, name='update-group-name'),
+    path('<int:group_id>/expenses/',
+         views.getGroupExpenses, name='get_group_expenses'),
+    path('<int:group_id>/create-expense/',
+         views.createExpense, name='create-expense'),
+
     path('<int:group_id>/invite/<int:invitee_id>/',
          views.sendGroupInvitation, name='send-group-invitation'),
 
-    path('<int:group_id>/create-expense/',
-         views.createExpense, name='create-expense'),
+    path('<int:group_id>/expenses/<int:expense_id>/update/',
+         views.updateExpense, name='update_expense'),
+    path('<int:group_id>/expenses/<int:expense_id>/delete/',
+         views.deleteExpense, name='delete-expense'),
+
 ]

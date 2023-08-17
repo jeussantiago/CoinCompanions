@@ -7,9 +7,9 @@ from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from base.serializers import UserSerializer, UserSerializerWithToken, UserFriendsSerializer, FriendRequestSerializer
+from base.serializers import UserSerializer, UserSerializerWithToken, UserFriendsSerializer, FriendRequestSerializer, GroupSerializer
 from django.contrib.auth.models import User
-from base.models import FriendRequest, UserFriends
+from base.models import FriendRequest, UserFriends, Group
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -259,3 +259,12 @@ def removeFriend(request, friend_id):
     friend_to_remove_friends.friends.remove(user)
 
     return Response({"message": "Unfriended successfully"}, status=200)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserGroups(request):
+    user = request.user
+    groups = Group.objects.filter(members=user)
+    serializer = GroupSerializer(groups, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

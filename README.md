@@ -54,30 +54,13 @@ Frontend
 
 #### TRIP & EXPENSES
 
-Backend
-
--   [x] user can create a trip
--   [x] see all users on the trip
--   [x] user can invite users to the trip (any user can invite to the trip if they are part of the trip already)
--   [x] user can join the trip once they accept
--   [x] create basic expense
-
--   [ ] see all expenses
--   [ ] create expense (defaultted to 'even split' upon creation but user can specify)
-    -   can split evenly: can specify who to include or not include (all include and all not included are is seen as same thing)
-    -   can split with raw numbers (can only add expense if total is properly added to total. If total=10, can't have user1 pay 3 and user2 pay 4. Has to add up to total(10))
-    -   can split using percentage ( same conecept as above)
--   [ ] modify expense
-    -   spliting same concept as above
--   [ ] recalculate total amount everyone owes
-
 -   when a user accepts the trip, they are redirected straight to the trip itself.
 -   if there are expenses already in the trip, the user can select which expenses to want to add themselves into.
 
     -   if the expenses is not evenly distributed (this means that someone manually change who owes how much) then a red box in the same expense row saying "unable to include self"
     -   if the expense is evenly distributed, then a user can add themselves
 
-    -   once we get a list of all the expenses a user wants to add themselves into, the the expenses will get modified to now include the new person/tranasction and the other existing people/transactions will be modified. split expense will be recalculated.
+    -   once we get a list of all the expenses a user wants to add themselves into, the expenses will get modified to now include the new person/tranasction and the other existing people/transactions will be modified. split expense will be recalculated.
 
     (some people are going to settle prematurely, so they will be in the expenses, don't include these expenses - filter it out in backend and remove from frontend)
 
@@ -85,9 +68,45 @@ Backend
     -   if a person is in the trip already and they create a new expense of update an existing expense. We recalculate how much everyone owes after that
     -   if a person just joined the trip and did the thing where they specify which expenses to add themselves into. We are going to update all the expenses first, then recalculate.
 
+Backend
+
+-   [x] user can create a Group
+-   [x] see all users on the Group
+-   [x] user can invite users to the Group (any user can invite to the trip if they are part of the trip already)
+-   [x] user can join the Group once they accept
+
+-   [x] see all expenses
+-   [x] create expense (defaultted to 'even split' upon creation but user can specify)
+-   [x] modify expense
+
+-   [ ] somehow keep track of how much people owe. We are only updating that price when expenses are update but we don't want to calculate every time we need to check how much someone owes
+-   [ ] calculate total amount everyone owes with minimum transaction
+
 Frontend
 
 -   [ ] can search people to add to trip from friends list and email (exclude the people who are already in the trip)
+-   [ ] create Group
+-   [ ] invite users to Groups using friends list or email
+-   [ ] user have a list of groups they are invited to
+-   [ ] can accept or decline group
+
+    -   [ ] decline deletes group invitation
+    -   [ ] accept takes user to another page where they will select which expenses to add themselves into
+        -   User can only add themselves into expenses that are specified to be evenly distributted
+            (reason: if an expense is manually calculated, we can assume that a user spent time to figure out how much each person owes whether it be through raw data or by percentages)
+
+-   [ ] update Group name
+-   [ ] create expense
+-   [ ] update expense
+
+    Expenses splitting options:
+
+    -   can split evenly: can specify who to include or not include (all include and all not included are is seen as same thing)
+    -   can split with raw numbers (can only add expense if total is properly added to total. If total=10, can't have user1 pay 3 and user2 pay 4. Has to add up to total(10))
+    -   can split using percentage ( same conecept as above)
+
+-   might have to update backend Expense model to know if an exepnse was specified to EVEN SPLIT
+    -   this will be useful for the people invited later on after items are added
 
 ## BUILD:
 
