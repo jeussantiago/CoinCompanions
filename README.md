@@ -127,7 +127,7 @@ Frontend
 
     -   this will be useful for the people invited later on after items are added
 
--   [] settle up button
+-   [ ] settle up button
 
 ## BUILD:
 
