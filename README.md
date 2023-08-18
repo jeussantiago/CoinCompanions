@@ -155,7 +155,7 @@ This repository contains an implementation of the Simplify Debt Algorithm in Pyt
 -   [Algorithm Explanation](#algorithm-explanation)
 -   [Time Complexity Analysis](#time-complexity-analysis)
 -   [Space Complexity Analysis](#space-complexity-analysis)
--   [Example](#simplify-debt-algorithm-example)
+-   [Applying the Algorithm - Example](#applying-the-algorithm---example)
 
 ## Introduction
 
