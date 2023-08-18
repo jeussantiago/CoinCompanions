@@ -19,6 +19,8 @@ urlpatterns = [
          views.getGroupExpenses, name='get_group_expenses'),
     path('<int:group_id>/create-expense/',
          views.createExpense, name='create-expense'),
+    path('<int:group_id>/calculate-debts/',
+         views.calculateSimplifiedDebts, name='calculate-debts'),
 
     path('<int:group_id>/invite/<int:invitee_id>/',
          views.sendGroupInvitation, name='send-group-invitation'),
@@ -27,5 +29,6 @@ urlpatterns = [
          views.updateExpense, name='update_expense'),
     path('<int:group_id>/expenses/<int:expense_id>/delete/',
          views.deleteExpense, name='delete-expense'),
+
 
 ]

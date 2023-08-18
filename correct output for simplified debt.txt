@@ -1,0 +1,23 @@
+correct output for simplified debt
+
+Expenses
+
+Gabe owes $30 to Bob.
+Gabe owes $10 to David.
+Fred owes $10 to Bob.
+Fred owes $30 to Charlie.
+Fred owes $10 to David.
+Fred owes $10 to Ema.
+Bob owes $40 to Charlie.
+Charlie owes $20 to David.
+David owes $50 to Ema.
+
+Net Total
+
+[(<User: fred@email.com>, -60.0), (<User: gabe@email.com>, -40.0), (<User: david@email.com>, -10.0), (<User: charlie@email.com>, 50.0), (<User: ema@email.com>, 60.0)]
+
+Simplified Debt
+
+fred(8) owes ema: settle -60.0 (fred pays ema 60.0)
+gabe(7) owes charlie: settle -40.0 (gabe pays charlie 40.0)
+david(11) owes charlie: settle -10.0 (david pays charlie 10.0)

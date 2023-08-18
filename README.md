@@ -78,9 +78,9 @@ Backend
 -   [x] see all expenses
 -   [x] create expense (defaultted to 'even split' upon creation but user can specify)
 -   [x] modify expense
+-   [x] calculate total amount everyone owes with minimum transaction (Simplify debt algorithm)
 
--   [ ] somehow keep track of how much people owe. We are only updating that price when expenses are update but we don't want to calculate every time we need to check how much someone owes
--   [ ] calculate total amount everyone owes with minimum transaction
+-   [] somehow keep track of how much people owe. We are only updating that price when expenses are update but we don't want to calculate every time we need to check how much someone owes
 
 Frontend
 
@@ -142,3 +142,124 @@ Frontend
 
 -   pie charts to show who has spent what on the trip
 -   graph/line chart to show daily total spending
+
+### Simplify Debts Algorithm
+
+---
+
+# Simplify Debt Algorithm Implementation
+
+This repository contains an implementation of the Simplify Debt Algorithm in Python, along with an explanation of the algorithm, its implementation details, and an analysis of its time and space complexity.
+
+## Table of Contents
+
+-   [Introduction](#introduction)
+-   [Algorithm Explanation](#algorithm-explanation)
+-   [Implementation](#implementation)
+-   [Time Complexity Analysis](#time-complexity-analysis)
+-   [Space Complexity Analysis](#space-complexity-analysis)
+-   [Example](#simplify-debt-algorithm-example)
+
+## Introduction
+
+The Simplify Debt Algorithm is used to efficiently settle debts among a group of users. It aims to minimize the number of transactions required to balance the debts, resulting in a simplified and fair settlement process.
+
+## Algorithm Explanation
+
+The algorithm proceeds as follows:
+
+1. Calculate net balances for each user.
+2. Sort users based on their net balances.
+3. Initialize two pointers at the extremes of the sorted list: one at the user who owes the most and another at the user who is owed the most.
+4. Find the minimum of the absolute value of the debts for the two users pointed by the pointers. This represents the maximum amount that can be settled between them.
+5. Update balances using the amount
+6. Move pointers if the balance of a creditor or debtor becoms 0
+7. Repeat until all debts are settled.
+
+## Time Complexity Analysis
+
+n is the number of users
+m is the number of expenses
+
+(n \* m) Calculate net balances for each user. Each user has m number of expenses, have to check evrything to figure out total net balance for a user
+(nlogn) Sorting the net balances
+(n) Loop to process each user at most once, involving constant-time operations
+
+Simplified time complexity: O(m \* n)
+
+## Space Complexity Analysis
+
+n is the number of users
+m is the number of expenses
+
+The space complexity includes the storage of balances, transactions, temporary variables, and even extra space used for sorting. Python sorting uses (n) extra space. In the worst case, where each user owes money to every other user, the space complexity is O(n \* m) since each expense can have all the users involved.
+
+Simplified time complexity: O(m \* n)
+
+## Applying the Algorithm - Example
+
+Imagine a group of friends who frequently share expenses, such as dinners, trips, and bills. Over time, they've accumulated various debts and credits among themselves. The Simplify Debt Algorithm comes to the rescue to efficiently settle these debts and ensure everyone is squared away with the least number of transactions possible.
+
+### Group Members
+
+Let's consider a group of five friends: Alice, Bob, Carol, David, and Emily.
+
+### Initial Expenses
+
+-   Alice owes Bob $20.
+-   Bob owes Carol $30.
+-   Carol owes David $10.
+-   David owes Emily $15.
+-   Emily owes Alice $25.
+
+### Initial Calculated Net Balances
+
+-   Alice: $5 (Net positive, is owed money(Creditor))
+-   Bob: -$10 (Net negative, owes money(Debtor))
+-   Carol: $20
+-   David: -$5
+-   Emily: -$10
+
+### Applying the Algorithm
+
+1. **Sorting and Pointers:**
+   The friends are sorted based on their calculated net balances. Two pointers are positioned at the friend who owes the most (Bob) and the friend who is owed the most (Carol).
+
+    - Carol: $20
+    - Alice: $5
+    - David: -$5
+    - Emily: -$10
+    - Bob: -$10
+
+2. **Settlements:**
+
+    - Bob owes Carol $10, so the algorithm settles Bob's debt. Updated balances:
+
+        - Carol: $10
+        - Alice: $5
+        - David: -$5
+        - Emily: -$10
+        - Bob: $0
+
+    - Emily owes Carol $10, so the algorithm settles their debt. Updated balances:
+
+        - Carol: $0
+        - Alice: $5
+        - David: -$5
+        - Emily: $0
+        - Bob: $0
+
+    - David owes Alice $5, so the algorithm settles their debt. Updated balances:
+        - Carol: $0
+        - Alice: $0
+        - David: $0
+        - Emily: $0
+        - Bob: $0
+
+    At this point, all debts have been settled, and the balances are simplified: - Bob owes Carol $10 - Emily owes Carol $10 - David owes Alice $5
+
+### Benefits and Efficiency
+
+By applying the Simplify Debt Algorithm, the group of 5 friends managed to settle their debts with only 3 transactions, even though there were originally 5 imbalanced accounts. This algorithm minimizes the number of transactions required, making it an efficient and fair way to settle debts among a group of individuals.
+
+---

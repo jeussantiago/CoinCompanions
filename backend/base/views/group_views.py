@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
+from django.db.models import Sum
+from collections import defaultdict, deque
 
 from base.serializers import GroupSerializer, GroupInvitationSerializer, ExpenseSerializer, ExpenseDetailSerializer
 from django.contrib.auth.models import User
@@ -371,6 +373,145 @@ def deleteExpense(request, group_id, expense_id):
         expense.delete()
 
         return Response({"message": "Expense deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+    except Group.DoesNotExist:
+        return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+def settleUp(balances):
+    '''
+    param balances: Net change of debts for each user [{User_1: balance1}, {User_2: balance2}]
+
+    returns json where key is the id of the debtor and value is a list of the users the debtor
+    owes and how much
+    {
+        "simplified_debts": {
+            "4": [
+                {
+                    "creditor": {
+                        "id": 3,
+                        "email": "tim@email.com"
+                    },
+                    "settlement_amount": 50.0
+                },
+                {
+                    "creditor": {
+                        "id": 1,
+                        "email": "jeus@email.com"
+                    },
+                    "settlement_amount": 50.0
+                }
+            ]
+        }
+    }
+
+    n is the number of users
+    Time: O(nlogn)
+        ; (nlogn) sorting
+        ; (n) while loop to simplify balances. Each pair is processed once
+        ;   no infinite loop can be processed, this is with an assumption that the data provided
+        ;   has a net change of 0. The inner contents of the while loop are constant operations
+    Space: O(n)
+        ; (n) converting the dictionary into a list
+        ; (n) python sorting uses more space than other languages
+
+    '''
+
+    # Initialize a list to store transactions
+    transactions = defaultdict(list)
+
+    # Convert the balances dictionary into a list of tuples for easier sorting
+    balances_list = [(user, balance)
+                     for user, balance in balances.items() if balance != 0]
+
+    # Sort the balances list by values in ascending order - Biggest Debtors on the left, Biggest Creditors on the right
+    sorted_balances = sorted(balances_list, key=lambda x: x[1])
+
+    # Initialize two pointers: one at the beginning and one at the end of the sorted list
+    left = 0
+    right = len(sorted_balances) - 1
+
+    while left < right:
+        debtor, debt_amount = sorted_balances[left]
+        creditor, credit_amount = sorted_balances[right]
+
+        # Calculate the settlement amount
+        settlement_amount = min(-debt_amount, credit_amount)
+
+        # Update balances - used to see the net balance of the users, but doesn't affect
+        # actual values in algorithm
+        # balances[debtor] += settlement_amount
+        # balances[creditor] -= settlement_amount
+
+        # Append the transaction to the debt list
+        transaction = {
+            "creditor": {
+                "id": creditor.id,
+                "email": creditor.username  # username and email hold the same value
+            },
+            "settlement_amount": settlement_amount
+        }
+        transactions[debtor.id].append(transaction)
+
+        # Update the pointers based on the settlement
+        new_debt_balance = debt_amount + settlement_amount
+        if new_debt_balance == 0:
+            left += 1
+        else:
+            sorted_balances[left] = (debtor, new_debt_balance)
+
+        new_credit_balance = credit_amount - settlement_amount
+        if new_credit_balance == 0:
+            right -= 1
+        else:
+            sorted_balances[right] = (creditor, new_credit_balance)
+
+    # print(balances)
+    return transactions
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def calculateSimplifiedDebts(request, group_id):
+    '''
+    param group_id is the id of the group you want to calculate the simplified debt for
+
+    Rather than having evryone paying multiple people, the simply debt algorithm aims to reduce
+    the number of transactionsl between 
+
+    n is the number of users
+    m is the number of expenses
+    Time: O(m * n)
+        ; (m * n) Calculate the net total. Each expense has n number of expense details. You have to go
+        ;   through all the expenses
+        ; (nlogn) settleUp function
+        ; (m * n + nlogn) - very likely the case that a group will have many times more expenses
+        ;   than users. We can reduce to (m * n)
+    '''
+    try:
+        # Retrieve the group and ensure the user is a member
+        group = Group.objects.get(id=group_id)
+        if request.user not in group.members.all():
+            return Response({"error": "You are not a member of this group"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Calculate individual debts within the group
+        balances = defaultdict(float)
+
+        # Calculate total owed by each user (Net Change)
+        for user in group.members.all():
+            user_expenses = ExpenseDetail.objects.filter(
+                user=user, expense__group=group)
+            total_owed = user_expenses.aggregate(total_owed=Sum('amount_owed'))[
+                'total_owed'] or 0
+            total_owed = float(total_owed)
+            # We are storing data with negative amount meaning they were a payer,
+            # so we multiply by -1 to reverse these actions.
+            balances[user] += (total_owed * -1)
+
+        # Calculate simplified debts and net balances
+        simplified_debts = settleUp(balances)
+
+        return Response({"simplified_debts": simplified_debts}, status=status.HTTP_200_OK)
 
     except Group.DoesNotExist:
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
