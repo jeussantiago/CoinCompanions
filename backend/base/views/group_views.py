@@ -515,3 +515,46 @@ def calculateSimplifiedDebts(request, group_id):
 
     except Group.DoesNotExist:
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def updateExpensesForNewUser(request, group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+        new_user_id = request.data.get('new_user_id')
+        new_user = User.objects.get(id=new_user_id)
+
+        if new_user not in group.members.all():
+            return Response({"error": f"User with ID {new_user_id} is not a member of this group"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # add user to all expenses with a value of 0
+        expenses = Expense.objects.filter(group=group)
+
+        for expense in expenses:
+            ExpenseDetail.objects.create(
+                expense=expense, user=new_user, amount_owed=0)
+
+        # update the specified expenses to the amount specified
+        expenses = request.data.get('expenses', [])
+        for expense_data in expenses:
+            expense_id = expense_data.get('id')
+            amount = expense_data.get('amount')
+
+            expense = Expense.objects.get(id=expense_id, group=group)
+            expense_details = ExpenseDetail.objects.filter(
+                expense=expense).update(amount_owed=amount)
+            # skip the expense with faulty data
+            if len(expense_details) * amount != expense.amount:
+                print(expense.description)
+                continue
+
+            # all users part of the expense get their amount adjusted to amount
+            expense_details.update(amount_owed=amount)
+
+        return Response({"message": f"User with ID {new_user_id} added to expenses with amount_owed 0"}, status=status.HTTP_201_CREATED)
+
+    except Group.DoesNotExist:
+        return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+    except User.DoesNotExist:
+        return Response({"error": f"User with ID {new_user_id} not found"}, status=status.HTTP_404_NOT_FOUND)

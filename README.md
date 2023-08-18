@@ -80,7 +80,25 @@ Backend
 -   [x] modify expense
 -   [x] calculate total amount everyone owes with minimum transaction (Simplify debt algorithm)
 
--   [] somehow keep track of how much people owe. We are only updating that price when expenses are update but we don't want to calculate every time we need to check how much someone owes
+-   [ ] somehow keep track of how much people owe. We are only updating that price when expenses are update but we don't want to calculate every time we need to check how much someone owes
+-   [ ] need a way to update a list of expenses for when a new user comes, the ids specified will add him to the corresponding expense detail and update the other users expense to the values epcified. if the id of the expense is not specified, just add user to the expense detail with amount value of 0 (test view updateExpensesForNewUser)
+
+-   if expense is speicifed as "is Evenly Split", new user can join
+
+    -   get new user using new_user_id
+        Error Check:
+    -   make sure that the total of new_amount == amount in expense
+        -   can calculate by getting the length of current expense detail filter for expens
+        -   add +1 for new guy
+        -   multiply that value with amount to see if it equals total
+
+    If Error: - just add the user to the expense detail with value of 0
+
+    -   create an expenseDetail for the new user in the expense of amount_owed=amount
+    -   update the other expenseDetails to be the same value as amount
+
+-   [ ] create a settle up transaction
+    -   on settle up add a new expense where the only detail is you paying the other party (positive amount for request user, negative amount person you pay to)
 
 Frontend
 
@@ -262,5 +280,17 @@ Let's consider a group of five friends: Alice, Bob, Carol, David, and Emily.
 ### Benefits and Efficiency
 
 By applying the Simplify Debt Algorithm, the group of 5 friends managed to settle their debts with only 3 transactions, even though there were originally 5 imbalanced accounts. This algorithm minimizes the number of transactions required, making it an efficient and fair way to settle debts among a group of individuals.
+
+### Issues
+
+Since the algorithm converges towards the center of a list, you get cases where it creates more transactions for a user than they have created in expenses. One such case is:
+
+[-10, -8, -8, 1, 8, 8, 9]
+
+We notice that if we match up a pair of collector who is owed $8 and a debtor who owes 8 for 2 people each, we can be left with [-10, 1, 9]. We can now see that both debtors just have to pay the one collector.
+
+The min number of transactions here is 4.
+
+However, with our algorithm, the min number of transactions comes out to 6 because it converges towards the center. It fulfills the needs of those on the outer before moving closer to the center..
 
 ---
