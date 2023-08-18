@@ -80,8 +80,8 @@ Backend
 -   [x] modify expense
 -   [x] calculate total amount everyone owes with minimum transaction (Simplify debt algorithm)
 
--   [ ] somehow keep track of how much people owe. We are only updating that price when expenses are update but we don't want to calculate every time we need to check how much someone owes
--   [ ] need a way to update a list of expenses for when a new user comes, the ids specified will add him to the corresponding expense detail and update the other users expense to the values epcified. if the id of the expense is not specified, just add user to the expense detail with amount value of 0 (test view updateExpensesForNewUser)
+-   [x] need a way to update a list of expenses for when a new user comes, the ids specified will add him to the corresponding expense detail and update the other users expense to the values epcified. if the id of the expense is not specified, just add user to the expense detail with amount value of 0 (test view updateExpensesForNewUser)
+-   [x] create a settle up transaction - records payment
 
 -   if expense is speicifed as "is Evenly Split", new user can join
 
@@ -97,8 +97,8 @@ Backend
     -   create an expenseDetail for the new user in the expense of amount_owed=amount
     -   update the other expenseDetails to be the same value as amount
 
--   [ ] create a settle up transaction
-    -   on settle up add a new expense where the only detail is you paying the other party (positive amount for request user, negative amount person you pay to)
+-   \*\*\*Might have Boolean in Expense to differentiate between Settlements and Expenses (isSettlement)
+-   \*\*\*Need Boolean for Expense to see if something is evenly split so that we know if new user can join
 
 Frontend
 
@@ -124,7 +124,10 @@ Frontend
     -   can split using percentage ( same conecept as above)
 
 -   might have to update backend Expense model to know if an exepnse was specified to EVEN SPLIT
+
     -   this will be useful for the people invited later on after items are added
+
+-   [] settle up button
 
 ## BUILD:
 

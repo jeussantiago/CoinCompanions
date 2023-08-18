@@ -243,10 +243,6 @@ def createExpense(request, group_id):
                 ExpenseDetail.objects.create(
                     expense=expense, user=user, amount_owed=0)
 
-        # Create an ExpenseDetail with negative amount_owed for the user who paid
-        ExpenseDetail.objects.create(
-            expense=expense, user=request.user, amount_owed=-amount)
-
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -343,12 +339,6 @@ def updateExpense(request, group_id, expense_id):
                 except ExpenseDetail.DoesNotExist:
                     pass
 
-        # update the payer's amount
-        expense_detail = ExpenseDetail.objects.get(
-            expense=expense, user=expense.payer)
-        expense_detail.amount_owed = -new_amount
-        expense_detail.save()
-
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -378,7 +368,7 @@ def deleteExpense(request, group_id, expense_id):
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
-def settleUp(balances):
+def calculateSimplifiedDebtsWithNetBalances(balances):
     '''
     param balances: Net change of debts for each user [{User_1: balance1}, {User_2: balance2}]
 
@@ -426,6 +416,7 @@ def settleUp(balances):
 
     # Sort the balances list by values in ascending order - Biggest Debtors on the left, Biggest Creditors on the right
     sorted_balances = sorted(balances_list, key=lambda x: x[1])
+    # print(sorted_balances)
 
     # Initialize two pointers: one at the beginning and one at the end of the sorted list
     left = 0
@@ -508,8 +499,14 @@ def calculateSimplifiedDebts(request, group_id):
             # so we multiply by -1 to reverse these actions.
             balances[user] += (total_owed * -1)
 
+        # Calculate amount spent by each user
+        expenses = Expense.objects.filter(group=group)
+        for expense in expenses:
+            if expense.payer in group.members.all():
+                balances[expense.payer] += float(expense.amount)
+
         # Calculate simplified debts and net balances
-        simplified_debts = settleUp(balances)
+        simplified_debts = calculateSimplifiedDebtsWithNetBalances(balances)
 
         return Response({"simplified_debts": simplified_debts}, status=status.HTTP_200_OK)
 
@@ -520,13 +517,34 @@ def calculateSimplifiedDebts(request, group_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def updateExpensesForNewUser(request, group_id):
+    '''
+    This function can only be called if the expense is originally Evenly Split because 
+    it will set all the user's for the expense to have the same amount
+
+    request data: key="expense_details" is an array of expense_ids found in group(group_id) 
+    that wish to be updated to include the new_user in the payment
+
+    {
+        "expense_ids": [15,14]
+    }
+    '''
     try:
         group = Group.objects.get(id=group_id)
-        new_user_id = request.data.get('new_user_id')
-        new_user = User.objects.get(id=new_user_id)
+        new_user = User.objects.get(id=request.user.id)
 
         if new_user not in group.members.all():
-            return Response({"error": f"User with ID {new_user_id} is not a member of this group"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": f"User with ID {request.user.id} is not a member of this group"}, status=status.HTTP_400_BAD_REQUEST)
+
+        '''
+        check the invitiation to the group
+        - if no invitation exists
+            - thats means that the user is trying again after using this api
+            - can only use this api once after a user joins a group for the first time
+            - return 
+        - otherwise
+            - can continue to code to create new data
+            - delete the invitation
+        '''
 
         # add user to all expenses with a value of 0
         expenses = Expense.objects.filter(group=group)
@@ -535,26 +553,69 @@ def updateExpensesForNewUser(request, group_id):
             ExpenseDetail.objects.create(
                 expense=expense, user=new_user, amount_owed=0)
 
-        # update the specified expenses to the amount specified
-        expenses = request.data.get('expenses', [])
-        for expense_data in expenses:
-            expense_id = expense_data.get('id')
-            amount = expense_data.get('amount')
-
+        # update expenses for ids specified
+        expense_ids = request.data.get('expense_ids', [])
+        for expense_id in expense_ids:
             expense = Expense.objects.get(id=expense_id, group=group)
-            expense_details = ExpenseDetail.objects.filter(
-                expense=expense).update(amount_owed=amount)
-            # skip the expense with faulty data
-            if len(expense_details) * amount != expense.amount:
-                print(expense.description)
-                continue
 
-            # all users part of the expense get their amount adjusted to amount
+            expense_details = ExpenseDetail.objects.filter(expense=expense)
+            amount = expense.amount / len(expense_details)
+            # update amount_owed for all users in expense (this includes the new user)
             expense_details.update(amount_owed=amount)
 
-        return Response({"message": f"User with ID {new_user_id} added to expenses with amount_owed 0"}, status=status.HTTP_201_CREATED)
+        return Response({"message": f"User with ID {new_user.id} added to group {group_id}'s expenses"}, status=status.HTTP_201_CREATED)
 
     except Group.DoesNotExist:
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
     except User.DoesNotExist:
-        return Response({"error": f"User with ID {new_user_id} not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": f"User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def recordPayment(request, group_id):
+    '''
+    Payment from request.user to receiving_user_id. Records it by creating an expense and
+    corresponding expense detail
+
+    request.data
+    {
+        "receiving_user_id": 2,
+        "amount": 25.0
+    }
+    '''
+    try:
+        # Retrieve the group and ensure the user is a member
+        group = Group.objects.get(id=group_id)
+        if request.user not in group.members.all():
+            return Response({"error": "You are not a member of this group"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Validate input data
+        receiving_user_id = request.data.get('receiving_user_id')
+        amount = request.data.get('amount')
+
+        if receiving_user_id is None or amount is None:
+            return Response({"error": "Receiving user ID and amount are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Retrieve the receiving user
+        receiving_user = User.objects.get(id=receiving_user_id)
+
+        # Create the payment expense
+        payment_expense_data = {
+            'group': group,
+            'description': f'User {request.user.username} settled up with {receiving_user.username}',
+            'amount': amount,
+            'payer': request.user
+        }
+        payment_expense = Expense.objects.create(**payment_expense_data)
+
+        # Create the corresponding expense detail
+        ExpenseDetail.objects.create(
+            expense=payment_expense, user=receiving_user, amount_owed=amount)
+
+        return Response({"message": f"Payment recorded from {request.user} to {receiving_user} for ${amount}"}, status=status.HTTP_201_CREATED)
+
+    except Group.DoesNotExist:
+        return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+    except User.DoesNotExist:
+        return Response({"error": "Receiving user not found"}, status=status.HTTP_404_NOT_FOUND)
