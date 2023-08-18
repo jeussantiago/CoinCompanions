@@ -143,8 +143,6 @@ Frontend
 -   pie charts to show who has spent what on the trip
 -   graph/line chart to show daily total spending
 
-### Simplify Debts Algorithm
-
 ---
 
 # Simplify Debt Algorithm Implementation
@@ -155,7 +153,6 @@ This repository contains an implementation of the Simplify Debt Algorithm in Pyt
 
 -   [Introduction](#introduction)
 -   [Algorithm Explanation](#algorithm-explanation)
--   [Implementation](#implementation)
 -   [Time Complexity Analysis](#time-complexity-analysis)
 -   [Space Complexity Analysis](#space-complexity-analysis)
 -   [Example](#simplify-debt-algorithm-example)
@@ -178,7 +175,7 @@ The algorithm proceeds as follows:
 
 ## Time Complexity Analysis
 
-n is the number of users
+n is the number of users <br />
 m is the number of expenses
 
 (n \* m) Calculate net balances for each user. Each user has m number of expenses, have to check evrything to figure out total net balance for a user
@@ -189,7 +186,7 @@ Simplified time complexity: O(m \* n)
 
 ## Space Complexity Analysis
 
-n is the number of users
+n is the number of users <br />
 m is the number of expenses
 
 The space complexity includes the storage of balances, transactions, temporary variables, and even extra space used for sorting. Python sorting uses (n) extra space. In the worst case, where each user owes money to every other user, the space complexity is O(n \* m) since each expense can have all the users involved.
@@ -256,7 +253,11 @@ Let's consider a group of five friends: Alice, Bob, Carol, David, and Emily.
         - Emily: $0
         - Bob: $0
 
-    At this point, all debts have been settled, and the balances are simplified: - Bob owes Carol $10 - Emily owes Carol $10 - David owes Alice $5
+    At this point, all debts have been settled, and the balances are simplified:
+
+    - Bob owes Carol $10
+    - Emily owes Carol $10
+    - David owes Alice $5
 
 ### Benefits and Efficiency
 
