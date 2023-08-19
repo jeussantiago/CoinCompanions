@@ -24,7 +24,7 @@ Frontend
     -   email
     -   name
     -   password
--   [ ] user login frontend
+-   [ ] user login frontends
     -   email
     -   password
 -   [ ] user logout frontend
@@ -117,7 +117,7 @@ Frontend
 -   [ ] create expense
 -   [ ] update expense
 
-    Expenses splitting options:
+    Expenses splitting optionss:
 
     -   can split evenly: can specify who to include or not include (all include and all not included are is seen as same thing)
     -   can split with raw numbers (can only add expense if total is properly added to total. If total=10, can't have user1 pay 3 and user2 pay 4. Has to add up to total(10))
