@@ -64,7 +64,10 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                 <Row className="py-3">
                     <Col>
                         New Customer? Register (pass parameter to Registrations)
-                        <Button onClick={toggleHomeComponentOnRight}>
+                        <Button
+                            variant="warning"
+                            onClick={toggleHomeComponentOnRight}
+                        >
                             Register
                         </Button>
                     </Col>

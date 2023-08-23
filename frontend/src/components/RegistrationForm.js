@@ -95,7 +95,10 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
                     <Col>
                         Existing Customer? Sign In (pass parameter to
                         Registrations)
-                        <Button onClick={toggleHomeComponentOnRight}>
+                        <Button
+                            variant="warning"
+                            onClick={toggleHomeComponentOnRight}
+                        >
                             Sign in
                         </Button>
                     </Col>
