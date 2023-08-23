@@ -1,4 +1,5 @@
 import { Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
 
 import SideBar from "./components/SideBar";
@@ -10,12 +11,15 @@ import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 
 function App() {
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
     return (
         <Router>
-            {/* { isAuthenticated && <SideBar /> } */}
             <div className="d-flex flex-row">
-                <SideBar />
-                <main className="py-3">
+                {/* Don't show the Sidebar on the log in/home page */}
+                {userInfo && <SideBar />}
+                <main>
                     <Container>
                         <Routes>
                             <Route path="/" element={<HomeScreen />} exact />

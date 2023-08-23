@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 // import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
+import { useNavigate } from "react-router-dom";
 
+import { logout } from "../actions/userActions";
 import logo from "../images/small-logo.png";
 import "../styles/components/SideBar.css";
 
 function SideBar() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [burger_class, setBurgerClass] = useState("burger-bar unclicked");
     const [menu_class, setMenuClass] = useState("menu hidden");
     const [isMenuClicked, setIsMenuClicked] = useState(false);
@@ -40,9 +46,9 @@ function SideBar() {
     }, []);
 
     const logoutHandler = () => {
-        console.log("loggin out");
-        // dispatch(logout());
-        // navigate("/");
+        // console.log("loggin out");
+        dispatch(logout());
+        navigate("/");
     };
 
     return (
@@ -115,7 +121,6 @@ function SideBar() {
                                         >
                                             <div>
                                                 <i className="fa-solid fa-users-line"></i>
-                                                {/* <i class="fa-solid fa-people-group"></i> */}
                                                 <span className="ms-2 d-none d-sm-inline">
                                                     Groups
                                                 </span>
