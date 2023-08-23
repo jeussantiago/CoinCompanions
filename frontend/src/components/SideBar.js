@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
+import logo from "../images/small-logo.png";
 import "../styles/components/SideBar.css";
 
 function SideBar() {
@@ -62,9 +63,19 @@ function SideBar() {
                             <div className="upper-sidebar-content">
                                 <div className="text-decoration-none ms-3 d-flex align-itmes-center d-none d-sm-inline">
                                     <LinkContainer to="/dashboard">
-                                        <h3 className="brand-name">
-                                            Coin Companion
-                                        </h3>
+                                        <div className="brand-name-container">
+                                            <h3 className="brand-name">
+                                                Coin{" "}
+                                                <img
+                                                    src={logo}
+                                                    alt="Logo"
+                                                    className="logo-image"
+                                                />{" "}
+                                            </h3>
+                                            <h3 className="brand-name">
+                                                Companion
+                                            </h3>
+                                        </div>
                                     </LinkContainer>
                                 </div>
                                 <ul
