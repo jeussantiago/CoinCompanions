@@ -25,6 +25,8 @@ urlpatterns = [
          views.updateExpensesForNewUser, name='update-expenses-for-new-user'),
     path('<int:group_id>/record-payment/',
          views.recordPayment, name='record-payment'),
+    path('<int:group_id>/debts/',
+         views.getGroupDebtsPerUser, name='group-debts-per-user'),
 
     path('<int:group_id>/invite/<int:invitee_id>/',
          views.sendGroupInvitation, name='send-group-invitation'),

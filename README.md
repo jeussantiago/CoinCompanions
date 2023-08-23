@@ -10,6 +10,14 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 ## TO DO:
 
+#### Sidebar
+
+-   [x] routes to the different locations in the app
+-   [x] logout button
+-   [ ] implement functional part of logout button
+-   [x] responsive to size
+-   [ ] visible on all screens except the Home/Login/Registration screen
+
 #### USER AUTHORIZATION & AUTHENTICATION
 
 Backend
@@ -20,14 +28,14 @@ Backend
 
 Frontend
 
--   [ ] user registration frontend
+-   [ ] user registration
     -   email
     -   name
     -   password
--   [ ] user login frontends
+-   [ ] user login
     -   email
     -   password
--   [ ] user logout frontend
+-   [ ] user logout
 
 #### USER FRIENDS
 

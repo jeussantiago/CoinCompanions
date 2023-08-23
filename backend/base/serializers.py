@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import FriendRequest, UserFriends, Group, GroupInvitation, Expense, ExpenseDetail
+from .models import FriendRequest, UserFriends, Group, GroupInvitation, Expense, ExpenseDetail, Debt
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -78,3 +78,12 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExpenseDetail
         fields = ['user', 'amount_owed']
+
+
+class DebtSerializer(serializers.ModelSerializer):
+    debtor = UserSerializer()
+    creditor = UserSerializer()
+
+    class Meta:
+        model = Debt
+        fields = ['debtor', 'creditor', 'group', 'amount']

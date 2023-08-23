@@ -5,9 +5,9 @@ from rest_framework import status
 from django.db.models import Sum
 from collections import defaultdict, deque
 
-from base.serializers import GroupSerializer, GroupInvitationSerializer, ExpenseSerializer, ExpenseDetailSerializer
+from base.serializers import GroupSerializer, GroupInvitationSerializer, ExpenseSerializer, ExpenseDetailSerializer, DebtSerializer, UserSerializer
 from django.contrib.auth.models import User
-from base.models import Group, GroupInvitation, Expense, ExpenseDetail
+from base.models import Group, GroupInvitation, Expense, ExpenseDetail, Debt
 
 
 @api_view(['GET'])
@@ -508,6 +508,20 @@ def calculateSimplifiedDebts(request, group_id):
         # Calculate simplified debts and net balances
         simplified_debts = calculateSimplifiedDebtsWithNetBalances(balances)
 
+        # Delete existing debts for the group
+        Debt.objects.filter(group=group).delete()
+
+        # Record updated simplified debts into the Debt model
+        for debtor_id, transactions in simplified_debts.items():
+            debtor = User.objects.get(id=debtor_id)
+            for transaction in transactions:
+                creditor_id = transaction['creditor']['id']
+                creditor = User.objects.get(id=creditor_id)
+                settlement_amount = transaction['settlement_amount']
+
+                Debt.objects.create(
+                    debtor=debtor, creditor=creditor, group=group, amount=settlement_amount)
+
         return Response({"simplified_debts": simplified_debts}, status=status.HTTP_200_OK)
 
     except Group.DoesNotExist:
@@ -619,3 +633,56 @@ def recordPayment(request, group_id):
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
     except User.DoesNotExist:
         return Response({"error": "Receiving user not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getGroupDebtsPerUser(request, group_id):
+    '''
+    gets a dictionary with key=creditor_user_id and value=list of users that owe this
+    user and how much
+
+    "debts_per_user": {
+        "10": [
+            {
+                "debtor": {
+                    "id": 10,
+                    "username": "charlie@email.com",
+                    "email": "charlie@email.com",
+                    "name": "charlie"
+                },
+                "creditor": {
+                    "id": 1,
+                    "username": "jeus@email.com",
+                    "email": "jeus@email.com",
+                    "name": "Jeus"
+                },
+                "group": 6,
+                "amount": "158.33"
+            }
+        ],
+    }
+
+    Use in combination with /api/groups/<int:group_id>/details/ to match up the members
+    with their IDs
+    '''
+
+    try:
+        group = Group.objects.get(id=group_id)
+        debts = Debt.objects.filter(group=group)
+
+        # Group the debts by debtor
+        debts_per_user = defaultdict(list)
+        for debt in debts:
+            debts_per_user[debt.debtor].append(debt)
+
+        # Serialize the grouped debts
+        serialized_debts = {}
+        for debtor, debts in debts_per_user.items():
+            serializer = DebtSerializer(debts, many=True)
+            serialized_debts[debtor.id] = serializer.data
+
+        return Response({"debts_per_user": serialized_debts}, status=status.HTTP_200_OK)
+
+    except Group.DoesNotExist:
+        return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)

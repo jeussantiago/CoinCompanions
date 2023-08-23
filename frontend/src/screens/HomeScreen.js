@@ -1,22 +1,26 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+// import React, { useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
 
-import { getAllUsers } from "../actions/userActions";
+// import { getAllUsers } from "../actions/userActions";
 
 function HomeScreen() {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const userList = useSelector((state) => state.userList);
-    const { loading, error, users } = userList;
-    console.log(users);
+    // const userList = useSelector((state) => state.userList);
+    // const { loading, error, users } = userList;
+    // console.log(users);
 
-    useEffect(() => {
-        dispatch(getAllUsers());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getAllUsers());
+    // }, [dispatch]);
     return (
         <div>
             <div>home page</div>
-            {loading ? (
+
+            <div>Login and Register Page</div>
+
+            {/* {loading ? (
                 <div> Getting all users ....</div>
             ) : error ? (
                 <div> Error occured getting users </div>
@@ -26,7 +30,7 @@ function HomeScreen() {
                         <div key={user.id}>{user.username}</div>
                     ))}
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

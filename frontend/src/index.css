@@ -1,13 +1,57 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
+    background-color: grey;
+    color: black;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}  */
+
+/* NX = not expanded */
+
+.brand-name {
+    /* font-size: 21px; */
+    padding-left: 15px;
+    margin-bottom: 35px;
+}
+
+.upper-sidebar-content {
+    margin-top: 10px;
+}
+
+.upper-sidebar-content ul li {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.upper-sidebar-content ul li span {
+    margin-left: 5px;
+}
+
+.lower-sidebar-content {
+    margin-bottom: 25px;
+}
+
+@media (min-width: 576px) {
+    .upper-sidebar-content {
+        margin-top: 10px;
+        width: 200px;
+    }
+
+    .upper-sidebar-content ul li i {
+        margin-right: 7px;
+    }
+}
+
+@media (max-width: 576px) {
+    .upper-sidebar-content ul li i {
+        font-size: 21px;
+    }
 }

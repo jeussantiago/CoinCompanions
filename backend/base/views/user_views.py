@@ -3,13 +3,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
+from django.db.models import Sum
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from base.serializers import UserSerializer, UserSerializerWithToken, UserFriendsSerializer, FriendRequestSerializer, GroupSerializer
+from base.serializers import UserSerializer, UserSerializerWithToken, UserFriendsSerializer, FriendRequestSerializer, GroupSerializer, DebtSerializer
 from django.contrib.auth.models import User
-from base.models import FriendRequest, UserFriends, Group
+from base.models import FriendRequest, UserFriends, Group, Debt
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -268,3 +269,27 @@ def getUserGroups(request):
     groups = Group.objects.filter(members=user)
     serializer = GroupSerializer(groups, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserDebt(request):
+    '''
+    Gets a list of users that this user owes with the corresponding amount
+    '''
+    user = request.user
+    debts = Debt.objects.filter(creditor=user)
+    serializer = DebtSerializer(debts, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserCredit(request):
+    '''
+    Gets a list of users that owe this user with the corresponding amount
+    '''
+    user = request.user
+    debts = Debt.objects.filter(debtor=user)
+    serializer = DebtSerializer(debts, many=True)
+    return Response(serializer.data)
