@@ -26,3 +26,5 @@ Correct Solution:
 - person with 8 can give to person with -8
 
 min_num_transactions = 4
+
+- might find other cases
