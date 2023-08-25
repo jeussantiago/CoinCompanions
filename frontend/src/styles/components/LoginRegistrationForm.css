@@ -1,0 +1,103 @@
+/* brand logo*/
+.home-screen-logo-image {
+    width: 5em;
+    margin-bottom: 20px;
+}
+
+/* Welcome information */
+.login-registration-header {
+    /* margin-bottom: 50px; */
+    text-align: center;
+}
+
+/* Other Sign in options */
+.other-sign-in-options-container {
+    width: 70%;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+/* Line seperator */
+.separator-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    width: 70%;
+    max-width: 400px;
+}
+
+.line {
+    flex: 1;
+    height: 3px;
+    background-color: #ccc;
+}
+
+.left-line {
+    margin-right: 10px; /* Space between line and text */
+}
+
+.right-line {
+    margin-left: 10px; /* Space between line and text */
+}
+
+.text {
+    padding: 0 10px; /* Space between text and lines */
+}
+
+/* Form*/
+
+.login-registration-form {
+    margin: 10px 0;
+    width: 70%;
+    max-width: 400px;
+    /* border: 3px solid red; */
+}
+
+.move-home-box-link {
+    cursor: pointer;
+}
+
+.form-group-c {
+    margin-bottom: 20px;
+}
+
+.form-group-label {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* Error */
+
+.login-registration-form .message {
+    /* padding-bottom: 50px; */
+    width: 100%;
+    border-radius: 21px;
+    padding: 8px 0;
+    text-align: center;
+}
+
+.guest-account-conntainer {
+    width: 70%;
+    max-width: 400px;
+}
+.guest-account-conntainer {
+    margin-top: 0;
+}
+
+@media (max-width: 1200px) {
+    .other-sign-in-options-container {
+        width: 100%;
+    }
+
+    .separator-container {
+        width: 100%;
+    }
+
+    .login-registration-form {
+        width: 100%;
+    }
+
+    .guest-account-conntainer {
+        width: 100%;
+    }
+}

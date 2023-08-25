@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { register } from "../actions/userActions";
 import Message from "../components/Message";
+import "../styles/components/LoginRegistrationForm.css";
 
 function RegistrationForm({ toggleHomeComponentOnRight }) {
     const navigate = useNavigate();
@@ -36,78 +37,100 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
     };
 
     return (
-        <Container className="h-100 d-flex flex-column justify-content-center align-items-center">
-            <div>
-                <h1>Register</h1>
+        <Container className="d-flex flex-column justify-content-center align-items-center ">
+            <div className="login-registration-header">
+                <h1>Join Us!</h1>
+                Already have an account?{" "}
+                <span
+                    onClick={toggleHomeComponentOnRight}
+                    className="move-home-box-link fw-bolder border-bottom border-dark"
+                >
+                    Sign In
+                </span>
             </div>
-            <div className="login-register-form">
+            <div className="other-sign-in-options-container">
+                <Button
+                    type="submit"
+                    variant="light"
+                    className="w-100 rounded-pill mt-2 fw-bold"
+                >
+                    Google
+                </Button>
+            </div>
+            <div className="separator-container">
+                <div className="line left-line"></div>
+                <div className="text">Or sign up with</div>
+                <div className="line right-line"></div>
+            </div>
+            <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">
-                    <Form.Group controlId="name">
-                        <Form.Label>Name</Form.Label>
+                    <Form.Group controlId="name" class="form-group-c">
+                        <Form.Label class="form-group-label">Name</Form.Label>
                         <Form.Control
                             required
                             type="name"
-                            placeholder="name"
+                            placeholder="John Smith"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             autoComplete="off"
+                            className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="email">
-                        <Form.Label>Email</Form.Label>
+                    <Form.Group controlId="email" class="form-group-c">
+                        <Form.Label class="form-group-label">Email</Form.Label>
                         <Form.Control
                             type="email"
-                            placeholder="name@example.com"
+                            placeholder="E.g. yourname@email.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             autoComplete="off"
+                            className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="password">
-                        <Form.Label>Password</Form.Label>
+                    <Form.Group controlId="password" class="form-group-c">
+                        <Form.Label class="form-group-label">
+                            Password
+                        </Form.Label>
                         <Form.Control
                             type="password"
-                            placeholder="password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="passwordConfirm">
-                        <Form.Label>Confirm Password</Form.Label>
+                    <Form.Group
+                        controlId="passwordConfirm"
+                        class="form-group-c"
+                    >
+                        <Form.Label class="form-group-label">
+                            Confirm Password
+                        </Form.Label>
                         <Form.Control
                             required
                             type="password"
-                            placeholder="confirm password"
+                            placeholder="Confirm password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
-
-                    <Button type="submit" variant="primary">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        className="w-100 rounded-pill mt-2"
+                    >
                         Register
                     </Button>
                 </Form>
 
                 <Row className="py-3">
                     <Col>
-                        Existing Customer? Sign In (pass parameter to
-                        Registrations)
-                        <Button
-                            variant="warning"
-                            onClick={toggleHomeComponentOnRight}
-                        >
-                            Sign in
-                        </Button>
-                    </Col>
-                </Row>
-
-                <Row className="py-3">
-                    <Col>
                         {error && (
-                            <div className="w-50 d-flex flex-row">
+                            <div className="d-flex flex-row">
                                 <Message variant="danger">{error}</Message>
                             </div>
                         )}

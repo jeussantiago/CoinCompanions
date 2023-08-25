@@ -25,17 +25,16 @@ Backend
 -   [x] JWT atuhorization
 -   [x] user registration backend
 -   [x] user login backend
+-   [ ] google registration
+-   [ ] google login
 
 Frontend
 
--   [ ] user registration
-    -   email
-    -   name
-    -   password
--   [ ] user login
-    -   email
-    -   password
--   [ ] user logout
+-   [x] user registration
+-   [ ] google registration
+-   [x] user login
+-   [ ] google login
+-   [x] user logout
 
 #### USER FRIENDS
 

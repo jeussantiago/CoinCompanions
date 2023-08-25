@@ -3,73 +3,77 @@ import { Col, Row } from "react-bootstrap";
 
 import LoginForm from "../components/LoginForm";
 import RegistrationForm from "../components/RegistrationForm";
+import divingImage from "../images/friends-diving.png";
 import "../styles/screens/HomeScreen.css";
 
 function HomeScreen() {
-    const [homeComponentOnRight, setHomeComponentOnRight] = useState(true);
-    const [homeComponentClass, setHomeComponentClass] = useState(
-        "home position-absolute top-0 end-0 bg-primary"
-    );
+    const [isHomeBoxOnRight, setIsHomeBoxOnRight] = useState(true);
 
-    const toggleHomeComponentOnRight = () => {
-        if (homeComponentOnRight) {
-            setHomeComponentClass(
-                "home position-absolute top-0 start-0 bg-primary"
-            );
-        } else {
-            setHomeComponentClass(
-                "home position-absolute top-0 end-0 bg-primary"
-            );
-        }
-
-        setHomeComponentOnRight(!homeComponentOnRight);
+    const toggleHomeBoxPosition = () => {
+        setIsHomeBoxOnRight(!isHomeBoxOnRight);
     };
 
-    // const [homeComponentClass, setHomeComponentClass] = useState(
-    //     "home unclicked bg-primary"
-    // );
-
-    // const toggleHomeComponentOnRight = () => {
-    //     if (homeComponentOnRight) {
-    //         setHomeComponentClass("home clicked bg-primary");
-    //     } else {
-    //         setHomeComponentClass("home unclicked bg-primary");
-    //     }
-
-    //     setHomeComponentOnRight(!homeComponentOnRight);
-    // };
-
     return (
-        <div>
-            <div className="d-none d-md-inline">
-                <div className={homeComponentClass}>
-                    <p>
-                        Home Page <br />
-                        Info Section <br />
-                        logo/image
-                    </p>
+        <div className="view-container">
+            <div
+                className={`home-box ${
+                    isHomeBoxOnRight ? "home-box-right" : "home-box-left"
+                } bg-primary`}
+            >
+                <div className="home-box-container">
+                    <div className="home-box-text-container">
+                        <p>
+                            Travel, have fun and spend your hard earned money
+                            with friends and family.
+                            <br />
+                            Don't waste time trying to figure out who owes who.
+                            Let us do the work while you enjoy your trip.
+                        </p>
+                    </div>
+                    <div className="home-box-image-container">
+                        <img
+                            src={divingImage}
+                            alt="friends diving"
+                            style={{
+                                transform: isHomeBoxOnRight
+                                    ? "scale(0.7, 0.7) translate(-15%, -40%)"
+                                    : "scale(-0.7, 0.7) translate(-17%, -40%)",
+                                position: "absolute",
+                                top: 0,
+                                [isHomeBoxOnRight ? "left" : "right"]: 0,
+                            }}
+                            className="home-box-image"
+                        />
+                    </div>
                 </div>
             </div>
-            <Row className="justify-content-between min-vw-100 min-vh-100">
-                <Col
-                    xs={12}
-                    md={5}
-                    className="home-form mt-3 border border-primary"
+            <div className="view-content">
+                <Row
+                    className={`forms-container d-flex ${
+                        isHomeBoxOnRight
+                            ? "justify-content-start"
+                            : "justify-content-end"
+                    } align-items-center`}
                 >
-                    <LoginForm
-                        toggleHomeComponentOnRight={toggleHomeComponentOnRight}
-                    />
-                </Col>
-                <Col
-                    xs={12}
-                    md={5}
-                    className="home-form mt-3 border border-primary"
-                >
-                    <RegistrationForm
-                        toggleHomeComponentOnRight={toggleHomeComponentOnRight}
-                    />
-                </Col>
-            </Row>
+                    {isHomeBoxOnRight ? (
+                        <Col xs={12} md={5}>
+                            <LoginForm
+                                toggleHomeComponentOnRight={
+                                    toggleHomeBoxPosition
+                                }
+                            />
+                        </Col>
+                    ) : (
+                        <Col xs={12} md={5}>
+                            <RegistrationForm
+                                toggleHomeComponentOnRight={
+                                    toggleHomeBoxPosition
+                                }
+                            />
+                        </Col>
+                    )}
+                </Row>
+            </div>
         </div>
     );
 }

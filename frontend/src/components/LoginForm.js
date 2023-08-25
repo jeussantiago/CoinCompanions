@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import { login } from "../actions/userActions";
 import Message from "../components/Message";
-import "../styles/components/LoginForm.css";
+import logo from "../images/small-logo.png";
+import "../styles/components/LoginRegistrationForm.css";
 
 function LoginForm({ toggleHomeComponentOnRight }) {
     const navigate = useNavigate();
@@ -29,53 +30,74 @@ function LoginForm({ toggleHomeComponentOnRight }) {
     };
 
     return (
-        <Container className="h-100 d-flex flex-column justify-content-center align-items-center ">
+        <Container className="d-flex flex-column justify-content-center align-items-center">
             <div>
-                <h1>Login</h1>
+                <img src={logo} alt="Logo" className="home-screen-logo-image" />
             </div>
-            <div className="login-form">
+            <div className="login-registration-header">
+                <h1>Welcome!</h1>
+                Don't have an account yet?{" "}
+                <span
+                    onClick={toggleHomeComponentOnRight}
+                    className="move-home-box-link fw-bolder border-bottom border-dark"
+                >
+                    Register
+                </span>
+            </div>
+            <div className="other-sign-in-options-container">
+                <Button
+                    type="submit"
+                    variant="light"
+                    className="w-100 rounded-pill mt-2 fw-bold"
+                >
+                    Google
+                </Button>
+            </div>
+            <div className="separator-container">
+                <div className="line left-line"></div>
+                <div className="text">Or sign in with</div>
+                <div className="line right-line"></div>
+            </div>
+            <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">
-                    <Form.Group controlId="email">
-                        <Form.Label>Email</Form.Label>
+                    <Form.Group controlId="email" class="form-group-c">
+                        <Form.Label class="form-group-label">Email</Form.Label>
                         <Form.Control
                             type="email"
-                            placeholder="name@example.com"
+                            placeholder="E.g. yourname@email.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             autoComplete="off"
+                            className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="password">
-                        <Form.Label>Password</Form.Label>
+                    <Form.Group controlId="password" class="form-group-c">
+                        <Form.Label class="form-group-label">
+                            Password
+                        </Form.Label>
                         <Form.Control
                             type="password"
-                            placeholder="password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Button type="submit" variant="primary">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        className="w-100 rounded-pill mt-2"
+                    >
                         Sign in
                     </Button>
                 </Form>
 
                 <Row className="py-3">
                     <Col>
-                        New Customer? Register (pass parameter to Registrations)
-                        <Button
-                            variant="warning"
-                            onClick={toggleHomeComponentOnRight}
-                        >
-                            Register
-                        </Button>
-                    </Col>
-                </Row>
-                <Row className="py-3">
-                    <Col>
                         {error && (
-                            <div className="w-50 d-flex flex-row">
+                            <div className="d-flex flex-row">
                                 <Message variant="danger">
                                     {"User not found"}
                                 </Message>
@@ -87,8 +109,17 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                     <Col>{loading && <h3>Loading ...</h3>}</Col>
                 </Row>
             </div>
+
+            <div className="guest-account-conntainer">
+                <p>
+                    Don't feel like creating a new account? Sign in with our
+                    guest account to try the app:
+                </p>
+                <p>
+                    E: jeus@email.com <br /> P: hellofresh
+                </p>
+            </div>
         </Container>
-        // </div>
     );
 }
 
