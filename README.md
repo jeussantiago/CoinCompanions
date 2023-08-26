@@ -136,6 +136,20 @@ Frontend
 
 -   [ ] settle up button
 
+#### User Profile
+
+Frontend
+
+-   [ ] user profile - user name, email - can't see password
+-   [ ] update user name, email, and password (password wont be shown but will leave a textfield for it)
+-   [ ] conditional to not be able to update the guest users information (will have red text if the current user == 1(guest user), no updates will process -> something like "Guest users cannot update existing information")
+
+#### Settle Up
+
+-   [ ] add Paypal authorization
+-   [ ] save paypal linked to user account if authenticated
+-   [ ] add paypal send from one person to another
+
 ## BUILD:
 
 -   add friends
