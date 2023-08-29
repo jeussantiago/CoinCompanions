@@ -11,11 +11,13 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    })
 
     const userRegister = useSelector((state) => state.userRegister);
     const { error, loading, userInfo } = userRegister;
@@ -26,13 +28,21 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
         }
     }, [navigate, userInfo]);
 
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
     const submitHandler = (e) => {
         e.preventDefault();
+        setMessage("")
 
-        if (password !== confirmPassword) {
+        if (form.password !== form.confirmPassword) {
             setMessage("Passwords do not match");
         } else {
-            dispatch(register(name, email, password));
+            dispatch(register(form.name, form.email, form.password));
         }
     };
 
@@ -64,57 +74,57 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
             </div>
             <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">
-                    <Form.Group controlId="name" class="form-group-c">
-                        <Form.Label class="form-group-label">Name</Form.Label>
+                    <Form.Group controlId="name" className="form-group-c">
+                        <Form.Label className="fw-bold mb-1">Name</Form.Label>
                         <Form.Control
                             required
                             type="name"
                             placeholder="John Smith"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            name="name"
+                            onChange={handleChange}
                             autoComplete="off"
                             className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="email" class="form-group-c">
-                        <Form.Label class="form-group-label">Email</Form.Label>
+                    <Form.Group controlId="email" className="form-group-c">
+                        <Form.Label className="fw-bold mb-1">Email</Form.Label>
                         <Form.Control
                             type="email"
                             placeholder="E.g. yourname@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            onChange={handleChange}
                             autoComplete="off"
                             className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="password" class="form-group-c">
-                        <Form.Label class="form-group-label">
+                    <Form.Group controlId="password" className="form-group-c">
+                        <Form.Label className="fw-bold mb-1">
                             Password
                         </Form.Label>
                         <Form.Control
                             type="password"
                             placeholder="Enter your password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            name="password"
+                            onChange={handleChange}
                             className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
                     <Form.Group
                         controlId="passwordConfirm"
-                        class="form-group-c"
+                        className="form-group-c"
                     >
-                        <Form.Label class="form-group-label">
+                        <Form.Label className="fw-bold mb-1">
                             Confirm Password
                         </Form.Label>
                         <Form.Control
                             required
                             type="password"
                             placeholder="Confirm password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            name="confirmPassword"
+                            onChange={handleChange}
                             className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>

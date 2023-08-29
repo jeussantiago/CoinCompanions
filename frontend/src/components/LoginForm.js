@@ -12,8 +12,10 @@ function LoginForm({ toggleHomeComponentOnRight }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [form, setForm] = useState({
+        email: "",
+        password: "",
+    })
 
     const userLogin = useSelector((state) => state.userLogin);
     const { error, loading, userInfo } = userLogin;
@@ -24,10 +26,18 @@ function LoginForm({ toggleHomeComponentOnRight }) {
         }
     }, [navigate, userInfo]);
 
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(login(email, password));
+        dispatch(login(form.email, form.password));
     };
+
 
     return (
         <Container className="d-flex flex-column justify-content-center align-items-center">
@@ -60,27 +70,27 @@ function LoginForm({ toggleHomeComponentOnRight }) {
             </div>
             <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">
-                    <Form.Group controlId="email" class="form-group-c">
-                        <Form.Label class="form-group-label">Email</Form.Label>
+                    <Form.Group controlId="email" className="form-group-c">
+                        <Form.Label className="fw-bold mb-1">Email</Form.Label>
                         <Form.Control
                             type="email"
                             placeholder="E.g. yourname@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            onChange={handleChange}
                             autoComplete="off"
                             className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="password" class="form-group-c">
-                        <Form.Label class="form-group-label">
+                    <Form.Group controlId="password" className="form-group-c">
+                        <Form.Label className="fw-bold mb-1">
                             Password
                         </Form.Label>
                         <Form.Control
                             type="password"
                             placeholder="Enter your password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            name="password"
+                            onChange={handleChange}
                             className="rounded-pill"
                         ></Form.Control>
                     </Form.Group>
