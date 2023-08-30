@@ -9,6 +9,7 @@ urlpatterns = [
     path('groups/', views.getUserGroups, name='user-groups'),
     path('debt/', views.getUserDebt, name='owed-amount'),
     path('credit/', views.getUserCredit, name='owed-amount'),
+    path('search-users/', views.searchUsers, name='search-users'),
 
     path('profile/update/', views.updateUserProfile, name='users-profile-update'),
     path('delete/<str:pk>/', views.adminDeleteUser, name='admin-user-delete'),
@@ -26,6 +27,5 @@ urlpatterns = [
          views.sendFriendRequest, name='send-friend-request'),
     path('friend-requests/accept/<int:friend_request_id>/',
          views.acceptFriendRequest, name='accept-friend-request'),
-
 
 ]

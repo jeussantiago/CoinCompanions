@@ -1,0 +1,17 @@
+.screen-container {
+    padding: 10px 50px;
+}
+
+.friend-list-container {
+    border: 1px solid black;
+    padding: 12px 24px;
+}
+
+.friend-list-friend-box-container {
+    padding: 3px 5px;
+}
+
+.friend-list-friend-box {
+    border: 1px solid black;
+    padding: 3px 5px;
+}

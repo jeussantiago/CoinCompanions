@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
-from django.db.models import Sum
+from django.db.models import Q
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -85,6 +85,25 @@ def updateUserProfile(request):
     user.save()
 
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def searchUsers(request):
+    query = request.query_params.get('query', '')
+    current_user = request.user
+
+    # Exclude the current user from the search results
+    users = User.objects.exclude(id=current_user.id)
+
+    if query:
+        # Perform a case-insensitive search for users' usernames and emails
+        users = users.filter(
+            Q(username__icontains=query) | Q(email__icontains=query)
+        )
+
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
