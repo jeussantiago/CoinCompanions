@@ -90,11 +90,34 @@ def updateUserProfile(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def searchUsers(request):
+    '''
+    User able to search for other users. Results are based on query
+    Results do not include the user, their friends, users who have sent friend requests to the user, or
+    users to whom the current user has sent friend requests.
+    '''
     query = request.query_params.get('query', '')
     current_user = request.user
 
-    # Exclude the current user from the search results
-    users = User.objects.exclude(id=current_user.id)
+    user_friends = []
+    # Try to get the user's friends from the UserFriends model - empty list if doesn't have friends
+    try:
+        user_friends = UserFriends.objects.get(user=current_user).friends.all()
+    except UserFriends.DoesNotExist:
+        pass
+
+     # Get users who have sent a friend request to the current user
+    friend_requests_received = FriendRequest.objects.filter(
+        to_user=current_user)
+
+    # Get users to whom the current user has sent friend requests
+    friend_requests_sent = FriendRequest.objects.filter(from_user=current_user)
+
+    # Combine user IDs of friends, users who have sent friend requests, and users to whom the current user has sent friend requests
+    excluded_users_ids = [current_user.id] + list(user_friends.values_list('id', flat=True)) + list(
+        friend_requests_received.values_list('from_user', flat=True)) + list(friend_requests_sent.values_list('to_user', flat=True))
+
+    # Exclude users who are already friends, users who have sent friend requests, and users to whom the current user has sent friend requests
+    users = User.objects.exclude(id__in=excluded_users_ids)
 
     if query:
         # Perform a case-insensitive search for users' usernames and emails
@@ -257,7 +280,7 @@ def deleteFriendRequest(request, friend_request_id):
     # return Response(serializer.data)
 
 
-@api_view(['POST'])
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def removeFriend(request, friend_id):
     '''
@@ -269,14 +292,20 @@ def removeFriend(request, friend_id):
     except User.DoesNotExist:
         return Response({"error": "Friend not found"}, status=404)
 
-    # user friends
-    user_friends = UserFriends.objects.get(user=user)
-    # other person's friends
-    friend_to_remove_friends = UserFriends.objects.get(user=friend_to_remove)
+    try:
+        # user friends - remove other user
+        user_friends = UserFriends.objects.get(user=user)
+        user_friends.friends.remove(friend_to_remove)
+    except UserFriends.DoesNotExist:
+        pass
 
-    # Remove the friend from the friends list for both users
-    user_friends.friends.remove(friend_to_remove)
-    friend_to_remove_friends.friends.remove(user)
+    try:
+        # other person's friends - remove user
+        friend_to_remove_friends = UserFriends.objects.get(
+            user=friend_to_remove)
+        friend_to_remove_friends.friends.remove(user)
+    except UserFriends.DoesNotExist:
+        pass
 
     return Response({"message": "Unfriended successfully"}, status=200)
 

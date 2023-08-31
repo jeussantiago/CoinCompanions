@@ -9,7 +9,13 @@ import {
     USER_REGISTER_SUCCESS,
     USER_FRIENDS_LIST_REQUEST,
     USER_FRIENDS_LIST_SUCCESS,
-    USER_FRIENDS_LIST_FAIL
+    USER_FRIENDS_LIST_FAIL,
+    USER_FRIENDS_SEARCH_REQUEST,
+    USER_FRIENDS_SEARCH_SUCCESS,
+    USER_FRIENDS_SEARCH_FAIL,
+    USER_FRIENDS_DELETE_REQUEST,
+    USER_FRIENDS_DELETE_SUCCESS,
+    USER_FRIENDS_DELETE_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -111,6 +117,72 @@ export const getUsersFriends = () => async (dispatch, getState) => {
     } catch (err) {
         dispatch({
             type: USER_FRIENDS_LIST_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const getUserFriendSearch =
+    (keyword = "") =>
+    async (dispatch, getState) => {
+        try {
+            dispatch({ type: USER_FRIENDS_SEARCH_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.get(
+                `/api/users/search-users/?query=${keyword}`,
+                config
+            );
+
+            dispatch({ type: USER_FRIENDS_SEARCH_SUCCESS, payload: data });
+        } catch (err) {
+            dispatch({
+                type: USER_FRIENDS_SEARCH_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };
+
+export const deleteFriend = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_FRIENDS_DELETE_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.delete(
+            `/api/users/remove-friend/${id}/`,
+            config
+        );
+
+        dispatch({ type: USER_FRIENDS_DELETE_SUCCESS, payload: data });
+    } catch (err) {
+        dispatch({
+            type: USER_FRIENDS_DELETE_FAIL,
             payload:
                 err.response && err.response.data.detail
                     ? err.response.data.detail

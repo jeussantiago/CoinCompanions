@@ -185,6 +185,24 @@ Frontend
 -   pie charts to show who has spent what on the trip
 -   graph/line chart to show daily total spending
 
+#### Current Progress:
+
+-   [ ] Fix Friends Screen width. need to figure out how to make it go to 100% at all times
+
+-   [ ] add being able to see if you have pending notifications. If you have pending notifications. Sidebar "friends" icon will have a red dot
+-   [ ] functionality for confirm (add friend) or decline (delete request)
+
+-   [ ] when you open the Friend options, and select "Add to Group". Need to add functionality for that. Will add after creating the action and receivers for adding to group later.
+-   [ ] add columns to see how how much people owe you and how uch you owe people
+-   [ ] start Group page
+-   [ ] create group
+-   [ ] modify group name
+-   [ ] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
+-   [ ] add expenses
+-   [ ] modify expenses
+-   [ ] settle up
+-   [ ] if new user joins group and there are already expenses then add user to all expenses (dont add user to settle up expenses - method to stop this is probably add a "isEvenlyDistributed" key in model. Can only add self to entries that are evenly distributed)
+
 ---
 
 # Simplify Debt Algorithm Implementation

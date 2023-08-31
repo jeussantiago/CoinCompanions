@@ -21,7 +21,7 @@
 
 .burger-container {
     position: fixed;
-    margin-left: 10px;
+    margin-left: 13px;
 }
 
 .burger-box {
@@ -123,6 +123,8 @@
 .upper-sidebar-content ul li span {
     margin-left: 5px;
 }
+
+/* ------------- Lower Section of Sidebar ------------------ */
 
 .lower-sidebar-content {
     margin-bottom: 25px;

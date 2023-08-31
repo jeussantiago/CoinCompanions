@@ -1,17 +1,74 @@
+/* ------------- FriendsScreen.js ------------------ */
+.friends-screen-container {
+    border: 1px solid blue;
+    min-width: 100%;
+}
+
+/* ------------- FriendList.js ------------------ */
+
 .screen-container {
+    /* border: 1px solid red; */
     padding: 10px 50px;
+    min-width: 100%;
 }
 
 .friend-list-container {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     padding: 12px 24px;
+    background-color: white;
+    border-radius: 16px;
+    width: 100%;
 }
 
 .friend-list-friend-box-container {
     padding: 3px 5px;
+    color: white;
 }
 
 .friend-list-friend-box {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     padding: 3px 5px;
+    background-color: #78c2ad;
 }
+.friend-box-name {
+    /* border: 1px solid red; */
+    font-size: 18px;
+    text-transform: capitalize;
+    margin-left: 10px;
+}
+
+.friend-option-button-container {
+    /* border: 1px solid red; */
+    margin-right: 12px;
+}
+.friend-option-button {
+    /* border: 1px solid blue; */
+    cursor: pointer;
+}
+.view-all-button {
+    cursor: pointer;
+    /* border: 1px solid blue; */
+    padding: 6px 4px;
+    font-size: 14px;
+    color: grey;
+}
+
+/* ------------- searchFriendPopup.js ------------------ */
+
+.search-results-container {
+    max-height: 200px; /* Adjust as needed */
+    overflow-y: scroll;
+}
+
+/* ------------- smaller sizes------------------ */
+/* @media (max-width: 1200px) {
+    .friends-screen-container {
+        min-width: 70vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .friends-screen-container {
+        min-width: 55vw;
+    }
+} */
