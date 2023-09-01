@@ -1,12 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+
+import "../styles/screens/DashboardScreen.css";
+import PendingInvitesPopup from "../components/PendingInvitesPopup";
 
 function DashboardScreen() {
     const navigate = useNavigate();
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
+
+    const [showPendingInvitesPopup, setShowPendingInvitesPopup] =
+        useState(false);
+
+    // Function to open the PendingInvitesPopup
+    const openPendingInvitesPopup = () => {
+        setShowPendingInvitesPopup(true);
+    };
+
+    // Function to close the PendingInvitesPopup
+    const closePendingInvitesPopup = () => {
+        setShowPendingInvitesPopup(false);
+    };
 
     useEffect(() => {
         if (!userInfo) {
@@ -15,10 +32,17 @@ function DashboardScreen() {
     }, [navigate, userInfo]);
 
     return (
-        <div>
-            <div>DashboardScreen</div>
-
-            <div>hello {userInfo.name}</div>
+        <div className="screen-container">
+            <div className="d-flex flex-row justify-content-between align-items-center">
+                <h1>{userInfo.name}</h1>
+                <Button onClick={openPendingInvitesPopup}>
+                    Pending Invites
+                </Button>
+            </div>
+            <PendingInvitesPopup
+                show={showPendingInvitesPopup}
+                onClose={closePendingInvitesPopup}
+            />
         </div>
     );
 }

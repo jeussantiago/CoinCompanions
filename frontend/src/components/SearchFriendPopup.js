@@ -78,7 +78,7 @@ function SearchFriendPopup({ show, onClose }) {
 
     return (
         <Modal show={show} onHide={onClose}>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>Search Users</Modal.Title>
             </Modal.Header>
             <Modal.Body>

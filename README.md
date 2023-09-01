@@ -187,13 +187,12 @@ Frontend
 
 #### Current Progress:
 
--   [ ] Fix Friends Screen width. need to figure out how to make it go to 100% at all times
+-   [ ] Dahsboard Screen > Pending notifications functionality: accept group invitation
+-   [ ] Friends Screen > Friend Options functionality: add friend to group
+-   [ ] figure out to generally reroute the user if they are not logged in
 
--   [ ] add being able to see if you have pending notifications. If you have pending notifications. Sidebar "friends" icon will have a red dot
--   [ ] functionality for confirm (add friend) or decline (delete request)
-
--   [ ] when you open the Friend options, and select "Add to Group". Need to add functionality for that. Will add after creating the action and receivers for adding to group later.
--   [ ] add columns to see how how much people owe you and how uch you owe people
+-   [ ] Friends Screen: add columns to see how how much people owe you and how much you owe people
+-   [ ] Group Screen
 -   [ ] start Group page
 -   [ ] create group
 -   [ ] modify group name

@@ -1,22 +1,13 @@
 /* ------------- FriendsScreen.js ------------------ */
-.friends-screen-container {
-    border: 1px solid blue;
-    min-width: 100%;
-}
 
 /* ------------- FriendList.js ------------------ */
-
-.screen-container {
-    /* border: 1px solid red; */
-    padding: 10px 50px;
-    min-width: 100%;
-}
 
 .friend-list-container {
     /* border: 1px solid black; */
     padding: 12px 24px;
     background-color: white;
     border-radius: 16px;
+    border: 1px solid grey;
     width: 100%;
 }
 
@@ -28,7 +19,9 @@
 .friend-list-friend-box {
     /* border: 1px solid black; */
     padding: 3px 5px;
-    background-color: #78c2ad;
+    background-color: white;
+    border: 1px solid #78c2ad;
+    color: black;
 }
 .friend-box-name {
     /* border: 1px solid red; */

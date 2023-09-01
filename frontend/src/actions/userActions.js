@@ -16,6 +16,18 @@ import {
     USER_FRIENDS_DELETE_REQUEST,
     USER_FRIENDS_DELETE_SUCCESS,
     USER_FRIENDS_DELETE_FAIL,
+    USER_FRIENDS_REQUEST_LIST_REQUEST,
+    USER_FRIENDS_REQUEST_LIST_SUCCESS,
+    USER_FRIENDS_REQUEST_LIST_FAIL,
+    USER_GROUP_REQUEST_LIST_REQUEST,
+    USER_GROUP_REQUEST_LIST_SUCCESS,
+    USER_GROUP_REQUEST_LIST_FAIL,
+    USER_FRIENDS_REQUEST_DECLINE_REQUEST,
+    USER_FRIENDS_REQUEST_DECLINE_SUCCESS,
+    USER_FRIENDS_REQUEST_DECLINE_FAIL,
+    USER_FRIENDS_REQUEST_ACCEPT_REQUEST,
+    USER_FRIENDS_REQUEST_ACCEPT_SUCCESS,
+    USER_FRIENDS_REQUEST_ACCEPT_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -183,6 +195,129 @@ export const deleteFriend = (id) => async (dispatch, getState) => {
     } catch (err) {
         dispatch({
             type: USER_FRIENDS_DELETE_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const getPendingFriendRequest = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_FRIENDS_REQUEST_LIST_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(
+            `/api/users/friend-requests/received/`,
+            config
+        );
+
+        dispatch({ type: USER_FRIENDS_REQUEST_LIST_SUCCESS, payload: data });
+    } catch (err) {
+        dispatch({
+            type: USER_FRIENDS_REQUEST_LIST_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const getPendingGroupRequest = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_GROUP_REQUEST_LIST_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/groups/invitations`, config);
+
+        dispatch({ type: USER_GROUP_REQUEST_LIST_SUCCESS, payload: data });
+    } catch (err) {
+        dispatch({
+            type: USER_GROUP_REQUEST_LIST_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const deleteFriendRequest = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_FRIENDS_REQUEST_DECLINE_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.delete(`/api/users/friend-requests/delete/${id}/`, config);
+
+        dispatch({ type: USER_FRIENDS_REQUEST_DECLINE_SUCCESS });
+    } catch (err) {
+        dispatch({
+            type: USER_FRIENDS_REQUEST_DECLINE_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const acceptFriendRequest = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_FRIENDS_REQUEST_ACCEPT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(
+            `/api/users/friend-requests/accept/${id}/`,
+            {},
+            config
+        );
+
+        dispatch({ type: USER_FRIENDS_REQUEST_ACCEPT_SUCCESS });
+    } catch (err) {
+        dispatch({
+            type: USER_FRIENDS_REQUEST_ACCEPT_FAIL,
             payload:
                 err.response && err.response.data.detail
                     ? err.response.data.detail

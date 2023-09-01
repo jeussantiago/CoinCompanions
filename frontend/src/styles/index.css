@@ -5,7 +5,7 @@ body {
         "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; */
-    background-color: #d8d8d8;
+    background-color: #f6f8fe;
     color: black;
 }
 
@@ -18,4 +18,13 @@ body {
     padding-bottom: 5px;
     padding-top: 5px;
     font-size: 1em;
+}
+
+.route-container {
+    padding: 10px 50px;
+}
+
+.screen-container {
+    /* border: 1px solid black; */
+    width: 100%;
 }

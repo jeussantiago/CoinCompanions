@@ -32,7 +32,7 @@ function FriendOptionsPopup({
 
     return (
         <Modal show={show} onHide={onClose}>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>{selectedFriend.name.toUpperCase()}</Modal.Title>
             </Modal.Header>
             <Modal.Body>

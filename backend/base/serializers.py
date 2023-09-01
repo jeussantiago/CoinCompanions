@@ -32,6 +32,9 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class FriendRequestSerializer(serializers.ModelSerializer):
+    from_user = UserSerializer(many=False)
+    to_user = UserSerializer(many=False)
+
     class Meta:
         model = FriendRequest
         fields = ['id', 'from_user', 'to_user', 'created_at', 'accepted']
@@ -45,13 +48,6 @@ class UserFriendsSerializer(serializers.ModelSerializer):
         fields = ['friends']
 
 
-# class TripSerializer(serializers.ModelSerializer):
-#     members = UserSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         model = Trip
-#         fields = ['id', 'name', 'members']
-
 class GroupSerializer(serializers.ModelSerializer):
     members = UserSerializer(many=True)
 
@@ -61,9 +57,18 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class GroupInvitationSerializer(serializers.ModelSerializer):
+    invitee = UserSerializer(many=False)
+    group = serializers.SerializerMethodField()
+
     class Meta:
         model = GroupInvitation
         fields = ['id', 'group', 'inviter', 'invitee', 'accepted']
+
+    # Define a custom method to get the group data
+    def get_group(self, obj):
+        group = obj.group  # Retrieve the group object from the GroupInvitation
+        # Return only the id and name. Don't need the members
+        return {'id': group.id, 'name': group.name}
 
 
 class ExpenseSerializer(serializers.ModelSerializer):

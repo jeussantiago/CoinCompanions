@@ -48,7 +48,7 @@ function FriendList() {
     }, [dispatch, updateFriendsList]);
 
     return (
-        <Row className="screen-container">
+        <div>
             <div className="d-flex flex-row justify-content-between align-items-center">
                 <h1>Friends List</h1>
 
@@ -121,7 +121,7 @@ function FriendList() {
                 show={showSearchFriendsPopup}
                 onClose={closeSearchFriendPopup}
             />
-        </Row>
+        </div>
     );
 }
 

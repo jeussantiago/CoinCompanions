@@ -1,0 +1,8 @@
+/* ------------- PendingInvitesPopup.js ------------------ */
+.pending-invites-popup ul {
+}
+
+.scrollable-list {
+    max-height: 250px; /* Adjust the max height as needed */
+    overflow-y: auto;
+}

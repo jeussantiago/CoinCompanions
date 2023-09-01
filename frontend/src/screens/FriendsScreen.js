@@ -33,11 +33,11 @@ import FriendList from "../components/FriendList";
 
 function FriendsScreen() {
     return (
-        <div className="friends-screen-container d-flex flex-column ">
-            <div>who owes</div>
-            <div className="flex-grow-1">
-                <FriendList />
-            </div>
+        <div className="screen-container d-flex flex-column">
+            {/* <div>who owes</div> */}
+            <FriendList />
+            {/* <div className="flex-grow-1">
+            </div> */}
         </div>
     );
 }

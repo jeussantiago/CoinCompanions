@@ -1,8 +1,10 @@
 import React from "react";
 
+import "../styles/screens/GroupsScreens.css";
+
 function GroupsScreens() {
     return (
-        <div>
+        <div className="screen-container">
             <div>GroupsScreens</div>
         </div>
     );
