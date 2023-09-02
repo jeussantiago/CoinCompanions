@@ -6,7 +6,7 @@ import "../styles/screens/FriendsScreen.css";
 // import Message from "../components/Message";
 // import { getUsersFriends } from "../actions/userActions";
 // import FriendOptionsPopup from "../components/FriendOptionsPopup";
-import FriendList from "../components/FriendList";
+import FriendList from "../components/FriendsScreenComponents/FriendList";
 
 /**
  * Pending Friend Request

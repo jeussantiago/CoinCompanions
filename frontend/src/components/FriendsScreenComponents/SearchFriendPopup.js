@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, FormControl, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import "../styles/screens/FriendsScreen.css";
 
-import { getUserFriendSearch } from "../actions/userActions";
-import AlertMessage from "./AlertMessage";
+import "../../styles/screens/FriendsScreen.css";
+import { getUserFriendSearch } from "../../actions/userActions";
+import AlertMessage from "../AlertMessage";
 
 function SearchFriendPopup({ show, onClose }) {
     const dispatch = useDispatch();

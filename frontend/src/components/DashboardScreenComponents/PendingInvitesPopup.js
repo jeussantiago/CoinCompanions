@@ -2,21 +2,21 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Modal, Button, Tab, Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import "../styles/screens/DashboardScreen.css";
-import Message from "./Message";
+import "../../styles/screens/DashboardScreen.css";
+import Message from "../Message";
 import {
     getPendingFriendRequest,
     getPendingGroupRequest,
     deleteFriendRequest,
     acceptFriendRequest,
-} from "../actions/userActions";
-import { deleteGroupInvite } from "../actions/groupActions";
+} from "../../actions/userActions";
+import { deleteGroupInvite } from "../../actions/groupActions";
 import {
     USER_FRIENDS_REQUEST_DECLINE_RESET,
     USER_FRIENDS_REQUEST_ACCEPT_RESET,
-} from "../constants/userConstants";
-import { GROUP_INVITE_DECLINE_RESET } from "../constants/groupConstants";
-import AlertMessage from "./AlertMessage";
+} from "../../constants/userConstants";
+import { GROUP_INVITE_DECLINE_RESET } from "../../constants/groupConstants";
+import AlertMessage from "../AlertMessage";
 
 function PendingInvitesPopup({ show, onClose }) {
     const dispatch = useDispatch();

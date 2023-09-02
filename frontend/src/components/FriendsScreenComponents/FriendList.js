@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row, Button } from "react-bootstrap";
 
-import "../styles/screens/FriendsScreen.css";
-import Message from "../components/Message";
-import { getUsersFriends } from "../actions/userActions";
-import FriendOptionsPopup from "../components/FriendOptionsPopup";
+import "../../styles/screens/FriendsScreen.css";
+import Message from "../Message";
+import { getUsersFriends } from "../../actions/userActions";
+import FriendOptionsPopup from "./FriendOptionsPopup";
 import SearchFriendPopup from "./SearchFriendPopup";
 
 function FriendList() {

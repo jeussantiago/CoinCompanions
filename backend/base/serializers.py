@@ -48,12 +48,41 @@ class UserFriendsSerializer(serializers.ModelSerializer):
         fields = ['friends']
 
 
+class ExpenseSerializer(serializers.ModelSerializer):
+    payer = UserSerializer(many=False)
+
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+
 class GroupSerializer(serializers.ModelSerializer):
     members = UserSerializer(many=True)
 
     class Meta:
         model = Group
         fields = '__all__'
+
+
+class GroupSerializerForGetUserGroupsView(serializers.ModelSerializer):
+    most_recent_expense = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Group
+        exclude = ('members',)
+
+    def get_most_recent_expense(self, obj):
+        # Retrieve the most recent expenses for the group
+        most_recent_expenses = Expense.objects.filter(
+            group=obj).order_by('-date')[:2]
+
+        # Check if there are any expenses
+        if most_recent_expenses.exists():
+            # Serialize the most recent expenses using ExpenseSerializer
+            return ExpenseSerializer(most_recent_expenses, many=True).data
+        else:
+            # If no expenses exist, return an empty list
+            return []
 
 
 class GroupInvitationSerializer(serializers.ModelSerializer):
@@ -69,12 +98,6 @@ class GroupInvitationSerializer(serializers.ModelSerializer):
         group = obj.group  # Retrieve the group object from the GroupInvitation
         # Return only the id and name. Don't need the members
         return {'id': group.id, 'name': group.name}
-
-
-class ExpenseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Expense
-        fields = '__all__'
 
 
 class ExpenseDetailSerializer(serializers.ModelSerializer):

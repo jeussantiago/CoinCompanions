@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
-import { deleteFriend } from "../actions/userActions";
+import { deleteFriend } from "../../actions/userActions";
 
 function FriendOptionsPopup({
     show,

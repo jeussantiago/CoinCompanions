@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
 import "../styles/screens/DashboardScreen.css";
-import PendingInvitesPopup from "../components/PendingInvitesPopup";
+import PendingInvitesPopup from "../components/DashboardScreenComponents/PendingInvitesPopup";
 
 function DashboardScreen() {
     const navigate = useNavigate();

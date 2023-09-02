@@ -3,22 +3,24 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { login } from "../actions/userActions";
-import Message from "../components/Message";
-import logo from "../images/small-logo.png";
-import "../styles/components/LoginRegistrationForm.css";
+import { register } from "../../actions/userActions";
+import Message from "../Message";
+import "../../styles/components/LoginRegistrationForm.css";
 
-function LoginForm({ toggleHomeComponentOnRight }) {
+function RegistrationForm({ toggleHomeComponentOnRight }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const [message, setMessage] = useState("");
     const [form, setForm] = useState({
+        name: "",
         email: "",
         password: "",
-    })
+        confirmPassword: "",
+    });
 
-    const userLogin = useSelector((state) => state.userLogin);
-    const { error, loading, userInfo } = userLogin;
+    const userRegister = useSelector((state) => state.userRegister);
+    const { error, loading, userInfo } = userRegister;
 
     useEffect(() => {
         if (userInfo) {
@@ -29,29 +31,31 @@ function LoginForm({ toggleHomeComponentOnRight }) {
     const handleChange = (e) => {
         setForm({
             ...form,
-            [e.target.name]: e.target.value
-        })
-    }
+            [e.target.name]: e.target.value,
+        });
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(login(form.email, form.password));
+        setMessage("");
+
+        if (form.password !== form.confirmPassword) {
+            setMessage("Passwords do not match");
+        } else {
+            dispatch(register(form.name, form.email, form.password));
+        }
     };
 
-
     return (
-        <Container className="d-flex flex-column justify-content-center align-items-center">
-            <div>
-                <img src={logo} alt="Logo" className="home-screen-logo-image" />
-            </div>
+        <Container className="d-flex flex-column justify-content-center align-items-center ">
             <div className="login-registration-header">
-                <h1>Welcome!</h1>
-                Don't have an account yet?{" "}
+                <h1>Join Us!</h1>
+                Already have an account?{" "}
                 <span
                     onClick={toggleHomeComponentOnRight}
                     className="move-home-box-link fw-bolder border-bottom border-dark"
                 >
-                    Register
+                    Sign In
                 </span>
             </div>
             <div className="other-sign-in-options-container">
@@ -65,11 +69,24 @@ function LoginForm({ toggleHomeComponentOnRight }) {
             </div>
             <div className="separator-container">
                 <div className="line left-line"></div>
-                <div className="text">Or sign in with</div>
+                <div className="text">Or sign up with</div>
                 <div className="line right-line"></div>
             </div>
             <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">
+                    <Form.Group controlId="name" className="form-group-c">
+                        <Form.Label className="fw-bold mb-1">Name</Form.Label>
+                        <Form.Control
+                            required
+                            type="name"
+                            placeholder="John Smith"
+                            name="name"
+                            onChange={handleChange}
+                            autoComplete="off"
+                            className="rounded-pill"
+                        ></Form.Control>
+                    </Form.Group>
+
                     <Form.Group controlId="email" className="form-group-c">
                         <Form.Label className="fw-bold mb-1">Email</Form.Label>
                         <Form.Control
@@ -95,12 +112,28 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                         ></Form.Control>
                     </Form.Group>
 
+                    <Form.Group
+                        controlId="passwordConfirm"
+                        className="form-group-c"
+                    >
+                        <Form.Label className="fw-bold mb-1">
+                            Confirm Password
+                        </Form.Label>
+                        <Form.Control
+                            required
+                            type="password"
+                            placeholder="Confirm password"
+                            name="confirmPassword"
+                            onChange={handleChange}
+                            className="rounded-pill"
+                        ></Form.Control>
+                    </Form.Group>
                     <Button
                         type="submit"
                         variant="primary"
                         className="w-100 rounded-pill mt-2"
                     >
-                        Sign in
+                        Register
                     </Button>
                 </Form>
 
@@ -108,29 +141,28 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                     <Col>
                         {error && (
                             <div className="d-flex flex-row">
-                                <Message variant="danger">
-                                    {"User not found"}
-                                </Message>
+                                <Message variant="danger">{error}</Message>
                             </div>
                         )}
                     </Col>
                 </Row>
+
+                {message && (
+                    <Row className="py-3">
+                        <Col>
+                            <div className="d-flex flex-row">
+                                <Message variant="danger">{message}</Message>
+                            </div>
+                        </Col>
+                    </Row>
+                )}
+
                 <Row className="py-3">
                     <Col>{loading && <h3>Loading ...</h3>}</Col>
                 </Row>
-            </div>
-
-            <div className="guest-account-conntainer">
-                <p>
-                    Don't feel like creating a new account? Sign in with our
-                    guest account to try the app:
-                </p>
-                <p>
-                    E: jeus@email.com <br /> P: hellofresh
-                </p>
             </div>
         </Container>
     );
 }
 
-export default LoginForm;
+export default RegistrationForm;

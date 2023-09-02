@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Max
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from base.serializers import UserSerializer, UserSerializerWithToken, UserFriendsSerializer, FriendRequestSerializer, GroupSerializer, DebtSerializer
+from base.serializers import UserSerializer, UserSerializerWithToken, FriendRequestSerializer, GroupSerializer, DebtSerializer, ExpenseSerializer, GroupSerializerForGetUserGroupsView
 from django.contrib.auth.models import User
-from base.models import FriendRequest, UserFriends, Group, Debt
+from base.models import FriendRequest, UserFriends, Group, Debt, Expense
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -315,7 +315,8 @@ def removeFriend(request, friend_id):
 def getUserGroups(request):
     user = request.user
     groups = Group.objects.filter(members=user)
-    serializer = GroupSerializer(groups, many=True)
+    serializer = GroupSerializerForGetUserGroupsView(
+        groups, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 

@@ -13,7 +13,11 @@ import {
     userFriendRequestDeclineReducer,
     userFriendRequestAcceptReducer,
 } from "./reducers/userReducers";
-import { groupInviteDeclineReducer } from "./reducers/groupReducers";
+import {
+    groupInviteDeclineReducer,
+    groupCreateReducer,
+    groupListsReducer,
+} from "./reducers/groupReducers";
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
@@ -27,6 +31,8 @@ const reducer = combineReducers({
     userFriendRequestAccept: userFriendRequestAcceptReducer,
 
     groupInviteDecline: groupInviteDeclineReducer,
+    groupCreate: groupCreateReducer,
+    groupLists: groupListsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

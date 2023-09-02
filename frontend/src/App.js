@@ -6,7 +6,8 @@ import SideBar from "./components/SideBar";
 
 import DashboardScreen from "./screens/DashboardScreen";
 import FriendsScreen from "./screens/FriendsScreen";
-import GroupsScreens from "./screens/GroupsScreens";
+import GroupsScreen from "./screens/GroupsScreen";
+import IndividualGroupScreen from "./screens/IndividualGroupScreen";
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 
@@ -35,7 +36,12 @@ function App() {
                             />
                             <Route
                                 path="/groups"
-                                element={<GroupsScreens />}
+                                element={<GroupsScreen />}
+                                exact
+                            />
+                            <Route
+                                path="/groups/:id"
+                                element={<IndividualGroupScreen />}
                                 exact
                             />
                             <Route

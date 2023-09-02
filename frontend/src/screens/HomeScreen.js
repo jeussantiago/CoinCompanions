@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 
-import LoginForm from "../components/LoginForm";
-import RegistrationForm from "../components/RegistrationForm";
+import LoginForm from "../components/HomeScreenComponents/LoginForm";
+import RegistrationForm from "../components/HomeScreenComponents/RegistrationForm";
 import divingImage from "../images/friends-diving.png";
 import "../styles/screens/HomeScreen.css";
 

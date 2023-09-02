@@ -1,6 +1,65 @@
-/* .container {
-    display: flex;
+.card-body-most-recent-expense {
+    /* border-left: 1px solid grey; */
+    /* padding-left: 50px; */
 }
-.full-width {
-    flex: 1;
-} */
+
+.card-body-most-recent-expense li {
+    /* border: 1px solid green; */
+    /* padding-left: 25px; */
+    list-style: none;
+    /* padding-bottom: 10px; */
+}
+
+.list-wrapper {
+    position: relative;
+    /* border: 1px solid green; */
+}
+.list-item-wrapper {
+    /* margin-top: 10px; */
+    position: relative;
+}
+.list-bullet {
+    float: left;
+    margin-left: 9px;
+    margin-top: 6px;
+    margin-right: 20px;
+    background: #78c2ad;
+    height: 12px;
+    width: 12px;
+    line-height: 10px;
+    border-radius: 100px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+}
+.list-item {
+    display: table-row;
+    vertical-align: middle;
+    margin-left: 10px;
+    /* border: 1px solid green; */
+}
+.list-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.list-text {
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+.red-line {
+    background: #78c2ad;
+    z-index: 0;
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 15px;
+}
+.white-line {
+    background: #fff;
+    z-index: -1;
+    top: 0px;
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 15px;
+}
