@@ -39,7 +39,7 @@ function LoginForm({ toggleHomeComponentOnRight }) {
     };
 
     return (
-        <Container className="d-flex flex-column justify-content-center align-items-center">
+        <div className="d-flex flex-column justify-content-center align-items-center">
             <div>
                 <img src={logo} alt="Logo" className="home-screen-logo-image" />
             </div>
@@ -128,7 +128,7 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                     E: jeus@email.com <br /> P: hellofresh
                 </p>
             </div>
-        </Container>
+        </div>
     );
 }
 

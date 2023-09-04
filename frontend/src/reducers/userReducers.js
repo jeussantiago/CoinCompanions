@@ -30,6 +30,9 @@ import {
     USER_FRIENDS_REQUEST_ACCEPT_SUCCESS,
     USER_FRIENDS_REQUEST_ACCEPT_FAIL,
     USER_FRIENDS_REQUEST_ACCEPT_RESET,
+    USER_GROUP_CREDIT_DEBT_REQUEST,
+    USER_GROUP_CREDIT_DEBT_SUCCESS,
+    USER_GROUP_CREDIT_DEBT_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -194,6 +197,25 @@ export const userFriendRequestAcceptReducer = (state = {}, action) => {
 
         case USER_FRIENDS_REQUEST_ACCEPT_RESET:
             return {};
+
+        default:
+            return state;
+    }
+};
+
+export const usersGroupsTotalDebtCreditReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_GROUP_CREDIT_DEBT_REQUEST:
+            return { loading: true };
+
+        case USER_GROUP_CREDIT_DEBT_SUCCESS:
+            return {
+                loading: false,
+                userGroupsTotalCreditDebit: action.payload,
+            };
+
+        case USER_GROUP_CREDIT_DEBT_FAIL:
+            return { loading: false, error: action.payload };
 
         default:
             return state;

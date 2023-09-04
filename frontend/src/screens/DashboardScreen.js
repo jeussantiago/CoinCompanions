@@ -32,7 +32,7 @@ function DashboardScreen() {
     }, [navigate, userInfo]);
 
     return (
-        <div className="screen-container">
+        <div className="route-container screen-container">
             <div className="d-flex flex-row justify-content-between align-items-center">
                 <h1>{userInfo.name}</h1>
                 <Button onClick={openPendingInvitesPopup}>

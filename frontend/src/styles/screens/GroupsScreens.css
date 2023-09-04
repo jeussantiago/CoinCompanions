@@ -1,7 +1,8 @@
-.card-body-most-recent-expense {
-    /* border-left: 1px solid grey; */
-    /* padding-left: 50px; */
-}
+/* .card-body-most-recent-expense {
+    border-left: 1px solid grey; */
+/* padding-left: 50px;
+} */
+/* ---------------- GroupList.js ------------------ */
 
 .card-body-most-recent-expense li {
     /* border: 1px solid green; */
@@ -39,7 +40,6 @@
     /* border: 1px solid green; */
 }
 .list-title {
-    font-weight: 700;
     margin-bottom: 10px;
 }
 .list-text {
@@ -63,3 +63,12 @@
     position: absolute;
     left: 15px;
 }
+
+.owed-box {
+    border-radius: 10px;
+    height: 100%;
+    max-width: 300px;
+    /* padding: 8px 16px; */
+}
+
+/* ---------------- IndividualGroupScreen.js ------------------ */

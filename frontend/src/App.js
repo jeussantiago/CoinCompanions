@@ -1,4 +1,3 @@
-import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
 
@@ -17,40 +16,38 @@ function App() {
 
     return (
         <Router>
-            <div className="d-flex flex-row border border-primary vw-100">
+            <div className="d-flex flex-row vw-100 vh-100">
                 {/* Don't show the Sidebar on the log in/home page */}
                 {userInfo && <SideBar />}
-                <main className="w-100 ">
-                    <Container className="route-container">
-                        <Routes>
-                            <Route path="/" element={<HomeScreen />} exact />
-                            <Route
-                                path="/dashboard"
-                                element={<DashboardScreen />}
-                                exact
-                            />
-                            <Route
-                                path="/friends"
-                                element={<FriendsScreen />}
-                                exact
-                            />
-                            <Route
-                                path="/groups"
-                                element={<GroupsScreen />}
-                                exact
-                            />
-                            <Route
-                                path="/groups/:id"
-                                element={<IndividualGroupScreen />}
-                                exact
-                            />
-                            <Route
-                                path="/settings"
-                                element={<SettingsScreen />}
-                                exact
-                            />
-                        </Routes>
-                    </Container>
+                <main className="main-content w-100">
+                    <Routes>
+                        <Route path="/" element={<HomeScreen />} exact />
+                        <Route
+                            path="/dashboard"
+                            element={<DashboardScreen />}
+                            exact
+                        />
+                        <Route
+                            path="/friends"
+                            element={<FriendsScreen />}
+                            exact
+                        />
+                        <Route
+                            path="/groups"
+                            element={<GroupsScreen />}
+                            exact
+                        />
+                        <Route
+                            path="/groups/:id"
+                            element={<IndividualGroupScreen />}
+                            exact
+                        />
+                        <Route
+                            path="/settings"
+                            element={<SettingsScreen />}
+                            exact
+                        />
+                    </Routes>
                 </main>
             </div>
         </Router>

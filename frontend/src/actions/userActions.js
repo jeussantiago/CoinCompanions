@@ -28,6 +28,9 @@ import {
     USER_FRIENDS_REQUEST_ACCEPT_REQUEST,
     USER_FRIENDS_REQUEST_ACCEPT_SUCCESS,
     USER_FRIENDS_REQUEST_ACCEPT_FAIL,
+    USER_GROUP_CREDIT_DEBT_REQUEST,
+    USER_GROUP_CREDIT_DEBT_SUCCESS,
+    USER_GROUP_CREDIT_DEBT_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -325,3 +328,36 @@ export const acceptFriendRequest = (id) => async (dispatch, getState) => {
         });
     }
 };
+
+export const getUsersGroupsTotalCreditDebit =
+    () => async (dispatch, getState) => {
+        try {
+            dispatch({ type: USER_GROUP_CREDIT_DEBT_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.get(
+                `/api/users/groups-debt-credit/`,
+                config
+            );
+
+            dispatch({ type: USER_GROUP_CREDIT_DEBT_SUCCESS, payload: data });
+        } catch (err) {
+            dispatch({
+                type: USER_GROUP_CREDIT_DEBT_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };

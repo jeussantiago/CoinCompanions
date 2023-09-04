@@ -14,7 +14,7 @@ function HomeScreen() {
     };
 
     return (
-        <div className="view-container">
+        <div className="screen-container home-screen">
             <div
                 className={`home-box ${
                     isHomeBoxOnRight ? "home-box-right" : "home-box-left"
@@ -47,7 +47,7 @@ function HomeScreen() {
                     </div>
                 </div>
             </div>
-            <div className="view-content">
+            <div className="view-content h-100">
                 <Row
                     className={`forms-container d-flex ${
                         isHomeBoxOnRight

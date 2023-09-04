@@ -52,7 +52,7 @@ function SideBar() {
     };
 
     return (
-        <div>
+        <div className="sidebar">
             <div className="burger-container d-block d-sm-none">
                 <div className="burger-box" onClick={updateMenu}>
                     <div className="burger-menu">

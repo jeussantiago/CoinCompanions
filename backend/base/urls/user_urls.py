@@ -9,6 +9,8 @@ urlpatterns = [
     path('groups/', views.getUserGroups, name='user-groups'),
     path('debt/', views.getUserDebt, name='owed-amount'),
     path('credit/', views.getUserCredit, name='owed-amount'),
+    path('groups-debt-credit/', views.getUserGroupDebtCredit,
+         name='user-groups-debt-credit'),
     path('search-users/', views.searchUsers, name='search-users'),
 
     path('profile/update/', views.updateUserProfile, name='users-profile-update'),

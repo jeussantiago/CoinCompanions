@@ -12,11 +12,14 @@ import {
     userGroupRequestListReducer,
     userFriendRequestDeclineReducer,
     userFriendRequestAcceptReducer,
+    usersGroupsTotalDebtCreditReducer,
 } from "./reducers/userReducers";
 import {
     groupInviteDeclineReducer,
     groupCreateReducer,
     groupListsReducer,
+    groupDetailsReducer,
+    groupNameUpdateReducer,
 } from "./reducers/groupReducers";
 
 const reducer = combineReducers({
@@ -29,10 +32,13 @@ const reducer = combineReducers({
     userGroupRequestList: userGroupRequestListReducer,
     userFriendRequestDecline: userFriendRequestDeclineReducer,
     userFriendRequestAccept: userFriendRequestAcceptReducer,
+    usersGroupsTotalDebtCredit: usersGroupsTotalDebtCreditReducer,
 
     groupInviteDecline: groupInviteDeclineReducer,
     groupCreate: groupCreateReducer,
     groupLists: groupListsReducer,
+    groupDetails: groupDetailsReducer,
+    groupNameUpdate: groupNameUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

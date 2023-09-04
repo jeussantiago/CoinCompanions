@@ -1,6 +1,6 @@
 .home {
     min-height: 100vh;
-    width: 57%;
+    /* width: 57%; */
     transition: ease-out 0.5s;
 }
 
@@ -27,15 +27,16 @@
     position: relative;
     display: flex;
     height: 100vh;
-    width: 98vw; /* Use full viewport width */
+    width: 100%; /* Use full viewport width */
     overflow: hidden;
     /* border: 3px solid blue; */
 }
 
 .view-content {
-    flex: 1;
+    /* flex: 1; */
     /* padding: 20px; */
     overflow: auto;
+    width: 100%;
     /* border: 3px solid red; */
 }
 

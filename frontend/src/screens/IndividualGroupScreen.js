@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
+import "../styles/screens/GroupsScreens.css";
+import { GROUP_DETAILS_RESET } from "../constants/groupConstants";
+import Message from "../components/Message";
+import AlertMessage from "../components/AlertMessage";
+import { getGroupDetails } from "../actions/groupActions";
+import UpdateNamePopup from "../components/IndividualGroupScreenComponents/UpdateNamePopup";
 /**
  * if the user is not logged in. navigate to home page
  * if the user is not part of the group. navigate to the groups page
  *
  * modify group name
- * create group button
  *
  *
  * expense chart
@@ -39,14 +45,89 @@ import { Link, useNavigate, useParams } from "react-router-dom";
  *
  */
 function IndividualGroupScreen() {
+    const dispatch = useDispatch();
+    // group id
     const { id } = useParams();
     const navigate = useNavigate();
 
+    // get the current user details
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
+    // get the members of the group
+    const groupDetails = useSelector((state) => state.groupDetails);
+    const {
+        error: groupDetailsError,
+        loading: groupDetailsLoading,
+        groupDetail,
+    } = groupDetails;
+
+    const [showUpdateNamePopup, setShowUpdateNamePopup] = useState(false);
+    const [isGroupNameUpdated, setIsGroupNameUpdated] = useState(false);
+
+    const openShowUpdateNamePopup = () => {
+        setShowUpdateNamePopup(true);
+    };
+
+    const closeShowUpdateNamePopup = () => {
+        setShowUpdateNamePopup(false);
+    };
+
+    const groupNameIsUpdated = () => {
+        setIsGroupNameUpdated(!isGroupNameUpdated);
+    };
+
     // NAVIGATE THE USER AWAY IF THEY ARE NOT PART OF THIS GROUP
+    useEffect(() => {
+        // finished getting data and group id doesn't exist
+        //user not a member
+        if (
+            !groupDetailsLoading &&
+            (groupDetailsError ||
+                (groupDetail &&
+                    !groupDetail.members.some(
+                        (member) => member.id === userInfo.id
+                    )))
+        ) {
+            navigate("/groups");
+            dispatch({ type: GROUP_DETAILS_RESET });
+        }
+    }, [
+        navigate,
+        userInfo,
+        groupDetailsError,
+        groupDetailsLoading,
+        groupDetail,
+        dispatch,
+    ]);
+
+    useEffect(() => {
+        dispatch(getGroupDetails(id));
+    }, [dispatch, id, isGroupNameUpdated]);
 
     return (
-        <div>
-            <div>IndividualGroupScreen : Group {id} </div>
+        <div className="route-container screen-container">
+            <div>
+                {groupDetail ? (
+                    <div>
+                        <div>
+                            <h1>{groupDetail.name}</h1>
+                            <button onClick={openShowUpdateNamePopup}>
+                                Edit
+                            </button>
+                        </div>
+                        <UpdateNamePopup
+                            show={showUpdateNamePopup}
+                            onClose={closeShowUpdateNamePopup}
+                            groupNameIsUpdated={groupNameIsUpdated}
+                            currentGroupName={groupDetail.name}
+                            groupId={id}
+                        />
+                    </div>
+                ) : (
+                    <div>loading...</div>
+                )}
+            </div>
         </div>
     );
 }

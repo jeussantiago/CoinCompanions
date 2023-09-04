@@ -2,8 +2,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.hashers import make_password
+from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
-from django.db.models import Q, Max
+from django.db.models import Q, Sum, ExpressionWrapper, DecimalField
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -342,3 +343,65 @@ def getUserCredit(request):
     debts = Debt.objects.filter(debtor=user)
     serializer = DebtSerializer(debts, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserGroupDebtCredit(request):
+    '''
+    key=group id
+    val={
+        total_credit: user's total credit from other users (other users owe user)
+        total_debt: user's total debt to other users (user owes other users)
+    }
+
+    {
+        "6": {
+            "group_name": "another group",
+            "total_credit": 464.67,
+            "total_debt": null
+        },
+        "7": {
+            "group_name": "second",
+            "total_credit": 100.0,
+            "total_debt": null
+        },
+        "17": {
+            "group_name": "Good Name",
+            "total_credit": null,
+            "total_debt": null
+        }
+    }
+    '''
+    user = request.user
+
+    # Retrieve all groups the user is a part of
+    groups = Group.objects.filter(members=user)
+
+    # Calculate the total debt and credit for each group and store in a dictionary
+    group_debt_credit = {}
+    for group in groups:
+        total_credit_result = Debt.objects.filter(group=group, creditor=user).aggregate(
+            total_amount=ExpressionWrapper(
+                Sum('amount'),
+                output_field=DecimalField()
+            )
+        )
+        total_debt_result = Debt.objects.filter(group=group, debtor=user).aggregate(
+            total_amount=ExpressionWrapper(
+                Sum('amount'),
+                output_field=DecimalField()
+            )
+        )
+
+        # Access the results using the aliases
+        total_credit = total_credit_result.get('total_amount', 0)
+        total_debt = total_debt_result.get('total_amount', 0)
+
+        group_debt_credit[group.id] = {
+            'group_name': group.name,
+            'total_credit': total_credit,
+            'total_debt': total_debt,
+        }
+
+    return Response(group_debt_credit, status=status.HTTP_200_OK)

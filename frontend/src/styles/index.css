@@ -20,6 +20,11 @@ body {
     font-size: 1em;
 }
 
+.main-content {
+    /* flex-grow: 1; */
+    overflow-y: auto;
+}
+
 .route-container {
     padding: 10px 50px;
 }
@@ -27,4 +32,9 @@ body {
 .screen-container {
     /* border: 1px solid black; */
     width: 100%;
+}
+
+.home-screen {
+    padding: 0 20px;
+    height: 100%;
 }

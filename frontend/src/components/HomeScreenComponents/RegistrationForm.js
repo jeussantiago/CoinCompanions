@@ -47,7 +47,7 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
     };
 
     return (
-        <Container className="d-flex flex-column justify-content-center align-items-center ">
+        <div className="d-flex flex-column justify-content-center align-items-center ">
             <div className="login-registration-header">
                 <h1>Join Us!</h1>
                 Already have an account?{" "}
@@ -161,7 +161,7 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
                     <Col>{loading && <h3>Loading ...</h3>}</Col>
                 </Row>
             </div>
-        </Container>
+        </div>
     );
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 
 function SettingsScreen() {
     return (
-        <div>
+        <div className="route-container screen-container">
             <div>SettingsScreen</div>
         </div>
     );
