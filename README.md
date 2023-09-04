@@ -190,11 +190,11 @@ Frontend
 -   [ ] Dahsboard Screen > Pending notifications functionality: accept group invitation
 -   [ ] Friends Screen > Friend Options functionality: add friend to group
 -   [ ] figure out to generally reroute the user if they are not logged in
--   [ ] Friends Screen: add columns to see how how much people owe you and how much you owe people
+-   [x] Friends Screen: add columns to see how how much people owe you and how much you owe people
 
 -   [ ] Group Screens
--   [ ] create group
--   [ ] modify group name
+-   [x] create group
+-   [x] modify group name
 -   [ ] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
 -   [ ] add expenses
 -   [ ] modify expenses
