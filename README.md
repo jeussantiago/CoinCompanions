@@ -198,6 +198,7 @@ Frontend
 -   [ ] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
 -   [ ] add expenses
 -   [x] modify expenses
+-   [ ] add a feature to evenly split expense
 -   [ ] settle up
 -   [ ] if new user joins group and there are already expenses then add user to all expenses (dont add user to settle up expenses - method to stop this is probably add a "isEvenlyDistributed" key in model. Can only add self to entries that are evenly distributed)
 

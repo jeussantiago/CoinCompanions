@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../styles/screens/GroupsScreens.css";
 import AlertMessage from "../AlertMessage";
 import { updateGroupExpense } from "../../actions/groupActions";
-
+/**
+ * ADD FEATURE TO EVENLY SPLIT BETWEEN USERS
+ *
+ * just have a button that says "evenly split"
+ * when you click it it divides the total by the amount of people there
+ *
+ */
 function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);

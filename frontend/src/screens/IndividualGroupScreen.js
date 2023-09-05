@@ -39,6 +39,7 @@ import ExpenseList from "../components/IndividualGroupScreenComponents/ExpenseLi
  *          - raw numbers
  *          - percentage
  *          - evenly split
+ * - [ ] add a feature to evenly split expense
  *
  * RIGHT SIDE:
  * list all the users and their debt to each person or how much they are owed from certain people
