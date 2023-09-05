@@ -20,6 +20,8 @@ import {
     groupListsReducer,
     groupDetailsReducer,
     groupNameUpdateReducer,
+    groupExpensesReducer,
+    groupExpenseDetailUpdateReducer,
 } from "./reducers/groupReducers";
 
 const reducer = combineReducers({
@@ -39,6 +41,8 @@ const reducer = combineReducers({
     groupLists: groupListsReducer,
     groupDetails: groupDetailsReducer,
     groupNameUpdate: groupNameUpdateReducer,
+    groupExpenses: groupExpensesReducer,
+    groupExpenseDetailUpdate: groupExpenseDetailUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

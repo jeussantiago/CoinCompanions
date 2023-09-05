@@ -72,3 +72,53 @@
 }
 
 /* ---------------- IndividualGroupScreen.js ------------------ */
+.group-name-container h1 {
+    padding-right: 10px;
+}
+
+.group-name-container .clickable {
+    cursor: pointer;
+}
+
+.group-name-container .clickable i {
+    color: rgb(72, 67, 67);
+}
+
+/* ---------------- ExpenseList.js ------------------ */
+.expense-list .expense-list-col {
+    overflow: auto;
+}
+
+.description-heading {
+    padding-top: 3px;
+}
+
+.detail strong {
+    font-weight: 600;
+}
+
+@media (max-width: 992px) {
+    .expense-list .expense-list-col {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .expense-list .expense-list-col {
+        font-size: 14px;
+    }
+}
+
+/* ---------------- ExpenseList.js ------------------ */
+
+.expense-detail-popout h5 {
+    margin-bottom: 20px;
+}
+
+.expense-detail-popout .left-col div {
+    margin-bottom: 10px;
+}
+
+.right-col {
+    border-left: 1px solid;
+}

@@ -32,7 +32,11 @@ function SideBar() {
     // returns a function to cleanup/remove event listener
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth >= 576) {
+            if (window.innerWidth <= 576) {
+                setBurgerClass("burger-bar unclicked");
+                setMenuClass("menu hidden");
+                setIsMenuClicked(false);
+            } else if (window.innerWidth >= 576) {
                 setBurgerClass("burger-bar clicked");
                 setMenuClass("menu visible");
                 setIsMenuClicked(true);

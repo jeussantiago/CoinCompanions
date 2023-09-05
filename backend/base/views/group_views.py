@@ -254,6 +254,7 @@ def createExpense(request, group_id):
 @permission_classes([IsAuthenticated])
 def updateExpense(request, group_id, expense_id):
     '''
+    (unable to update payer )
     Even if someone is not specified, they will be updated with a pay value of 0
 
     {

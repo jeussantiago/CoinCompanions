@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Row, Col } from "react-bootstrap";
 
 import "../styles/screens/GroupsScreens.css";
 import { GROUP_DETAILS_RESET } from "../constants/groupConstants";
@@ -8,20 +9,22 @@ import Message from "../components/Message";
 import AlertMessage from "../components/AlertMessage";
 import { getGroupDetails } from "../actions/groupActions";
 import UpdateNamePopup from "../components/IndividualGroupScreenComponents/UpdateNamePopup";
+import ExpenseList from "../components/IndividualGroupScreenComponents/ExpenseList";
 /**
  * if the user is not logged in. navigate to home page
- * if the user is not part of the group. navigate to the groups page
  *
- * modify group name
+ * if the user is not part of the group. navigate to the groups page <<<<<<<<
+ *
+ * modify group name <<<<<<<<<<
  *
  *
- * expense chart
+ * expense chart <<<<<<<
  * list expenses
  *      type='expense' or 'settle'
- *      date_added
+ *      who paid
  *      description
  *      how_much
- *      who paid
+ *      date_added
  *      (edit button)
  *
  * add expense
@@ -30,7 +33,7 @@ import UpdateNamePopup from "../components/IndividualGroupScreenComponents/Updat
  * (when you click an expense, it expands to show the specifics)
  *      how much each person owes the payer
  *
- * Expense Edit
+ * Expense Edit <<<<<<<
  *      able to see how much each person paid
  *      decide to split it by:
  *          - raw numbers
@@ -109,12 +112,20 @@ function IndividualGroupScreen() {
         <div className="route-container screen-container">
             <div>
                 {groupDetail ? (
-                    <div>
-                        <div>
-                            <h1>{groupDetail.name}</h1>
-                            <button onClick={openShowUpdateNamePopup}>
-                                Edit
-                            </button>
+                    <div className="group-name-container">
+                        <div className="d-flex flex-row">
+                            <div
+                                className="clickable"
+                                onClick={openShowUpdateNamePopup}
+                            >
+                                <h1 className="pr-2">{groupDetail.name}</h1>
+                            </div>
+                            <div
+                                className="clickable"
+                                onClick={openShowUpdateNamePopup}
+                            >
+                                <i className="fa-solid fa-pen-to-square"></i>
+                            </div>
                         </div>
                         <UpdateNamePopup
                             show={showUpdateNamePopup}
@@ -127,6 +138,17 @@ function IndividualGroupScreen() {
                 ) : (
                     <div>loading...</div>
                 )}
+            </div>
+            <Row className="mb-4">
+                <Col md={8} className="border border-primary">
+                    chart
+                </Col>
+                <Col md={4} className="border border-primary">
+                    Members Debt
+                </Col>
+            </Row>
+            <div>
+                <ExpenseList />
             </div>
         </div>
     );
