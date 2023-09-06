@@ -206,8 +206,8 @@ export const updateGroupExpense =
     (groupId, expenseId, newGroupExpense) => async (dispatch, getState) => {
         try {
             dispatch({ type: GROUP_EXPENSES_DETAILS_UPDATE_REQUEST });
-            console.log(`/api/groups/${groupId}/expenses/${expenseId}/update`);
-            console.log("data: ", newGroupExpense);
+            // console.log(`/api/groups/${groupId}/expenses/${expenseId}/update`);
+            // console.log("data: ", newGroupExpense);
 
             const {
                 userLogin: { userInfo },

@@ -8,8 +8,9 @@ import Message from "../Message";
 import AlertMessage from "../AlertMessage";
 import { getGroupExpenses } from "../../actions/groupActions";
 import ExpenseDetailPopup from "./ExpenseDetailPopup";
+import CreateExpensePopup from "./CreateExpensePopup";
 
-function ExpenseList() {
+function ExpenseList({ groupDetails }) {
     // group id
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -25,17 +26,31 @@ function ExpenseList() {
     const [showExpenseDetail, setShowExpenseDetail] = useState(false);
     // State to store the currently expanded expense
     const [expandedExpense, setExpandedExpense] = useState(null);
+    // State to store the create expense popup
+    const [showCreateExpensePopup, setShowCreateExpensePopup] = useState(null);
+    // handle popup closing
     const [didExpenseUpdate, setDidExpenseUpdate] = useState(false);
 
     // Function to toggle the visibility of the ExpenseDetailPopup
     const toggleExpensePopup = (expense) => {
-        setExpandedExpense(expense);
-        setShowExpenseDetail(true); // Show the popup when an expense is clicked
+        if (expense.isTypeSettle === false) {
+            setExpandedExpense(expense);
+            setShowExpenseDetail(true); // Show the popup when an expense is clicked
+        }
+    };
+
+    const openCreateExpensePopup = () => {
+        setShowCreateExpensePopup(true);
     };
 
     // Function to close the ExpenseDetailPopup
     const closeExpensePopup = () => {
         setShowExpenseDetail(false);
+        setDidExpenseUpdate(false);
+    };
+
+    const closeCreateExpensePopup = () => {
+        setShowCreateExpensePopup(false);
         setDidExpenseUpdate(false);
     };
 
@@ -49,6 +64,10 @@ function ExpenseList() {
 
     return (
         <div className="expense-list">
+            <Row>
+                <Button onClick={openCreateExpensePopup}>Add Expense</Button>
+            </Row>
+
             {groupExpensesLoading ? (
                 <div>Loading...</div>
             ) : groupExpensesError ? (
@@ -111,7 +130,11 @@ function ExpenseList() {
                         <div key={expense.id} className="expense-row">
                             <Row
                                 onClick={() => toggleExpensePopup(expense)}
-                                style={{ cursor: "pointer" }}
+                                style={{
+                                    cursor: expense.isTypeSettle
+                                        ? "default"
+                                        : "pointer",
+                                }}
                                 className="d-flex flex-row justify-content-center p-0 border-top border-primary py-2"
                             >
                                 <Col
@@ -120,9 +143,15 @@ function ExpenseList() {
                                     md={1}
                                     className="expense-list-col d-flex flex-row align-items-center justify-content-center"
                                 >
-                                    <Badge pill bg="primary">
-                                        Expense
-                                    </Badge>
+                                    {expense.isTypeSettle ? (
+                                        <Badge pill bg="secondary">
+                                            Settle
+                                        </Badge>
+                                    ) : (
+                                        <Badge pill bg="primary">
+                                            Expense
+                                        </Badge>
+                                    )}
                                 </Col>
                                 <Col
                                     xs={2}
@@ -166,7 +195,11 @@ function ExpenseList() {
                                     md={1}
                                     className="expense-list-col d-flex flex-row align-items-center justify-content-center py-2"
                                 >
-                                    <i className="fa-solid fa-angles-down"></i>
+                                    {expense.isTypeSettle ? (
+                                        <div></div>
+                                    ) : (
+                                        <i className="fa-solid fa-angles-down"></i>
+                                    )}
                                 </Col>
                             </Row>
                         </div>
@@ -181,6 +214,12 @@ function ExpenseList() {
                     )}
                 </div>
             )}
+            <CreateExpensePopup
+                show={showCreateExpensePopup}
+                onClose={closeCreateExpensePopup}
+                handleExpenseUpdate={handleExpenseUpdate}
+                groupDetails={groupDetails}
+            />
         </div>
     );
 }

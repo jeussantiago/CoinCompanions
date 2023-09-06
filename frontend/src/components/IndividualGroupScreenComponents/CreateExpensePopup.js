@@ -1,13 +1,57 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Modal, Button, Row, Col, FormControl, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import "../../styles/screens/GroupsScreens.css";
 import AlertMessage from "../AlertMessage";
-import { updateGroupExpense } from "../../actions/groupActions";
-import { GROUP_EXPENSES_DETAILS_UPDATE_RESET } from "../../constants/groupConstants";
+// import { createGroupExpense } from "../../actions/groupActions";
+// import { GROUP_EXPENSES_DETAILS_CREATE_RESET } from "../../constants/groupConstants";
 
-function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
+// const userData = [
+//     {
+//         id: 1,
+//         username: "jeus@email.com",
+//         email: "jeus@email.com",
+//         name: "Jeus",
+//     },
+//     {
+//         id: 3,
+//         username: "tim@email.com",
+//         email: "tim@email.com",
+//         name: "tim",
+//     },
+//     {
+//         id: 9,
+//         username: "bob@email.com",
+//         email: "bob@email.com",
+//         name: "bob",
+//     },
+//     {
+//         id: 10,
+//         username: "charlie@email.com",
+//         email: "charlie@email.com",
+//         name: "charlie",
+//     },
+//     {
+//         id: 11,
+//         username: "david@email.com",
+//         email: "david@email.com",
+//         name: "david",
+//     },
+//     {
+//         id: 12,
+//         username: "ema@email.com",
+//         email: "ema@email.com",
+//         name: "ema",
+//     },
+// ];
+
+function CreateExpensePopup({
+    show,
+    onClose,
+    handleExpenseUpdate,
+    groupDetails,
+}) {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
@@ -15,13 +59,14 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
     const [updatedDescription, setUpdatedDescription] = useState("");
     const [updatedAmountPaid, setUpdatedAmountPaid] = useState(0);
     const [userAmounts, setUserAmounts] = useState({});
-    const [isEvenlySplit, setIsEvenlySplit] = useState(expense.isEvenlySplit);
+    const [isEvenlySplit, setIsEvenlySplit] = useState(false);
+    const members = groupDetails.members;
 
-    const groupExpenseDetailUpdate = useSelector(
-        (state) => state.groupExpenseDetailUpdate
-    );
-    const { success: groupExpenseDetailUpdateSuccess } =
-        groupExpenseDetailUpdate;
+    // const groupExpenseDetailUpdate = useSelector(
+    //     (state) => state.groupExpenseDetailUpdate
+    // );
+    // const { success: groupExpenseDetailUpdateSuccess } =
+    //     groupExpenseDetailUpdate;
 
     // Function to handle changes in user amount inputs
     const handleUserAmountChange = (userId, amount) => {
@@ -63,7 +108,7 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
             setUpdatedAmountPaid(newValue);
             mostRecentAmount = newValue;
         } else {
-            setUpdatedAmountPaid(0); // You can set it to an empty string or some other default value.
+            setUpdatedAmountPaid(0);
             mostRecentAmount = 0;
         }
 
@@ -72,7 +117,6 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
         }
     };
 
-    // Function to submit the updated data
     const handleSubmit = () => {
         // Calculate the total amount from userAmounts
         const totalAmount = Object.values(userAmounts).reduce(
@@ -106,15 +150,16 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                 isEvenlySplit: isEvenlySplit,
             };
 
-            dispatch(
-                updateGroupExpense(expense.group, expense.id, updatedData)
-            );
+            // dispatch(
+            //     updateGroupExpense(expense.group, expense.id, updatedData)
+            // );
+            console.log(updatedData);
             handleClose();
         }
     };
 
     const handleClose = () => {
-        dispatch({ type: GROUP_EXPENSES_DETAILS_UPDATE_RESET });
+        // dispatch({ type: GROUP_EXPENSES_DETAILS_CREATE_RESET });
         onClose();
     };
 
@@ -127,39 +172,27 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
         }, 3000);
     }, []);
 
+    // useEffect(() => {
+    //     if (groupExpenseDetailUpdateSuccess) {
+    //         // tells ExpenseList.js to update the list
+    //         handleExpenseUpdate();
+    //         handleShowAlert("Successfully updated expense", "success");
+    //     } else if (groupExpenseDetailUpdateSuccess === false) {
+    //         handleShowAlert(
+    //             "Error occurred while trying to update success",
+    //             "danger"
+    //         );
+    //     }
+    // }, [groupExpenseDetailUpdateSuccess, handleShowAlert, handleExpenseUpdate]);
+
     useEffect(() => {
-        if (groupExpenseDetailUpdateSuccess) {
-            // tells ExpenseList.js to update the list
-            handleExpenseUpdate();
-            handleShowAlert("Successfully updated expense", "success");
-        } else if (groupExpenseDetailUpdateSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to update success",
-                "danger"
-            );
-        }
-    }, [groupExpenseDetailUpdateSuccess, handleShowAlert, handleExpenseUpdate]);
-
-    // Initialize userAmounts when the expense prop changes
-    useEffect(() => {
-        if (expense) {
-            // Initialize userAmounts with the initial data
-            const initialUserAmounts = {};
-            expense.expense_details.forEach((detail) => {
-                initialUserAmounts[detail.user.id] = detail.amount_owed;
-            });
-            setUserAmounts(initialUserAmounts);
-
-            // Initialize other state variables as needed
-            setUpdatedDescription(expense.description);
-            setUpdatedAmountPaid(expense.amount);
-            setIsEvenlySplit(expense.isEvenlySplit);
-        }
-    }, [expense]);
-
-    if (!expense) {
-        return null;
-    }
+        // Initialize userAmounts with initial data from members
+        const initialUserAmounts = {};
+        members.forEach((user) => {
+            initialUserAmounts[user.id] = 0;
+        });
+        setUserAmounts(initialUserAmounts);
+    }, [members]);
 
     return (
         <div>
@@ -168,14 +201,7 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                     <Row className="expense-detail-popout py-3">
                         <Col className="left-col">
                             <h5>Expense Details</h5>
-                            <div className="d-flex flex-row">
-                                <h6 className="d-flex align-items-center my-0 me-2">
-                                    Payer:
-                                </h6>
-
-                                <p className="p-0 m-0">{expense.payer.name}</p>
-                            </div>
-                            <div className="d-flex flex-row">
+                            <div className="d-flex flex-row my-2">
                                 <h6 className="my-0 me-2">Amount Paid</h6>
                                 <FormControl
                                     type="number"
@@ -185,15 +211,8 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                                     pattern="[0-9]*"
                                 />
                             </div>
-                            <div className="d-flex flex-row">
-                                <h6 className="d-flex align-items-center my-0 me-2">
-                                    Date:
-                                </h6>
-
-                                <p className="p-0 m-0">{expense.date}</p>
-                            </div>
-                            <div className="d-flex flex-column">
-                                <h6 className="mb-2">Description:</h6>
+                            <div className="d-flex flex-column my-2">
+                                <h6 className="my-2">Description:</h6>
                                 <FormControl
                                     as="textarea"
                                     rows={4}
@@ -204,28 +223,24 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                                 />
                             </div>
                         </Col>
-                        <Col className="right-col border-primary ">
+                        <Col className="right-col border-primary">
                             <h5>Expense Distribution</h5>
                             <div
                                 className={`${isEvenlySplit ? "disabled" : ""}`}
                             >
-                                {expense.expense_details.map((detail) => (
-                                    <div key={detail.user.id}>
+                                {members.map((user) => (
+                                    <div key={user.id}>
                                         <div
                                             className={`detail d-flex flex-row align-items-center my-2`}
                                         >
-                                            <strong>{detail.user.name}</strong>
+                                            <strong>{user.name}</strong>
                                             's&nbsp;split&nbsp;is&nbsp;$
                                             <FormControl
                                                 type="number"
-                                                value={
-                                                    userAmounts[
-                                                        detail.user.id
-                                                    ] || detail.amount_owed
-                                                }
+                                                value={userAmounts[user.id]}
                                                 onChange={(e) =>
                                                     handleUserAmountChange(
-                                                        detail.user.id,
+                                                        user.id,
                                                         e.target.value
                                                     )
                                                 }
@@ -271,4 +286,4 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
     );
 }
 
-export default ExpenseDetailPopup;
+export default CreateExpensePopup;

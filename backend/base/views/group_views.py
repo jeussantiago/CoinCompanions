@@ -137,7 +137,7 @@ def getGroupExpenses(request, group_id):
         if request.user not in group.members.all():
             return Response({"error": "You are not a member of this group"}, status=status.HTTP_403_FORBIDDEN)
 
-        expenses = Expense.objects.filter(group=group)
+        expenses = Expense.objects.filter(group=group).order_by('-date', '-id')
         serialized_expenses = ExpenseSerializer(expenses, many=True).data
 
         for expense_data in serialized_expenses:
@@ -163,6 +163,7 @@ def createExpense(request, group_id):
     {
         "description": "Dinner",
         "amount": 100.00,
+        "isEvenlySplit": False
         "expense_details": [
             {
                 "user": 2,   // User ID of the first person who owes
@@ -221,9 +222,10 @@ def createExpense(request, group_id):
         # Create the expense
         expense_data = {
             'group': group,
-            'description': request.data.get('description'),
+            'description': request.data.get('description', ""),
             'amount': amount,
-            'payer': request.user
+            'payer': request.user,
+            'isEvenlySplit': request.data.get('isEvenlySplit', False)
         }
 
         expense = Expense.objects.create(**expense_data)
@@ -265,7 +267,8 @@ def updateExpense(request, group_id, expense_id):
                 "user": 4,
                 "amount_owed": 50.00
             }
-        ]
+        ],
+        "isEvenlySplit": False
     }
     '''
     try:
@@ -277,6 +280,8 @@ def updateExpense(request, group_id, expense_id):
             expense = Expense.objects.get(id=expense_id, group=group)
         except Expense.DoesNotExist:
             return Response({"error": "Expense not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        expense.isEvenlySplit = request.data.get('isEvenlySplit', False)
 
         expense.description = request.data.get(
             'description', expense.description)
@@ -620,7 +625,9 @@ def recordPayment(request, group_id):
             'group': group,
             'description': f'User {request.user.username} settled up with {receiving_user.username}',
             'amount': amount,
-            'payer': request.user
+            'payer': request.user,
+            'isEvenlySplit': False,
+            'isTypeSettle': True
         }
         payment_expense = Expense.objects.create(**payment_expense_data)
 

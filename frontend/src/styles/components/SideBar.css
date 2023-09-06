@@ -71,6 +71,7 @@
 }
 
 /* ----- animations--------- */
+
 /* clicked */
 .burger-bar.clicked:nth-child(1) {
     transform: rotate(45deg) translate(0.9em, 0.25em) scale(0.8);
@@ -135,8 +136,8 @@
 .lower-sidebar-content {
     margin-bottom: 25px;
 }
-
-@media (min-width: 576px) {
+/* 576px */
+@media (min-width: 768px) {
     .upper-sidebar-content {
         margin-top: 10px;
         width: 200px;
@@ -147,7 +148,7 @@
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .upper-sidebar-content {
         margin-top: 55px;
     }

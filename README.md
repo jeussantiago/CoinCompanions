@@ -198,9 +198,18 @@ Frontend
 -   [ ] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
 -   [ ] add expenses
 -   [x] modify expenses
--   [ ] add a feature to evenly split expense
+-   [x] add a feature to evenly split expense
 -   [ ] settle up
 -   [ ] if new user joins group and there are already expenses then add user to all expenses (dont add user to settle up expenses - method to stop this is probably add a "isEvenlyDistributed" key in model. Can only add self to entries that are evenly distributed)
+
+-   [x] add isEvenlySplit to update expense API
+-   [ ] add isEvenlySplit to create expense API
+-   [x] add isTypeSettle to add payment
+
+-   [x] solve bug of sidebar resizing. I want the sidebar to disappear at 768px. The sidebar does disappear at that width but the menu button doesnt appear until you get to 576px.
+
+-   [ ] create a action and reducers for create expense
+-   [ ] test create expense and alerts and refresh of list
 
 ---
 

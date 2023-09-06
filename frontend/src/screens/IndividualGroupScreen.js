@@ -113,43 +113,47 @@ function IndividualGroupScreen() {
         <div className="route-container screen-container">
             <div>
                 {groupDetail ? (
-                    <div className="group-name-container">
-                        <div className="d-flex flex-row">
-                            <div
-                                className="clickable"
-                                onClick={openShowUpdateNamePopup}
-                            >
-                                <h1 className="pr-2">{groupDetail.name}</h1>
+                    <div>
+                        <div className="group-name-container">
+                            <div className="d-flex flex-row">
+                                <div
+                                    className="clickable"
+                                    onClick={openShowUpdateNamePopup}
+                                >
+                                    <h1 className="pr-2">{groupDetail.name}</h1>
+                                </div>
+                                <div
+                                    className="clickable"
+                                    onClick={openShowUpdateNamePopup}
+                                >
+                                    <i className="fa-solid fa-pen-to-square"></i>
+                                </div>
                             </div>
-                            <div
-                                className="clickable"
-                                onClick={openShowUpdateNamePopup}
-                            >
-                                <i className="fa-solid fa-pen-to-square"></i>
+                            <UpdateNamePopup
+                                show={showUpdateNamePopup}
+                                onClose={closeShowUpdateNamePopup}
+                                groupNameIsUpdated={groupNameIsUpdated}
+                                currentGroupName={groupDetail.name}
+                                groupId={id}
+                            />
+                        </div>
+                        <div className="group-body">
+                            <Row className="mb-4">
+                                <Col md={8} className="border border-primary">
+                                    chart
+                                </Col>
+                                <Col md={4} className="border border-primary">
+                                    Members Debt
+                                </Col>
+                            </Row>
+                            <div>
+                                <ExpenseList groupDetails={groupDetail} />
                             </div>
                         </div>
-                        <UpdateNamePopup
-                            show={showUpdateNamePopup}
-                            onClose={closeShowUpdateNamePopup}
-                            groupNameIsUpdated={groupNameIsUpdated}
-                            currentGroupName={groupDetail.name}
-                            groupId={id}
-                        />
                     </div>
                 ) : (
                     <div>loading...</div>
                 )}
-            </div>
-            <Row className="mb-4">
-                <Col md={8} className="border border-primary">
-                    chart
-                </Col>
-                <Col md={4} className="border border-primary">
-                    Members Debt
-                </Col>
-            </Row>
-            <div>
-                <ExpenseList />
             </div>
         </div>
     );

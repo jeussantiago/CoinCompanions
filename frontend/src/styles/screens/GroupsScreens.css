@@ -109,7 +109,7 @@
     }
 }
 
-/* ---------------- ExpenseList.js ------------------ */
+/* ---------------- ExpenseDetailPopup.js ------------------ */
 
 .expense-detail-popout h5 {
     margin-bottom: 20px;
@@ -121,4 +121,10 @@
 
 .right-col {
     border-left: 1px solid;
+}
+
+.disabled {
+    background-color: #f2f2f2; /* Light grey background */
+    color: #999; /* Grey text color */
+    pointer-events: none; /* Disable pointer events */
 }
