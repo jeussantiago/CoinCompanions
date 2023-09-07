@@ -20,7 +20,7 @@ urlpatterns = [
     path('<int:group_id>/create-expense/',
          views.createExpense, name='create-expense'),
     path('<int:group_id>/calculate-debts/',
-         views.calculateSimplifiedDebts, name='calculate-debts'),
+         views.getSimplifiedDebt, name='calculate-debts'),
     path('<int:group_id>/update-expenses-for-new-user/',
          views.updateExpensesForNewUser, name='update-expenses-for-new-user'),
     path('<int:group_id>/record-payment/',

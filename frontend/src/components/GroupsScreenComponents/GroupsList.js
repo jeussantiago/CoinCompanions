@@ -8,7 +8,7 @@ import { getGroupsList } from "../../actions/groupActions";
 import { getUsersGroupsTotalCreditDebit } from "../../actions/userActions";
 import Message from "../Message";
 
-function GroupsList() {
+function GroupsList({ createGroupSuccess, handleRefreshData }) {
     const dispatch = useDispatch();
 
     const groupLists = useSelector((state) => state.groupLists);
@@ -28,9 +28,13 @@ function GroupsList() {
     } = usersGroupsTotalDebtCredit;
 
     useEffect(() => {
-        dispatch(getGroupsList());
-        dispatch(getUsersGroupsTotalCreditDebit());
-    }, [dispatch]);
+        if (createGroupSuccess) {
+            dispatch(getGroupsList());
+            dispatch(getUsersGroupsTotalCreditDebit());
+            handleRefreshData();
+        }
+    }, [dispatch, createGroupSuccess, handleRefreshData]);
+
     return (
         <div>
             {groupListLoading || userGroupsTotalCreditDebitLoading ? (

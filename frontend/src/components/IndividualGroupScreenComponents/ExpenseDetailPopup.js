@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../styles/screens/GroupsScreens.css";
 import AlertMessage from "../AlertMessage";
 import { updateGroupExpense } from "../../actions/groupActions";
-import { GROUP_EXPENSES_DETAILS_UPDATE_RESET } from "../../constants/groupConstants";
+import { deleteGroupExpense } from "../../actions/groupActions";
 
 function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
     const dispatch = useDispatch();
@@ -22,6 +22,9 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
     );
     const { success: groupExpenseDetailUpdateSuccess } =
         groupExpenseDetailUpdate;
+
+    const groupExpenseDelete = useSelector((state) => state.groupExpenseDelete);
+    const { success: groupExpenseDeleteSuccess } = groupExpenseDelete;
 
     // Function to handle changes in user amount inputs
     const handleUserAmountChange = (userId, amount) => {
@@ -113,8 +116,13 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
         }
     };
 
+    const handleDelete = () => {
+        dispatch(deleteGroupExpense(expense.group, expense.id));
+        handleClose();
+    };
+
     const handleClose = () => {
-        dispatch({ type: GROUP_EXPENSES_DETAILS_UPDATE_RESET });
+        // dispatch({ type: GROUP_EXPENSES_DETAILS_UPDATE_RESET });
         onClose();
     };
 
@@ -134,11 +142,24 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
             handleShowAlert("Successfully updated expense", "success");
         } else if (groupExpenseDetailUpdateSuccess === false) {
             handleShowAlert(
-                "Error occurred while trying to update success",
+                "Error occurred while trying to update expense",
                 "danger"
             );
         }
     }, [groupExpenseDetailUpdateSuccess, handleShowAlert, handleExpenseUpdate]);
+
+    useEffect(() => {
+        if (groupExpenseDeleteSuccess) {
+            // tells ExpenseList.js to update the list
+            handleExpenseUpdate();
+            handleShowAlert("Successfully deleted expense", "success");
+        } else if (groupExpenseDeleteSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to deleted expense",
+                "danger"
+            );
+        }
+    }, [groupExpenseDeleteSuccess, handleShowAlert, handleExpenseUpdate]);
 
     // Initialize userAmounts when the expense prop changes
     useEffect(() => {
@@ -206,6 +227,15 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                         </Col>
                         <Col className="right-col border-primary ">
                             <h5>Expense Distribution</h5>
+                            <div className="d-flex flex-row align-items-center my-2">
+                                <Form.Check
+                                    type="checkbox"
+                                    id="evenlySplitCheckbox"
+                                    label="Evenly Split"
+                                    checked={isEvenlySplit}
+                                    onChange={handleIsEvenlySplitChange}
+                                />
+                            </div>
                             <div
                                 className={`${isEvenlySplit ? "disabled" : ""}`}
                             >
@@ -237,25 +267,27 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                                     </div>
                                 ))}
                             </div>
-                            <div className="d-flex flex-row align-items-center my-2">
-                                <Form.Check
-                                    type="checkbox"
-                                    id="evenlySplitCheckbox"
-                                    label="Evenly Split"
-                                    checked={isEvenlySplit}
-                                    onChange={handleIsEvenlySplitChange}
-                                />
-                            </div>
                         </Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleSubmit}>
-                        Save Changes
-                    </Button>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
+                    <div className="w-100 d-flex flex-row justify-content-between ">
+                        <Button variant="danger" onClick={handleDelete}>
+                            Delete
+                        </Button>
+                        <div>
+                            <Button
+                                variant="primary"
+                                onClick={handleSubmit}
+                                className="me-1"
+                            >
+                                Save Changes
+                            </Button>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                        </div>
+                    </div>
                 </Modal.Footer>
                 {showAlert && (
                     <AlertMessage

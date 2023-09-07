@@ -22,6 +22,10 @@ import {
     groupNameUpdateReducer,
     groupExpensesReducer,
     groupExpenseDetailUpdateReducer,
+    groupExpenseCreateReducer,
+    groupExpenseDeleteReducer,
+    groupCreditsReducer,
+    groupDebtsReducer,
 } from "./reducers/groupReducers";
 
 const reducer = combineReducers({
@@ -43,6 +47,10 @@ const reducer = combineReducers({
     groupNameUpdate: groupNameUpdateReducer,
     groupExpenses: groupExpensesReducer,
     groupExpenseDetailUpdate: groupExpenseDetailUpdateReducer,
+    groupExpenseCreate: groupExpenseCreateReducer,
+    groupExpenseDelete: groupExpenseDeleteReducer,
+    groupCredits: groupCreditsReducer,
+    groupDebts: groupDebtsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Sum
 from collections import defaultdict, deque
 
@@ -137,9 +138,34 @@ def getGroupExpenses(request, group_id):
         if request.user not in group.members.all():
             return Response({"error": "You are not a member of this group"}, status=status.HTTP_403_FORBIDDEN)
 
-        expenses = Expense.objects.filter(group=group).order_by('-date', '-id')
+        # Get the page and itemsPerPage parameters from the request query parameters.
+        # Default to page 1 if not provided.
+        page = int(request.GET.get('page', 1))
+        # Default to 10 if not provided.
+        items_per_page = int(request.GET.get('itemsPerPage', 2))
+
+        expenses = Expense.objects.filter(group=group).order_by(
+            '-date', '-id')
+
+        paginator = Paginator(expenses, items_per_page)
+
+        try:
+            expenses = paginator.page(page)
+        except PageNotAnInteger:
+            expenses = paginator.page(1)
+        except EmptyPage:
+            # if we have 10 pages and user passes in page 40 or a page with no content
+            # return the last page
+            expenses = paginator.page(paginator.num_pages)
+
+        if not page:
+            page = 1
+
+        page = int(page)
+
         serialized_expenses = ExpenseSerializer(expenses, many=True).data
 
+        # get a breakdown of the expense. List of expense details
         for expense_data in serialized_expenses:
             expense_id = expense_data['id']
             expense_details = ExpenseDetail.objects.filter(
@@ -148,7 +174,12 @@ def getGroupExpenses(request, group_id):
                 expense_details, many=True)
             expense_data['expense_details'] = serialized_details.data
 
-        return Response(serialized_expenses, status=status.HTTP_200_OK)
+        # return Response(serialized_expenses, status=status.HTTP_200_OK)
+        return Response({
+            'expenses': serialized_expenses,
+            'page': page,
+            'pages': paginator.num_pages
+        })
 
     except Group.DoesNotExist:
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -196,7 +227,7 @@ def createExpense(request, group_id):
             return Response({"error": "At least one user must be specified in expense_details"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if total amount == amount user payed
-        total_amount_owed = 0
+        # total_amount_owed = 0
 
         for detail in expense_details:
             user_id = detail.get('user')
@@ -212,10 +243,10 @@ def createExpense(request, group_id):
             except User.DoesNotExist:
                 return Response({"error": f"User with ID {user_id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-            total_amount_owed += amount_owed
+            # total_amount_owed += amount_owed
 
-        if total_amount_owed != amount:
-            return Response({"error": "Total amount_owed must equal the expense amount"}, status=status.HTTP_400_BAD_REQUEST)
+        # if total_amount_owed != amount:
+        #     return Response({"error": "Total amount_owed must equal the expense amount"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Data safe to manipulate
 
@@ -244,6 +275,9 @@ def createExpense(request, group_id):
             if user.id not in existing_user_ids and user != request.user:
                 ExpenseDetail.objects.create(
                     expense=expense, user=user, amount_owed=0)
+
+        # update the debts
+        calculateSimplifiedDebts(group)
 
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -296,7 +330,7 @@ def updateExpense(request, group_id, expense_id):
         expense_details = request.data.get('expense_details', [])
 
         # Check if the data is safe
-        total_amount_owed = 0
+        # total_amount_owed = 0
 
         for detail in expense_details:
             user_id = detail.get('user')
@@ -305,7 +339,7 @@ def updateExpense(request, group_id, expense_id):
             if amount_owed is None:
                 return Response({"error": "Amount owed is required for each expense detail"}, status=status.HTTP_400_BAD_REQUEST)
 
-            total_amount_owed += amount_owed
+            # total_amount_owed += amount_owed
 
             try:
                 user = User.objects.get(id=user_id)
@@ -314,8 +348,8 @@ def updateExpense(request, group_id, expense_id):
             except User.DoesNotExist:
                 return Response({"error": f"User with ID {user_id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        if total_amount_owed != new_amount:
-            return Response({"error": "Total amount owed must equal the expense amount"}, status=status.HTTP_400_BAD_REQUEST)
+        # if total_amount_owed != new_amount:
+        #     return Response({"error": "Total amount owed must equal the expense amount"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Data safe now to save update
         expense.save()
@@ -345,6 +379,9 @@ def updateExpense(request, group_id, expense_id):
                 except ExpenseDetail.DoesNotExist:
                     pass
 
+        # update the debts
+        calculateSimplifiedDebts(group)
+
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -367,6 +404,9 @@ def deleteExpense(request, group_id, expense_id):
 
         # Delete the expense - since expense in models is cascading, it will delete automatically
         expense.delete()
+
+        # update the debts
+        calculateSimplifiedDebts(group)
 
         return Response({"message": "Expense deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
@@ -467,9 +507,9 @@ def calculateSimplifiedDebtsWithNetBalances(balances):
     return transactions
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def calculateSimplifiedDebts(request, group_id):
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def calculateSimplifiedDebts(group):
     '''
     param group_id is the id of the group you want to calculate the simplified debt for
 
@@ -485,50 +525,58 @@ def calculateSimplifiedDebts(request, group_id):
         ; (m * n + nlogn) - very likely the case that a group will have many times more expenses
         ;   than users. We can reduce to (m * n)
     '''
+    # Calculate individual debts within the group
+    balances = defaultdict(float)
+
+    # Calculate total owed by each user (Net Change)
+    for user in group.members.all():
+        user_expenses = ExpenseDetail.objects.filter(
+            user=user, expense__group=group)
+        total_owed = user_expenses.aggregate(total_owed=Sum('amount_owed'))[
+            'total_owed'] or 0
+        total_owed = float(total_owed)
+        # We are storing data with negative amount meaning they were a payer,
+        # so we multiply by -1 to reverse these actions.
+        balances[user] += (total_owed * -1)
+
+    # Calculate amount spent by each user
+    expenses = Expense.objects.filter(group=group)
+    for expense in expenses:
+        if expense.payer in group.members.all():
+            balances[expense.payer] += float(expense.amount)
+
+    # Calculate simplified debts and net balances
+    simplified_debts = calculateSimplifiedDebtsWithNetBalances(balances)
+
+    # Delete existing debts for the group
+    Debt.objects.filter(group=group).delete()
+
+    # Record updated simplified debts into the Debt model
+    for debtor_id, transactions in simplified_debts.items():
+        debtor = User.objects.get(id=debtor_id)
+        for transaction in transactions:
+            creditor_id = transaction['creditor']['id']
+            creditor = User.objects.get(id=creditor_id)
+            settlement_amount = transaction['settlement_amount']
+
+            Debt.objects.create(
+                debtor=debtor, creditor=creditor, group=group, amount=settlement_amount)
+
+    return {"simplified_debts": simplified_debts}
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getSimplifiedDebt(request, group_id):
     try:
         # Retrieve the group and ensure the user is a member
         group = Group.objects.get(id=group_id)
+
         if request.user not in group.members.all():
             return Response({"error": "You are not a member of this group"}, status=status.HTTP_403_FORBIDDEN)
 
-        # Calculate individual debts within the group
-        balances = defaultdict(float)
-
-        # Calculate total owed by each user (Net Change)
-        for user in group.members.all():
-            user_expenses = ExpenseDetail.objects.filter(
-                user=user, expense__group=group)
-            total_owed = user_expenses.aggregate(total_owed=Sum('amount_owed'))[
-                'total_owed'] or 0
-            total_owed = float(total_owed)
-            # We are storing data with negative amount meaning they were a payer,
-            # so we multiply by -1 to reverse these actions.
-            balances[user] += (total_owed * -1)
-
-        # Calculate amount spent by each user
-        expenses = Expense.objects.filter(group=group)
-        for expense in expenses:
-            if expense.payer in group.members.all():
-                balances[expense.payer] += float(expense.amount)
-
-        # Calculate simplified debts and net balances
-        simplified_debts = calculateSimplifiedDebtsWithNetBalances(balances)
-
-        # Delete existing debts for the group
-        Debt.objects.filter(group=group).delete()
-
-        # Record updated simplified debts into the Debt model
-        for debtor_id, transactions in simplified_debts.items():
-            debtor = User.objects.get(id=debtor_id)
-            for transaction in transactions:
-                creditor_id = transaction['creditor']['id']
-                creditor = User.objects.get(id=creditor_id)
-                settlement_amount = transaction['settlement_amount']
-
-                Debt.objects.create(
-                    debtor=debtor, creditor=creditor, group=group, amount=settlement_amount)
-
-        return Response({"simplified_debts": simplified_debts}, status=status.HTTP_200_OK)
+        simplifed_debts = calculateSimplifiedDebts(group)
+        return Response(simplifed_debts, status=status.HTTP_200_OK)
 
     except Group.DoesNotExist:
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)

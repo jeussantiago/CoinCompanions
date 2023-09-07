@@ -25,6 +25,20 @@ import {
     GROUP_EXPENSES_DETAILS_UPDATE_SUCCESS,
     GROUP_EXPENSES_DETAILS_UPDATE_FAIL,
     GROUP_EXPENSES_DETAILS_UPDATE_RESET,
+    GROUP_EXPENSES_CREATE_REQUEST,
+    GROUP_EXPENSES_CREATE_SUCCESS,
+    GROUP_EXPENSES_CREATE_FAIL,
+    GROUP_EXPENSES_CREATE_RESET,
+    GROUP_EXPENSES_DELETE_REQUEST,
+    GROUP_EXPENSES_DELETE_SUCCESS,
+    GROUP_EXPENSES_DELETE_FAIL,
+    GROUP_EXPENSES_DELETE_RESET,
+    GROUP_CREDIT_REQUEST,
+    GROUP_CREDIT_SUCCESS,
+    GROUP_CREDIT_FAIL,
+    GROUP_DEBT_REQUEST,
+    GROUP_DEBT_SUCCESS,
+    GROUP_DEBT_FAIL,
 } from "../constants/groupConstants";
 
 export const groupInviteDeclineReducer = (state = {}, action) => {
@@ -151,6 +165,76 @@ export const groupExpenseDetailUpdateReducer = (state = {}, action) => {
 
         case GROUP_EXPENSES_DETAILS_UPDATE_RESET:
             return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupExpenseCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_EXPENSES_CREATE_REQUEST:
+            return { loading: true };
+
+        case GROUP_EXPENSES_CREATE_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_EXPENSES_CREATE_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case GROUP_EXPENSES_CREATE_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupExpenseDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_EXPENSES_DELETE_REQUEST:
+            return { loading: true };
+
+        case GROUP_EXPENSES_DELETE_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_EXPENSES_DELETE_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case GROUP_EXPENSES_DELETE_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupCreditsReducer = (state = { groupCredit: {} }, action) => {
+    switch (action.type) {
+        case GROUP_CREDIT_REQUEST:
+            return { loading: true, groupCredit: {} };
+
+        case GROUP_CREDIT_SUCCESS:
+            return { loading: false, groupCredit: action.payload };
+
+        case GROUP_CREDIT_FAIL:
+            return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const groupDebtsReducer = (state = { groupDebt: {} }, action) => {
+    switch (action.type) {
+        case GROUP_DEBT_REQUEST:
+            return { loading: true, groupDebt: {} };
+
+        case GROUP_DEBT_SUCCESS:
+            return { loading: false, groupDebt: action.payload };
+
+        case GROUP_DEBT_FAIL:
+            return { loading: false, error: action.payload };
 
         default:
             return state;

@@ -196,20 +196,26 @@ Frontend
 -   [x] create group
 -   [x] modify group name
 -   [ ] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
--   [ ] add expenses
+-   [x] add expenses
 -   [x] modify expenses
 -   [x] add a feature to evenly split expense
--   [ ] settle up
+-   [x] settle up
 -   [ ] if new user joins group and there are already expenses then add user to all expenses (dont add user to settle up expenses - method to stop this is probably add a "isEvenlyDistributed" key in model. Can only add self to entries that are evenly distributed)
 
 -   [x] add isEvenlySplit to update expense API
--   [ ] add isEvenlySplit to create expense API
+-   [x] add isEvenlySplit to create expense API
 -   [x] add isTypeSettle to add payment
-
 -   [x] solve bug of sidebar resizing. I want the sidebar to disappear at 768px. The sidebar does disappear at that width but the menu button doesnt appear until you get to 576px.
 
--   [ ] create a action and reducers for create expense
--   [ ] test create expense and alerts and refresh of list
+-   [x] create a action and reducers for create expense
+-   [x] test create expense and alerts and refresh of list
+-   [x] delete expense
+-   [x] add pagination to expense list OR scrolling loads more (pagination)
+-   [ ] list the people in the group and how much debt they have
+-   [ ] settle with person
+-   [x] when creating a new group, refresh the group list
+-   [ ] GroupCreditDebt: settle popup
+-   [ ] GroupCreditDebt: if settle is successful, get state from expenseList.js and update the list
 
 ---
 

@@ -85,6 +85,10 @@
 }
 
 /* ---------------- ExpenseList.js ------------------ */
+.expense-list {
+    margin-bottom: 30px;
+}
+
 .expense-list .expense-list-col {
     overflow: auto;
 }

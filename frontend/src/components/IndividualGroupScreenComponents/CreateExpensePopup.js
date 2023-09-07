@@ -4,52 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "../../styles/screens/GroupsScreens.css";
 import AlertMessage from "../AlertMessage";
-// import { createGroupExpense } from "../../actions/groupActions";
-// import { GROUP_EXPENSES_DETAILS_CREATE_RESET } from "../../constants/groupConstants";
-
-// const userData = [
-//     {
-//         id: 1,
-//         username: "jeus@email.com",
-//         email: "jeus@email.com",
-//         name: "Jeus",
-//     },
-//     {
-//         id: 3,
-//         username: "tim@email.com",
-//         email: "tim@email.com",
-//         name: "tim",
-//     },
-//     {
-//         id: 9,
-//         username: "bob@email.com",
-//         email: "bob@email.com",
-//         name: "bob",
-//     },
-//     {
-//         id: 10,
-//         username: "charlie@email.com",
-//         email: "charlie@email.com",
-//         name: "charlie",
-//     },
-//     {
-//         id: 11,
-//         username: "david@email.com",
-//         email: "david@email.com",
-//         name: "david",
-//     },
-//     {
-//         id: 12,
-//         username: "ema@email.com",
-//         email: "ema@email.com",
-//         name: "ema",
-//     },
-// ];
+import { createGroupExpense } from "../../actions/groupActions";
+import { GROUP_EXPENSES_CREATE_RESET } from "../../constants/groupConstants";
 
 function CreateExpensePopup({
     show,
     onClose,
-    handleExpenseUpdate,
+    handleExpenseCreate,
     groupDetails,
 }) {
     const dispatch = useDispatch();
@@ -62,11 +23,8 @@ function CreateExpensePopup({
     const [isEvenlySplit, setIsEvenlySplit] = useState(false);
     const members = groupDetails.members;
 
-    // const groupExpenseDetailUpdate = useSelector(
-    //     (state) => state.groupExpenseDetailUpdate
-    // );
-    // const { success: groupExpenseDetailUpdateSuccess } =
-    //     groupExpenseDetailUpdate;
+    const groupExpenseCreate = useSelector((state) => state.groupExpenseCreate);
+    const { success: groupExpenseCreateSuccess } = groupExpenseCreate;
 
     // Function to handle changes in user amount inputs
     const handleUserAmountChange = (userId, amount) => {
@@ -150,16 +108,14 @@ function CreateExpensePopup({
                 isEvenlySplit: isEvenlySplit,
             };
 
-            // dispatch(
-            //     updateGroupExpense(expense.group, expense.id, updatedData)
-            // );
-            console.log(updatedData);
+            dispatch(createGroupExpense(groupDetails.id, updatedData));
+
             handleClose();
         }
     };
 
     const handleClose = () => {
-        // dispatch({ type: GROUP_EXPENSES_DETAILS_CREATE_RESET });
+        // dispatch({ type: GROUP_EXPENSES_CREATE_RESET });
         onClose();
     };
 
@@ -172,27 +128,32 @@ function CreateExpensePopup({
         }, 3000);
     }, []);
 
-    // useEffect(() => {
-    //     if (groupExpenseDetailUpdateSuccess) {
-    //         // tells ExpenseList.js to update the list
-    //         handleExpenseUpdate();
-    //         handleShowAlert("Successfully updated expense", "success");
-    //     } else if (groupExpenseDetailUpdateSuccess === false) {
-    //         handleShowAlert(
-    //             "Error occurred while trying to update success",
-    //             "danger"
-    //         );
-    //     }
-    // }, [groupExpenseDetailUpdateSuccess, handleShowAlert, handleExpenseUpdate]);
+    useEffect(() => {
+        if (groupExpenseCreateSuccess) {
+            // tells ExpenseList.js to update the list
+            handleExpenseCreate();
+            handleShowAlert("Successfully created expense", "success");
+        } else if (groupExpenseCreateSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to create success",
+                "danger"
+            );
+        }
+    }, [groupExpenseCreateSuccess, handleShowAlert, handleExpenseCreate]);
 
     useEffect(() => {
+        // reset the values if a user creates an expense
+
         // Initialize userAmounts with initial data from members
         const initialUserAmounts = {};
         members.forEach((user) => {
             initialUserAmounts[user.id] = 0;
         });
         setUserAmounts(initialUserAmounts);
-    }, [members]);
+        setIsEvenlySplit(false);
+        setUpdatedDescription("");
+        setUpdatedAmountPaid(0);
+    }, [members, groupExpenseCreateSuccess]);
 
     return (
         <div>
@@ -225,6 +186,15 @@ function CreateExpensePopup({
                         </Col>
                         <Col className="right-col border-primary">
                             <h5>Expense Distribution</h5>
+                            <div className="d-flex flex-row align-items-center my-2">
+                                <Form.Check
+                                    type="checkbox"
+                                    id="evenlySplitCheckbox"
+                                    label="Evenly Split"
+                                    checked={isEvenlySplit}
+                                    onChange={handleIsEvenlySplitChange}
+                                />
+                            </div>
                             <div
                                 className={`${isEvenlySplit ? "disabled" : ""}`}
                             >
@@ -251,15 +221,6 @@ function CreateExpensePopup({
                                         </div>
                                     </div>
                                 ))}
-                            </div>
-                            <div className="d-flex flex-row align-items-center my-2">
-                                <Form.Check
-                                    type="checkbox"
-                                    id="evenlySplitCheckbox"
-                                    label="Evenly Split"
-                                    checked={isEvenlySplit}
-                                    onChange={handleIsEvenlySplitChange}
-                                />
                             </div>
                         </Col>
                     </Row>

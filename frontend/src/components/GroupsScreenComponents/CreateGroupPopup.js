@@ -6,7 +6,7 @@ import AlertMessage from "../AlertMessage";
 import { GROUP_CREATE_RESET } from "../../constants/groupConstants";
 import { createGroup } from "../../actions/groupActions";
 
-function CreateGroupPopup({ show, onClose }) {
+function CreateGroupPopup({ show, onClose, handleCreateGroupSucces }) {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
@@ -53,6 +53,7 @@ function CreateGroupPopup({ show, onClose }) {
 
     useEffect(() => {
         if (groupCreateSuccess) {
+            handleCreateGroupSucces();
             handleShowAlert("Created new group", "success");
         } else if (groupCreateSuccess === false) {
             handleShowAlert(
@@ -60,7 +61,7 @@ function CreateGroupPopup({ show, onClose }) {
                 "danger"
             );
         }
-    }, [groupCreateSuccess, handleShowAlert]);
+    }, [groupCreateSuccess, handleShowAlert, handleCreateGroupSucces]);
 
     return (
         <div>

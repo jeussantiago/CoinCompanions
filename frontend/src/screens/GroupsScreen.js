@@ -16,6 +16,7 @@ import GroupsList from "../components/GroupsScreenComponents/GroupsList";
  */
 function GroupsScreen() {
     const [showCreateGroupPopup, setShowCreateGroupPopup] = useState(false);
+    const [createGroupSuccess, setCreateGroupSuccess] = useState(true);
 
     // Function to open the PendingInvitesPopup
     const openCreateGroupPopup = () => {
@@ -27,6 +28,14 @@ function GroupsScreen() {
         setShowCreateGroupPopup(false);
     };
 
+    const handleCreateGroupSucces = () => {
+        setCreateGroupSuccess(true);
+    };
+
+    const handleRefreshData = () => {
+        setCreateGroupSuccess(false);
+    };
+
     return (
         <div className="route-container screen-container">
             <Row>
@@ -35,12 +44,16 @@ function GroupsScreen() {
                     <Button onClick={openCreateGroupPopup}>Create Group</Button>
                 </div>
                 <Row className="p-0 m-0">
-                    <GroupsList />
+                    <GroupsList
+                        createGroupSuccess={createGroupSuccess}
+                        handleRefreshData={handleRefreshData}
+                    />
                 </Row>
             </Row>
             <CreateGroupPopup
                 show={showCreateGroupPopup}
                 onClose={closeCreateGroupPopup}
+                handleCreateGroupSucces={handleCreateGroupSucces}
             />
         </div>
     );
