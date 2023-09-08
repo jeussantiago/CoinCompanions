@@ -114,10 +114,10 @@ export const userFriendDeleteReducer = (state = {}, action) => {
             return { loading: true };
 
         case USER_FRIENDS_DELETE_SUCCESS:
-            return { loading: false, status: action.payload };
+            return { loading: false, success: true };
 
         case USER_FRIENDS_DELETE_FAIL:
-            return { loading: false, error: action.payload };
+            return { loading: false, success: false, error: action.payload };
 
         case USER_FRIENDS_DELETE_RESET:
             return {};

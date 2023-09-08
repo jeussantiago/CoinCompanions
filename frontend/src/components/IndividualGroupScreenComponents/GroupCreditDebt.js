@@ -4,20 +4,41 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Message from "../Message";
 import { getGroupCredits, getGroupDebts } from "../../actions/groupActions";
+import SettlePopup from "./SettlePopup";
 
 function GroupCreditDebt({ groupDetails }) {
     const dispatch = useDispatch();
+    const [showSettlePopup, setShowSettlePopup] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    // settle expenses
+    const groupSettleCreate = useSelector((state) => state.groupSettleCreate);
+    const { success: groupSettleCreateSuccess } = groupSettleCreate;
+    // expense update
+    const groupExpenseDetailUpdate = useSelector(
+        (state) => state.groupExpenseDetailUpdate
+    );
+    const { success: groupExpenseDetailUpdateSuccess } =
+        groupExpenseDetailUpdate;
+
+    // expense delete
+    const groupExpenseDelete = useSelector((state) => state.groupExpenseDelete);
+    const { success: groupExpenseDeleteSuccess } = groupExpenseDelete;
+    // group expense created
+    const groupExpenseCreate = useSelector((state) => state.groupExpenseCreate);
+    const { success: groupExpenseCreateSuccess } = groupExpenseCreate;
+
+    // group User Credits (owed money)
     const groupCredits = useSelector((state) => state.groupCredits);
     const {
         error: groupCreditError,
         loading: groupCreditLoading,
         groupCredit,
     } = groupCredits;
-
+    // group User Debts (owe money)
     const groupDebts = useSelector((state) => state.groupDebts);
     const {
         error: groupDebtError,
@@ -25,14 +46,27 @@ function GroupCreditDebt({ groupDetails }) {
         groupDebt,
     } = groupDebts;
 
-    const handleSettle = (receivingUserId) => {
-        console.log("hello: ", receivingUserId);
+    const handleCloseSettlePopup = () => {
+        setShowSettlePopup(false);
+        setSelectedUser(null);
+    };
+
+    const handleOpenSettlePopup = (receivingUser) => {
+        setSelectedUser(receivingUser);
+        setShowSettlePopup(true);
     };
 
     useEffect(() => {
         dispatch(getGroupCredits(groupDetails.id));
         dispatch(getGroupDebts(groupDetails.id));
-    }, [dispatch, groupDetails]);
+    }, [
+        dispatch,
+        groupDetails,
+        groupSettleCreateSuccess,
+        groupExpenseDetailUpdateSuccess,
+        groupExpenseDeleteSuccess,
+        groupExpenseCreateSuccess,
+    ]);
 
     return (
         <div>
@@ -92,10 +126,8 @@ function GroupCreditDebt({ groupDetails }) {
                                                                     <Button
                                                                         variant="primary"
                                                                         onClick={() =>
-                                                                            handleSettle(
-                                                                                user
-                                                                                    .creditor
-                                                                                    .id
+                                                                            handleOpenSettlePopup(
+                                                                                user.creditor
                                                                             )
                                                                         }
                                                                     >
@@ -113,6 +145,14 @@ function GroupCreditDebt({ groupDetails }) {
                         ))}
                     </Accordion>
                 </div>
+            )}
+            {selectedUser && (
+                <SettlePopup
+                    groupId={groupDetails.id}
+                    receivingUser={selectedUser}
+                    show={showSettlePopup}
+                    handleClose={handleCloseSettlePopup}
+                />
             )}
         </div>
     );

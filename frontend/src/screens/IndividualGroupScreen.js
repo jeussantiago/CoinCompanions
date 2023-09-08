@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
 import "../styles/screens/GroupsScreens.css";
-import { GROUP_DETAILS_RESET } from "../constants/groupConstants";
 import Message from "../components/Message";
 import AlertMessage from "../components/AlertMessage";
 import { getGroupDetails } from "../actions/groupActions";
 import UpdateNamePopup from "../components/IndividualGroupScreenComponents/UpdateNamePopup";
 import ExpenseList from "../components/IndividualGroupScreenComponents/ExpenseList";
 import GroupCreditDebt from "../components/IndividualGroupScreenComponents/GroupCreditDebt";
+import {
+    GROUP_DETAILS_RESET,
+    GROUP_NAME_UPDATE_RESET,
+} from "../constants/groupConstants";
 
 /**
  * if the user is not logged in. navigate to home page
@@ -52,6 +55,9 @@ import GroupCreditDebt from "../components/IndividualGroupScreenComponents/Group
  */
 function IndividualGroupScreen() {
     const dispatch = useDispatch();
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertVariant, setAlertVariant] = useState("");
     // group id
     const { id } = useParams();
     const navigate = useNavigate();
@@ -68,8 +74,11 @@ function IndividualGroupScreen() {
         groupDetail,
     } = groupDetails;
 
+    // group name update
+    const groupNameUpdate = useSelector((state) => state.groupNameUpdate);
+    const { success: groupNameUpdateSuccess } = groupNameUpdate;
+
     const [showUpdateNamePopup, setShowUpdateNamePopup] = useState(false);
-    const [isGroupNameUpdated, setIsGroupNameUpdated] = useState(false);
 
     const openShowUpdateNamePopup = () => {
         setShowUpdateNamePopup(true);
@@ -79,9 +88,14 @@ function IndividualGroupScreen() {
         setShowUpdateNamePopup(false);
     };
 
-    const groupNameIsUpdated = () => {
-        setIsGroupNameUpdated(!isGroupNameUpdated);
-    };
+    const handleShowAlert = useCallback((message, variant) => {
+        setAlertMessage(message);
+        setAlertVariant(variant);
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000);
+    }, []);
 
     // NAVIGATE THE USER AWAY IF THEY ARE NOT PART OF THIS GROUP
     useEffect(() => {
@@ -107,9 +121,22 @@ function IndividualGroupScreen() {
         dispatch,
     ]);
 
+    // Updated Group Name
+    useEffect(() => {
+        if (groupNameUpdateSuccess) {
+            handleShowAlert("Updated group name", "success");
+            dispatch({ type: GROUP_NAME_UPDATE_RESET });
+        } else if (groupNameUpdateSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to update group name",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, groupNameUpdateSuccess]);
+
     useEffect(() => {
         dispatch(getGroupDetails(id));
-    }, [dispatch, id, isGroupNameUpdated]);
+    }, [dispatch, id, groupNameUpdateSuccess]);
 
     return (
         <div className="route-container screen-container">
@@ -141,7 +168,6 @@ function IndividualGroupScreen() {
                                 <UpdateNamePopup
                                     show={showUpdateNamePopup}
                                     onClose={closeShowUpdateNamePopup}
-                                    groupNameIsUpdated={groupNameIsUpdated}
                                     currentGroupName={groupDetail.name}
                                     groupId={id}
                                 />
@@ -149,16 +175,10 @@ function IndividualGroupScreen() {
                             <div className="group-body">
                                 <Row className="mb-4">
                                     <Col
-                                        md={8}
+                                        md={12}
                                         className="border border-primary"
                                     >
-                                        chart
-                                    </Col>
-                                    <Col
-                                        md={4}
-                                        className="border border-primary"
-                                    >
-                                        Members Debt
+                                        charts
                                     </Col>
                                 </Row>
                                 <Row>
@@ -178,6 +198,9 @@ function IndividualGroupScreen() {
                     )
                 )}
             </div>
+            {showAlert && (
+                <AlertMessage message={alertMessage} variant={alertVariant} />
+            )}
         </div>
     );
 }

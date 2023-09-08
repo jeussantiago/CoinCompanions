@@ -13,6 +13,7 @@ function SearchFriendPopup({ show, onClose }) {
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertVariant, setAlertVariant] = useState("");
+    const [friendRequestSent, setFriendRequestSent] = useState(null || Boolean);
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -54,12 +55,14 @@ function SearchFriendPopup({ show, onClose }) {
                     "danger"
                 );
             }
+            setFriendRequestSent(true);
         } catch (err) {
             const err_message =
                 err.response && err.response.data.detail
                     ? err.response.data.detail
                     : err.message;
             handleShowAlert(err_message, "danger");
+            setFriendRequestSent(true);
         }
     };
 
@@ -74,7 +77,8 @@ function SearchFriendPopup({ show, onClose }) {
 
     useEffect(() => {
         dispatch(getUserFriendSearch(searchTerm));
-    }, [dispatch, searchTerm]);
+        setFriendRequestSent(null);
+    }, [dispatch, searchTerm, friendRequestSent]);
 
     return (
         <Modal show={show} onHide={onClose}>
@@ -90,22 +94,23 @@ function SearchFriendPopup({ show, onClose }) {
                     className="mb-3"
                 />
                 <ListGroup className="search-results-container">
-                    {userFriendSearch.map((friend) => (
-                        <ListGroup.Item key={friend.id}>
-                            <div className="d-flex flex-row justify-content-between">
-                                <div className="d-flex align-items-center">
-                                    {friend.email}
+                    {userFriendSearch &&
+                        userFriendSearch.map((friend) => (
+                            <ListGroup.Item key={friend.id}>
+                                <div className="d-flex flex-row justify-content-between">
+                                    <div className="d-flex align-items-center">
+                                        {friend.email}
+                                    </div>
+                                    <Button
+                                        onClick={() =>
+                                            handleSendFriendRequest(friend.id)
+                                        }
+                                    >
+                                        Send friend request
+                                    </Button>
                                 </div>
-                                <Button
-                                    onClick={() =>
-                                        handleSendFriendRequest(friend.id)
-                                    }
-                                >
-                                    Send friend request
-                                </Button>
-                            </div>
-                        </ListGroup.Item>
-                    ))}
+                            </ListGroup.Item>
+                        ))}
                 </ListGroup>
             </Modal.Body>
             <Modal.Footer>

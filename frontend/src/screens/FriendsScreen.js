@@ -7,6 +7,7 @@ import "../styles/screens/FriendsScreen.css";
 // import { getUsersFriends } from "../actions/userActions";
 // import FriendOptionsPopup from "../components/FriendOptionsPopup";
 import FriendList from "../components/FriendsScreenComponents/FriendList";
+import FriendsCreditDebt from "../components/FriendsScreenComponents/FriendsCreditDebt";
 
 /**
  * Pending Friend Request
@@ -35,6 +36,7 @@ function FriendsScreen() {
     return (
         <div className="route-container screen-container d-flex flex-column">
             {/* <div>who owes</div> */}
+            <FriendsCreditDebt />
             <FriendList />
             {/* <div className="flex-grow-1">
             </div> */}

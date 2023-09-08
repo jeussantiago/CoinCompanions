@@ -39,6 +39,10 @@ import {
     GROUP_DEBT_REQUEST,
     GROUP_DEBT_SUCCESS,
     GROUP_DEBT_FAIL,
+    GROUP_SETTLE_CREATE_REQUEST,
+    GROUP_SETTLE_CREATE_SUCCESS,
+    GROUP_SETTLE_CREATE_FAIL,
+    GROUP_SETTLE_CREATE_RESET,
 } from "../constants/groupConstants";
 
 export const groupInviteDeclineReducer = (state = {}, action) => {
@@ -235,6 +239,25 @@ export const groupDebtsReducer = (state = { groupDebt: {} }, action) => {
 
         case GROUP_DEBT_FAIL:
             return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const groupSettleCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_SETTLE_CREATE_REQUEST:
+            return { loading: true };
+
+        case GROUP_SETTLE_CREATE_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_SETTLE_CREATE_FAIL:
+            return { loading: false, success: false, error: action.payload };
+
+        case GROUP_SETTLE_CREATE_RESET:
+            return {};
 
         default:
             return state;

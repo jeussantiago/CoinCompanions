@@ -33,6 +33,9 @@ import {
     GROUP_DEBT_REQUEST,
     GROUP_DEBT_SUCCESS,
     GROUP_DEBT_FAIL,
+    GROUP_SETTLE_CREATE_REQUEST,
+    GROUP_SETTLE_CREATE_SUCCESS,
+    GROUP_SETTLE_CREATE_FAIL,
 } from "../constants/groupConstants";
 
 export const deleteGroupInvite = (id) => async (dispatch, getState) => {
@@ -382,3 +385,40 @@ export const getGroupDebts = (groupId) => async (dispatch, getState) => {
         });
     }
 };
+
+export const createGroupSettle =
+    (groupId, receivingUserId, amount) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: GROUP_SETTLE_CREATE_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            await axios.post(
+                `/api/groups/${groupId}/record-payment/`,
+                {
+                    receiving_user_id: receivingUserId,
+                    amount: amount,
+                },
+                config
+            );
+
+            dispatch({ type: GROUP_SETTLE_CREATE_SUCCESS });
+        } catch (err) {
+            dispatch({
+                type: GROUP_SETTLE_CREATE_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };

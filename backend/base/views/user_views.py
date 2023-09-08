@@ -8,6 +8,7 @@ from django.db.models import Q, Sum, ExpressionWrapper, DecimalField
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from collections import defaultdict
 
 from base.serializers import UserSerializer, UserSerializerWithToken, FriendRequestSerializer, GroupSerializer, DebtSerializer, ExpenseSerializer, GroupSerializerForGetUserGroupsView
 from django.contrib.auth.models import User
@@ -179,13 +180,12 @@ def getFriendsList(request):
     user = request.user
     try:
         user_friends = UserFriends.objects.get(user=user)
+        friends = user_friends.friends.all()
+        serializer = UserSerializer(friends, many=True)
+        return Response(serializer.data)
     except UserFriends.DoesNotExist:
-        # if user does not have any friends, will return error
-        return Response({"error": "User profile has no friends"}, status=404)
-
-    friends = user_friends.friends.all()
-    serializer = UserSerializer(friends, many=True)
-    return Response(serializer.data)
+        # if user does not have any friends, will return empty list
+        return Response([], status=200)
 
 
 @api_view(['POST'])
@@ -325,24 +325,140 @@ def getUserGroups(request):
 @permission_classes([IsAuthenticated])
 def getUserDebt(request):
     '''
-    Gets a list of users that this user owes with the corresponding amount
+    Gets a list of users that this user owes with the corresponding amount. you get the total as 
+    well as the grup breakdown that make up the total
+
+    [
+        {
+            "id": 1,
+            "name": "Jeus",
+            "email": "jeus@email.com",
+            "total_amount": 286.36,
+            "debts_group_breakdown": [
+                {
+                    "amount": 286.36,
+                    "group_id": 6,
+                    "group_name": "another group "
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "tim",
+            "email": "tim@email.com",
+            "total_amount": 124.96,
+            "debts_group_breakdown": [
+                {
+                    "amount": 124.96,
+                    "group_id": 6,
+                    "group_name": "another group "
+                }
+            ]
+        }
+    ]
     '''
     user = request.user
-    debts = Debt.objects.filter(creditor=user)
-    serializer = DebtSerializer(debts, many=True)
-    return Response(serializer.data)
+    debts = Debt.objects.filter(debtor=user)
+
+    # Create a dictionary to store debtor data by their IDs
+    creditor_dict = defaultdict(
+        lambda: {'name': '', 'email': '', 'total_amount': 0, 'debts_group_breakdown': []})
+
+    for debt in debts:
+        creditor = debt.creditor
+        creditor_id = creditor.id
+
+        # Update the debtor's debts and total amount
+        creditor_dict[creditor_id]['debts_group_breakdown'].append({
+            'amount': float(debt.amount),
+            'group_id': debt.group.id,
+            'group_name': debt.group.name
+        })
+        creditor_dict[creditor_id]['total_amount'] += float(debt.amount)
+
+        # Set debtor's name and email
+        creditor_dict[creditor_id]['name'] = creditor.get_full_name()
+        creditor_dict[creditor_id]['email'] = creditor.email
+
+    # Create a list of debtor data from the dictionary
+    creditor_dict = [{"id": creditor_id, **data}
+                     for creditor_id, data in creditor_dict.items()]
+
+    return Response(creditor_dict)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserCredit(request):
     '''
-    Gets a list of users that owe this user with the corresponding amount
+    Gets a list of users that owe this user. You receive information regarding the user
+    the total amount they owe you. You then get a breakdown of the groups that this user
+    owes the you
+
+    [
+        {
+            "id": 11,
+            "username": "david@email.com",
+            "email": "david@email.com",
+            "name": "david",
+            "total_amount": 703.32,
+            "debts": [
+                {
+                    "amount": 100.0,
+                    "group_id": 7,
+                    "group_name": "second"
+                },
+                {
+                    "amount": 603.32,
+                    "group_id": 6,
+                    "group_name": "another group "
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "username": "charlie@email.com",
+            "email": "charlie@email.com",
+            "name": "charlie",
+            "total_amount": 286.36,
+            "debts": [
+                {
+                    "amount": 286.36,
+                    "group_id": 6,
+                    "group_name": "another group "
+                }
+            ]
+        }
+    ]
     '''
     user = request.user
-    debts = Debt.objects.filter(debtor=user)
-    serializer = DebtSerializer(debts, many=True)
-    return Response(serializer.data)
+    debts = Debt.objects.filter(creditor=user)
+
+    # Create a dictionary to store debtor data by their IDs
+    debtor_dict = defaultdict(
+        lambda: {'name': '', 'email': '', 'total_amount': 0, 'credits_group_breakdown': []})
+
+    for debt in debts:
+        debtor = debt.debtor
+        debtor_id = debtor.id
+
+        # Update the debtor's debts and total amount
+        debtor_dict[debtor_id]['credits_group_breakdown'].append({
+            'amount': float(debt.amount),
+            'group_id': debt.group.id,
+            'group_name': debt.group.name
+        })
+        debtor_dict[debtor_id]['total_amount'] += float(debt.amount)
+
+        # Set debtor's name and email
+        debtor_dict[debtor_id]['name'] = debtor.get_full_name()
+        debtor_dict[debtor_id]['email'] = debtor.email
+
+    # Create a list of debtor data from the dictionary
+    debtor_debts = [{"id": debtor_id, **data}
+                    for debtor_id, data in debtor_dict.items()]
+
+    return Response(debtor_debts)
 
 
 @api_view(['GET'])

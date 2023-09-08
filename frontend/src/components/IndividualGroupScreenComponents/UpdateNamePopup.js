@@ -1,58 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { Modal, Button, FormControl } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import AlertMessage from "../AlertMessage";
-import { GROUP_NAME_UPDATE_RESET } from "../../constants/groupConstants";
 import { updateGroupName } from "../../actions/groupActions";
 
-function UpdateNamePopup({
-    show,
-    onClose,
-    groupNameIsUpdated,
-    currentGroupName,
-    groupId,
-}) {
+function UpdateNamePopup({ show, onClose, currentGroupName, groupId }) {
     const dispatch = useDispatch();
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState("");
-    const [alertVariant, setAlertVariant] = useState("");
     const [groupName, setGroupName] = useState(currentGroupName);
-
-    const groupNameUpdate = useSelector((state) => state.groupNameUpdate);
-    const { success: groupNameUpdateSuccess } = groupNameUpdate;
 
     const handleClose = () => {
         setGroupName(currentGroupName);
         onClose();
-        dispatch({ type: GROUP_NAME_UPDATE_RESET });
     };
 
     const handleSubmit = () => {
         dispatch(updateGroupName(groupId, groupName));
-        groupNameIsUpdated();
-        handleClose(); // Now handleClose is defined before use
+        handleClose();
     };
-
-    const handleShowAlert = useCallback((message, variant) => {
-        setAlertMessage(message);
-        setAlertVariant(variant);
-        setShowAlert(true);
-        setTimeout(() => {
-            setShowAlert(false);
-        }, 3000);
-    }, []);
-
-    useEffect(() => {
-        if (groupNameUpdateSuccess) {
-            handleShowAlert("Updated group name", "success");
-        } else if (groupNameUpdateSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to update group name",
-                "danger"
-            );
-        }
-    }, [groupNameUpdateSuccess, handleShowAlert]);
 
     return (
         <div>
@@ -77,9 +41,6 @@ function UpdateNamePopup({
                     </Button>
                 </Modal.Footer>
             </Modal>
-            {showAlert && (
-                <AlertMessage message={alertMessage} variant={alertVariant} />
-            )}
         </div>
     );
 }

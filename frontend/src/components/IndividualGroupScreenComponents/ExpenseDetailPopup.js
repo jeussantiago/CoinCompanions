@@ -7,7 +7,7 @@ import AlertMessage from "../AlertMessage";
 import { updateGroupExpense } from "../../actions/groupActions";
 import { deleteGroupExpense } from "../../actions/groupActions";
 
-function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
+function ExpenseDetailPopup({ show, onClose, expense }) {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
@@ -22,9 +22,6 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
     );
     const { success: groupExpenseDetailUpdateSuccess } =
         groupExpenseDetailUpdate;
-
-    const groupExpenseDelete = useSelector((state) => state.groupExpenseDelete);
-    const { success: groupExpenseDeleteSuccess } = groupExpenseDelete;
 
     // Function to handle changes in user amount inputs
     const handleUserAmountChange = (userId, amount) => {
@@ -137,8 +134,6 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
 
     useEffect(() => {
         if (groupExpenseDetailUpdateSuccess) {
-            // tells ExpenseList.js to update the list
-            handleExpenseUpdate();
             handleShowAlert("Successfully updated expense", "success");
         } else if (groupExpenseDetailUpdateSuccess === false) {
             handleShowAlert(
@@ -146,20 +141,7 @@ function ExpenseDetailPopup({ show, onClose, expense, handleExpenseUpdate }) {
                 "danger"
             );
         }
-    }, [groupExpenseDetailUpdateSuccess, handleShowAlert, handleExpenseUpdate]);
-
-    useEffect(() => {
-        if (groupExpenseDeleteSuccess) {
-            // tells ExpenseList.js to update the list
-            handleExpenseUpdate();
-            handleShowAlert("Successfully deleted expense", "success");
-        } else if (groupExpenseDeleteSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to deleted expense",
-                "danger"
-            );
-        }
-    }, [groupExpenseDeleteSuccess, handleShowAlert, handleExpenseUpdate]);
+    }, [groupExpenseDetailUpdateSuccess, handleShowAlert]);
 
     // Initialize userAmounts when the expense prop changes
     useEffect(() => {

@@ -4,25 +4,17 @@ import { useDispatch } from "react-redux";
 
 import { deleteFriend } from "../../actions/userActions";
 
-function FriendOptionsPopup({
-    show,
-    onClose,
-    onCloseFriendOptions,
-    selectedFriend,
-    onFriendsUpdate,
-}) {
+function FriendOptionsPopup({ show, onClose, selectedFriend }) {
     const dispatch = useDispatch();
 
     const handleDeleteFriend = (id) => {
         dispatch(deleteFriend(id));
-
-        onCloseFriendOptions();
-        onFriendsUpdate();
+        onClose();
     };
 
     const handleAddToGroup = () => {
         console.log("add user to group");
-        onCloseFriendOptions();
+        onClose();
     };
 
     if (!show || selectedFriend === null) {

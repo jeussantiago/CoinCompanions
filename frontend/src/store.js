@@ -26,6 +26,7 @@ import {
     groupExpenseDeleteReducer,
     groupCreditsReducer,
     groupDebtsReducer,
+    groupSettleCreateReducer,
 } from "./reducers/groupReducers";
 
 const reducer = combineReducers({
@@ -51,6 +52,7 @@ const reducer = combineReducers({
     groupExpenseDelete: groupExpenseDeleteReducer,
     groupCredits: groupCreditsReducer,
     groupDebts: groupDebtsReducer,
+    groupSettleCreate: groupSettleCreateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

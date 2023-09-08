@@ -53,15 +53,50 @@
     overflow-y: scroll;
 }
 
+/* ------------- FriendsCreditDebt.js ------------------ */
+.owe-component-container {
+    /* border: 1px solid red; */
+}
+.owe-container {
+    padding: 20px 10px;
+    margin-bottom: 12px;
+    /* border: 0.3px solid #c6c6c6; */
+    border-radius: 5px;
+    box-shadow: 0 1px 2px #c6c6c6;
+    background-color: white;
+}
+
+.left-container {
+    border-right: 1px solid #5a5a5a;
+    padding-right: 10px;
+}
+.right-container {
+    padding-left: 10px;
+}
+.left-container .btn {
+    margin-left: 10px;
+    padding: 4px 8px;
+    /* height: 50%; */
+    font-size: 12px;
+}
+
 /* ------------- smaller sizes------------------ */
 /* @media (max-width: 1200px) {
     .friends-screen-container {
         min-width: 70vw;
     }
-}
+} */
 
 @media (max-width: 768px) {
-    .friends-screen-container {
+    /* .friends-screen-container {
         min-width: 55vw;
+    } */
+    .left-container {
+        border-right: none;
+        padding-right: 0px;
     }
-} */
+    .right-container {
+        padding-left: 0px;
+        margin-top: 30px;
+    }
+}

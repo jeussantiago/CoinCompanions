@@ -189,12 +189,9 @@ export const deleteFriend = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.delete(
-            `/api/users/remove-friend/${id}/`,
-            config
-        );
+        await axios.delete(`/api/users/remove-friend/${id}/`, config);
 
-        dispatch({ type: USER_FRIENDS_DELETE_SUCCESS, payload: data });
+        dispatch({ type: USER_FRIENDS_DELETE_SUCCESS });
     } catch (err) {
         dispatch({
             type: USER_FRIENDS_DELETE_FAIL,

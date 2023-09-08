@@ -683,6 +683,8 @@ def recordPayment(request, group_id):
         ExpenseDetail.objects.create(
             expense=payment_expense, user=receiving_user, amount_owed=amount)
 
+        calculateSimplifiedDebts(group)
+
         return Response({"message": f"Payment recorded from {request.user} to {receiving_user} for ${amount}"}, status=status.HTTP_201_CREATED)
 
     except Group.DoesNotExist:

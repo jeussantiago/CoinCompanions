@@ -5,14 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../styles/screens/GroupsScreens.css";
 import AlertMessage from "../AlertMessage";
 import { createGroupExpense } from "../../actions/groupActions";
-import { GROUP_EXPENSES_CREATE_RESET } from "../../constants/groupConstants";
 
-function CreateExpensePopup({
-    show,
-    onClose,
-    handleExpenseCreate,
-    groupDetails,
-}) {
+//handleExpenseCreate,
+function CreateExpensePopup({ show, onClose, groupDetails }) {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
@@ -128,18 +123,18 @@ function CreateExpensePopup({
         }, 3000);
     }, []);
 
-    useEffect(() => {
-        if (groupExpenseCreateSuccess) {
-            // tells ExpenseList.js to update the list
-            handleExpenseCreate();
-            handleShowAlert("Successfully created expense", "success");
-        } else if (groupExpenseCreateSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to create success",
-                "danger"
-            );
-        }
-    }, [groupExpenseCreateSuccess, handleShowAlert, handleExpenseCreate]);
+    // useEffect(() => {
+    //     if (groupExpenseCreateSuccess) {
+    //         // tells ExpenseList.js to update the list
+    //         handleExpenseCreate();
+    //         handleShowAlert("Successfully created expense", "success");
+    //     } else if (groupExpenseCreateSuccess === false) {
+    //         handleShowAlert(
+    //             "Error occurred while trying to create success",
+    //             "danger"
+    //         );
+    //     }
+    // }, [groupExpenseCreateSuccess, handleShowAlert, handleExpenseCreate]);
 
     useEffect(() => {
         // reset the values if a user creates an expense
@@ -240,9 +235,9 @@ function CreateExpensePopup({
                     />
                 )}
             </Modal>
-            {showAlert && (
+            {/* {showAlert && (
                 <AlertMessage message={alertMessage} variant={alertVariant} />
-            )}
+            )} */}
         </div>
     );
 }

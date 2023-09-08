@@ -211,11 +211,16 @@ Frontend
 -   [x] test create expense and alerts and refresh of list
 -   [x] delete expense
 -   [x] add pagination to expense list OR scrolling loads more (pagination)
--   [ ] list the people in the group and how much debt they have
--   [ ] settle with person
 -   [x] when creating a new group, refresh the group list
--   [ ] GroupCreditDebt: settle popup
--   [ ] GroupCreditDebt: if settle is successful, get state from expenseList.js and update the list
+-   [x] list the people in the group and how much debt they have
+-   [x] settle with person
+-   [x] GroupCreditDebt: settle popup
+-   [x] GroupCreditDebt: if settle is successful, get state from expenseList.js and update the list
+
+-   [x] rework debts and credits api to get all debts and credits but formatted to group same user together
+-   [x] see friends debts and credits
+
+-   [ ] settle with friend
 
 ---
 

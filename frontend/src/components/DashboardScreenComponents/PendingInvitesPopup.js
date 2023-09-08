@@ -81,20 +81,53 @@ function PendingInvitesPopup({ show, onClose }) {
         dispatch(deleteGroupInvite(id));
     };
 
-    const handleShowAlert = useCallback(
-        (message, variant) => {
-            setAlertMessage(message);
-            setAlertVariant(variant);
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({ type: USER_FRIENDS_REQUEST_DECLINE_RESET });
-                dispatch({ type: USER_FRIENDS_REQUEST_ACCEPT_RESET });
-                dispatch({ type: GROUP_INVITE_DECLINE_RESET });
-            }, 3000); // Hide the alert after 3 seconds
-        },
-        [dispatch]
-    );
+    const handleShowAlert = useCallback((message, variant) => {
+        setAlertMessage(message);
+        setAlertVariant(variant);
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000); // Hide the alert after 3 seconds
+    }, []);
+
+    // decline friend request
+    useEffect(() => {
+        if (userFriendRequestDeclineSuccess) {
+            handleShowAlert("Deleted user from friends list", "success");
+            dispatch({ type: USER_FRIENDS_REQUEST_DECLINE_RESET });
+        } else if (userFriendRequestDeclineSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to delete user from friends list",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, userFriendRequestDeclineSuccess]);
+
+    // accept friend request
+    useEffect(() => {
+        if (userFriendRequestAcceptSuccess) {
+            handleShowAlert("Added user to friends list", "success");
+            dispatch({ type: USER_FRIENDS_REQUEST_ACCEPT_RESET });
+        } else if (userFriendRequestAcceptSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to add user to friends list",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, userFriendRequestAcceptSuccess]);
+
+    // decline group invite
+    useEffect(() => {
+        if (groupInviteDeclineSuccess) {
+            handleShowAlert("Declined group invite", "success");
+            dispatch({ type: GROUP_INVITE_DECLINE_RESET });
+        } else if (groupInviteDeclineSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to delete group invite",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, groupInviteDeclineSuccess]);
 
     useEffect(() => {
         dispatch(getPendingFriendRequest());
@@ -105,39 +138,6 @@ function PendingInvitesPopup({ show, onClose }) {
         userFriendRequestAcceptSuccess,
         groupInviteDeclineSuccess,
     ]);
-
-    useEffect(() => {
-        if (userFriendRequestDeclineSuccess) {
-            handleShowAlert("Deleted user from friends list", "success");
-        } else if (userFriendRequestDeclineSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to delete user from friends list",
-                "danger"
-            );
-        }
-    }, [userFriendRequestDeclineSuccess, handleShowAlert]);
-
-    useEffect(() => {
-        if (userFriendRequestAcceptSuccess) {
-            handleShowAlert("Deleted user from friends list", "success");
-        } else if (userFriendRequestAcceptSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to delete user from friends list",
-                "danger"
-            );
-        }
-    }, [userFriendRequestAcceptSuccess, handleShowAlert]);
-
-    useEffect(() => {
-        if (groupInviteDeclineSuccess) {
-            handleShowAlert("Declined group invite", "success");
-        } else if (groupInviteDeclineSuccess === false) {
-            handleShowAlert(
-                "Error occurred while trying to delete group invite",
-                "danger"
-            );
-        }
-    }, [groupInviteDeclineSuccess, handleShowAlert]);
 
     return (
         <Modal show={show} onHide={onClose}>

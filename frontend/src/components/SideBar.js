@@ -69,9 +69,9 @@ function SideBar() {
             <div className={menu_class}>
                 <div className="container-fluid">
                     <div className="row ">
-                        <div className="col-auto col-sm2 bg-light d-flex flex-column justify-content-between min-vh-100">
+                        <div className="col-auto col-md2 bg-light d-flex flex-column justify-content-between min-vh-100">
                             <div className="upper-sidebar-content">
-                                <div className="text-decoration-none ms-3 d-flex align-itmes-center d-none d-sm-inline">
+                                <div className="text-decoration-none ms-3 d-flex align-itmes-center d-none d-md-inline">
                                     <LinkContainer to="/dashboard">
                                         <div className="brand-name-container">
                                             <h3 className="brand-name">
@@ -99,7 +99,7 @@ function SideBar() {
                                         >
                                             <div>
                                                 <i className="fa-solid fa-tachograph-digital"></i>
-                                                <span className="ms-2 d-none d-sm-inline">
+                                                <span className="ms-2 d-none d-md-inline">
                                                     Dashboard
                                                 </span>
                                             </div>
@@ -112,7 +112,7 @@ function SideBar() {
                                         >
                                             <div>
                                                 <i className="fas fa-user-friends"></i>
-                                                <span className="ms-2 d-none d-sm-inline">
+                                                <span className="ms-2 d-none d-md-inline">
                                                     Friends
                                                 </span>
                                             </div>
@@ -125,7 +125,7 @@ function SideBar() {
                                         >
                                             <div>
                                                 <i className="fa-solid fa-users-line"></i>
-                                                <span className="ms-2 d-none d-sm-inline">
+                                                <span className="ms-2 d-none d-md-inline">
                                                     Groups
                                                 </span>
                                             </div>
@@ -138,7 +138,7 @@ function SideBar() {
                                         >
                                             <div>
                                                 <i className="fa-solid fa-gear"></i>
-                                                <span className="ms-2 d-none d-sm-inline">
+                                                <span className="ms-2 d-none d-md-inline">
                                                     Settings
                                                 </span>
                                             </div>
@@ -154,10 +154,10 @@ function SideBar() {
                                             type="button"
                                             onClick={logoutHandler}
                                         >
-                                            <span className="d-none d-sm-inline">
+                                            <span className="d-none d-md-inline">
                                                 Logout
                                             </span>
-                                            <span className="d-block d-sm-none">
+                                            <span className="d-block d-md-none">
                                                 <i className="fa-solid fa-right-from-bracket"></i>
                                             </span>
                                         </button>

@@ -1,15 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Card, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import "../../styles/screens/GroupsScreens.css";
+import AlertMessage from "../AlertMessage";
+import { GROUP_CREATE_RESET } from "../../constants/groupConstants";
 import { getGroupsList } from "../../actions/groupActions";
 import { getUsersGroupsTotalCreditDebit } from "../../actions/userActions";
 import Message from "../Message";
 
-function GroupsList({ createGroupSuccess, handleRefreshData }) {
+function GroupsList() {
     const dispatch = useDispatch();
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertVariant, setAlertVariant] = useState("");
 
     const groupLists = useSelector((state) => state.groupLists);
     const {
@@ -27,13 +32,35 @@ function GroupsList({ createGroupSuccess, handleRefreshData }) {
         userGroupsTotalCreditDebit,
     } = usersGroupsTotalDebtCredit;
 
+    // created new group
+    const groupCreate = useSelector((state) => state.groupCreate);
+    const { success: groupCreateSuccess } = groupCreate;
+
+    const handleShowAlert = useCallback((message, variant) => {
+        setAlertMessage(message);
+        setAlertVariant(variant);
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000);
+    }, []);
+
     useEffect(() => {
-        if (createGroupSuccess) {
-            dispatch(getGroupsList());
-            dispatch(getUsersGroupsTotalCreditDebit());
-            handleRefreshData();
+        if (groupCreateSuccess) {
+            handleShowAlert("Created new group", "success");
+            dispatch({ type: GROUP_CREATE_RESET });
+        } else if (groupCreateSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to create a new group",
+                "danger"
+            );
         }
-    }, [dispatch, createGroupSuccess, handleRefreshData]);
+    }, [dispatch, handleShowAlert, groupCreateSuccess]);
+
+    useEffect(() => {
+        dispatch(getGroupsList());
+        dispatch(getUsersGroupsTotalCreditDebit());
+    }, [dispatch, groupCreateSuccess]);
 
     return (
         <div>
@@ -205,6 +232,9 @@ function GroupsList({ createGroupSuccess, handleRefreshData }) {
                         </div>
                     ))}
                 </div>
+            )}
+            {showAlert && (
+                <AlertMessage message={alertMessage} variant={alertVariant} />
             )}
         </div>
     );
