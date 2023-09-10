@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from collections import defaultdict, deque
 
 from base.serializers import GroupSerializer, GroupInvitationSerializer, ExpenseSerializer, ExpenseDetailSerializer, DebtSerializer, UserSerializer
@@ -797,3 +797,27 @@ def getGroupCreditsPerUser(request, group_id):
 
     except Group.DoesNotExist:
         return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def searchUsersToInvite(request, group_id):
+    '''
+    serach users not part of group and dont have an invite to the group
+    for them. Can only search my user emails since it is a unique field
+    '''
+    keyword = request.GET.get('keyword', '')
+    try:
+        group = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Query users who are not part of the group and have no group invites as invitees
+    users = User.objects.exclude(
+        Q(group_members=group) | Q(invitations__group=group)
+    ).filter(
+        email__icontains=keyword    # Filter by email
+    )
+
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

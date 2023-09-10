@@ -142,11 +142,13 @@ function FriendList() {
                     </div>
                 )}
             </div>
-            <FriendOptionsPopup
-                show={showOptions}
-                onClose={closeFriendOptions}
-                selectedFriend={selectedFriend}
-            />
+            {selectedFriend && (
+                <FriendOptionsPopup
+                    show={showOptions}
+                    onClose={closeFriendOptions}
+                    selectedFriend={selectedFriend}
+                />
+            )}
             <SearchFriendPopup
                 show={showSearchFriendsPopup}
                 onClose={closeSearchFriendPopup}

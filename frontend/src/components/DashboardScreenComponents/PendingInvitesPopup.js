@@ -10,12 +10,18 @@ import {
     deleteFriendRequest,
     acceptFriendRequest,
 } from "../../actions/userActions";
-import { deleteGroupInvite } from "../../actions/groupActions";
+import {
+    deleteGroupInvite,
+    acceptGroupInvite,
+} from "../../actions/groupActions";
 import {
     USER_FRIENDS_REQUEST_DECLINE_RESET,
     USER_FRIENDS_REQUEST_ACCEPT_RESET,
 } from "../../constants/userConstants";
-import { GROUP_INVITE_DECLINE_RESET } from "../../constants/groupConstants";
+import {
+    GROUP_INVITE_DECLINE_RESET,
+    GROUP_INVITE_ACCEPT_RESET,
+} from "../../constants/groupConstants";
 import AlertMessage from "../AlertMessage";
 
 function PendingInvitesPopup({ show, onClose }) {
@@ -59,24 +65,26 @@ function PendingInvitesPopup({ show, onClose }) {
 
     const groupInviteDecline = useSelector((state) => state.groupInviteDecline);
     const { success: groupInviteDeclineSuccess } = groupInviteDecline;
+    const groupInviteAccept = useSelector((state) => state.groupInviteAccept);
+    const { success: groupInviteAcceptSuccess } = groupInviteAccept;
 
     const switchTab = (tabName) => {
         setActiveTab(tabName);
     };
 
+    // accept friend request
     const handleFriendRequestAccept = (id) => {
         dispatch(acceptFriendRequest(id));
     };
-
+    // decline friend request
     const handleFriendRequestDecline = (id) => {
         dispatch(deleteFriendRequest(id));
     };
-
+    // accept group invite
     const handleGroupRequestAccept = (id) => {
-        // add user to group {id}
-        console.log("accepting group invite: ", id);
+        dispatch(acceptGroupInvite(id));
     };
-
+    // decline group invite
     const handleGroupRequestDecline = (id) => {
         dispatch(deleteGroupInvite(id));
     };
@@ -129,6 +137,19 @@ function PendingInvitesPopup({ show, onClose }) {
         }
     }, [dispatch, handleShowAlert, groupInviteDeclineSuccess]);
 
+    // accept group invite
+    useEffect(() => {
+        if (groupInviteAcceptSuccess) {
+            handleShowAlert("Accepted group invite", "success");
+            dispatch({ type: GROUP_INVITE_ACCEPT_RESET });
+        } else if (groupInviteAcceptSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to accept group invite",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, groupInviteAcceptSuccess]);
+
     useEffect(() => {
         dispatch(getPendingFriendRequest());
         dispatch(getPendingGroupRequest());
@@ -137,13 +158,14 @@ function PendingInvitesPopup({ show, onClose }) {
         userFriendRequestDeclineSuccess,
         userFriendRequestAcceptSuccess,
         groupInviteDeclineSuccess,
+        groupInviteAcceptSuccess,
     ]);
 
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Body className="pending-invites-popup">
                 <Tab.Container id="pending-invites-tabs" activeKey={activeTab}>
-                    <Nav variant="tabs" className="mb-3">
+                    <Nav variant="tabs" className="mb-3 ">
                         <Nav.Item>
                             <Nav.Link
                                 eventKey="pendingFriendRequests"
@@ -151,9 +173,25 @@ function PendingInvitesPopup({ show, onClose }) {
                                     switchTab("pendingFriendRequests")
                                 }
                             >
-                                Pending Friend Requests
+                                {friendRequestLoading ? (
+                                    <div>Loading...</div>
+                                ) : friendRequestError ? (
+                                    <Message variant="danger">
+                                        {friendRequestError}
+                                    </Message>
+                                ) : friendRequestList.length === 0 ? (
+                                    <div>Pending Friend</div>
+                                ) : (
+                                    <div>
+                                        <span className="notification-red-dot text-secondary">
+                                            <i className="fa-solid fa-circle-exclamation"></i>
+                                        </span>{" "}
+                                        Pending Friend
+                                    </div>
+                                )}
                             </Nav.Link>
                         </Nav.Item>
+
                         <Nav.Item>
                             <Nav.Link
                                 eventKey="pendingGroupRequests"
@@ -161,7 +199,22 @@ function PendingInvitesPopup({ show, onClose }) {
                                     switchTab("pendingGroupRequests")
                                 }
                             >
-                                Pending Group Requests
+                                {groupRequestLoading ? (
+                                    <div>Loading...</div>
+                                ) : groupRequestError ? (
+                                    <Message variant="danger">
+                                        {groupRequestError}
+                                    </Message>
+                                ) : groupRequestList.length === 0 ? (
+                                    <div>Pending Group</div>
+                                ) : (
+                                    <div>
+                                        <span className="notification-red-dot text-secondary">
+                                            <i className="fa-solid fa-circle-exclamation"></i>
+                                        </span>{" "}
+                                        Pending Group
+                                    </div>
+                                )}
                             </Nav.Link>
                         </Nav.Item>
                     </Nav>

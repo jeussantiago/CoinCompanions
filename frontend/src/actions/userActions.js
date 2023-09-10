@@ -31,6 +31,15 @@ import {
     USER_GROUP_CREDIT_DEBT_REQUEST,
     USER_GROUP_CREDIT_DEBT_SUCCESS,
     USER_GROUP_CREDIT_DEBT_FAIL,
+    USER_CREDIT_REQUEST,
+    USER_CREDIT_SUCCESS,
+    USER_CREDIT_FAIL,
+    USER_DEBT_REQUEST,
+    USER_DEBT_SUCCESS,
+    USER_DEBT_FAIL,
+    USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_REQUEST,
+    USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_SUCCESS,
+    USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -351,6 +360,100 @@ export const getUsersGroupsTotalCreditDebit =
         } catch (err) {
             dispatch({
                 type: USER_GROUP_CREDIT_DEBT_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };
+
+export const getUserCredits = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_CREDIT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/users/credit/`, config);
+
+        dispatch({ type: USER_CREDIT_SUCCESS, payload: data });
+    } catch (err) {
+        dispatch({
+            type: USER_CREDIT_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const getUserDebts = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_DEBT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/users/debt/`, config);
+
+        dispatch({ type: USER_DEBT_SUCCESS, payload: data });
+    } catch (err) {
+        dispatch({
+            type: USER_DEBT_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};
+
+export const getUserFriendNotMemberGroupSearch =
+    (friendId) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.get(
+                `/api/users/get-friend-invite-groups/?friend_user_id=${friendId}`,
+                config
+            );
+
+            dispatch({
+                type: USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_SUCCESS,
+                payload: data,
+            });
+        } catch (err) {
+            dispatch({
+                type: USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL,
                 payload:
                     err.response && err.response.data.detail
                         ? err.response.data.detail

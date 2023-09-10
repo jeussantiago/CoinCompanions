@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 
 import "../styles/screens/GroupsScreens.css";
 import Message from "../components/Message";
@@ -10,33 +10,13 @@ import { getGroupDetails } from "../actions/groupActions";
 import UpdateNamePopup from "../components/IndividualGroupScreenComponents/UpdateNamePopup";
 import ExpenseList from "../components/IndividualGroupScreenComponents/ExpenseList";
 import GroupCreditDebt from "../components/IndividualGroupScreenComponents/GroupCreditDebt";
+import InviteUsersPopup from "../components/IndividualGroupScreenComponents/InviteUsersPopup";
 import {
     GROUP_DETAILS_RESET,
     GROUP_NAME_UPDATE_RESET,
 } from "../constants/groupConstants";
 
 /**
- * if the user is not logged in. navigate to home page
- *
- * if the user is not part of the group. navigate to the groups page <<<<<<<<
- *
- * modify group name <<<<<<<<<<
- *
- *
- * expense chart <<<<<<<
- * list expenses
- *      type='expense' or 'settle'
- *      who paid
- *      description
- *      how_much
- *      date_added
- *      (edit button)
- *
- * add expense
- *      (will use the same form as edit expense. will have conditional to differentiate between adding expense and updating)
- *
- * (when you click an expense, it expands to show the specifics)
- *      how much each person owes the payer
  *
  * Expense Edit <<<<<<<
  *      able to see how much each person paid
@@ -58,6 +38,7 @@ function IndividualGroupScreen() {
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertVariant, setAlertVariant] = useState("");
+    const [showInviteUserPopup, setShowInviteUserPopup] = useState(false);
     // group id
     const { id } = useParams();
     const navigate = useNavigate();
@@ -86,6 +67,16 @@ function IndividualGroupScreen() {
 
     const closeShowUpdateNamePopup = () => {
         setShowUpdateNamePopup(false);
+    };
+
+    // Function to open the inviting users popup
+    const openInviteUserPopup = () => {
+        setShowInviteUserPopup(true);
+    };
+
+    // Function to close the inviting users popup
+    const closeInviteUserPopup = () => {
+        setShowInviteUserPopup(false);
     };
 
     const handleShowAlert = useCallback((message, variant) => {
@@ -149,21 +140,28 @@ function IndividualGroupScreen() {
                     groupDetail && (
                         <div>
                             <div className="group-name-container">
-                                <div className="d-flex flex-row">
-                                    <div
-                                        className="clickable"
-                                        onClick={openShowUpdateNamePopup}
-                                    >
-                                        <h1 className="pr-2">
-                                            {groupDetail.name}
-                                        </h1>
+                                <div className="d-flex flex-row justify-content-between align-items-center ">
+                                    <div className="d-flex flex-row">
+                                        <div
+                                            className="clickable"
+                                            onClick={openShowUpdateNamePopup}
+                                        >
+                                            <h1 className="pr-2">
+                                                {groupDetail.name}
+                                            </h1>
+                                        </div>
+                                        <div
+                                            className="clickable"
+                                            onClick={openShowUpdateNamePopup}
+                                        >
+                                            <i className="fa-solid fa-pen-to-square"></i>
+                                        </div>
                                     </div>
-                                    <div
-                                        className="clickable"
-                                        onClick={openShowUpdateNamePopup}
+                                    <Button
+                                        onClick={() => openInviteUserPopup()}
                                     >
-                                        <i className="fa-solid fa-pen-to-square"></i>
-                                    </div>
+                                        Invite User
+                                    </Button>
                                 </div>
                                 <UpdateNamePopup
                                     show={showUpdateNamePopup}
@@ -198,6 +196,11 @@ function IndividualGroupScreen() {
                     )
                 )}
             </div>
+            <InviteUsersPopup
+                show={showInviteUserPopup}
+                onClose={closeInviteUserPopup}
+                groupId={id}
+            />
             {showAlert && (
                 <AlertMessage message={alertMessage} variant={alertVariant} />
             )}

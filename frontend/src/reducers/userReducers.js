@@ -33,6 +33,15 @@ import {
     USER_GROUP_CREDIT_DEBT_REQUEST,
     USER_GROUP_CREDIT_DEBT_SUCCESS,
     USER_GROUP_CREDIT_DEBT_FAIL,
+    USER_CREDIT_REQUEST,
+    USER_CREDIT_SUCCESS,
+    USER_CREDIT_FAIL,
+    USER_DEBT_REQUEST,
+    USER_DEBT_SUCCESS,
+    USER_DEBT_FAIL,
+    USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_REQUEST,
+    USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_SUCCESS,
+    USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -215,6 +224,60 @@ export const usersGroupsTotalDebtCreditReducer = (state = {}, action) => {
             };
 
         case USER_GROUP_CREDIT_DEBT_FAIL:
+            return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const userCreditsReducer = (state = { userCredit: [] }, action) => {
+    switch (action.type) {
+        case USER_CREDIT_REQUEST:
+            return { loading: true, userCredit: [] };
+
+        case USER_CREDIT_SUCCESS:
+            return { loading: false, userCredit: action.payload };
+
+        case USER_CREDIT_FAIL:
+            return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const userDebtsReducer = (state = { userDebt: [] }, action) => {
+    switch (action.type) {
+        case USER_DEBT_REQUEST:
+            return { loading: true, userDebt: [] };
+
+        case USER_DEBT_SUCCESS:
+            return { loading: false, userDebt: action.payload };
+
+        case USER_DEBT_FAIL:
+            return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const userFriendNotMemberGroupSearchReducer = (
+    state = { userFriendNotMemberGroupSearchResults: [] },
+    action
+) => {
+    switch (action.type) {
+        case USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_REQUEST:
+            return { loading: true, userFriendNotMemberGroupSearchResults: [] };
+
+        case USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_SUCCESS:
+            return {
+                loading: false,
+                userFriendNotMemberGroupSearchResults: action.payload,
+            };
+
+        case USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL:
             return { loading: false, error: action.payload };
 
         default:

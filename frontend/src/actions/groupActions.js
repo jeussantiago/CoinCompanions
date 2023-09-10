@@ -36,6 +36,15 @@ import {
     GROUP_SETTLE_CREATE_REQUEST,
     GROUP_SETTLE_CREATE_SUCCESS,
     GROUP_SETTLE_CREATE_FAIL,
+    GROUP_INVITE_SEND_REQUEST,
+    GROUP_INVITE_SEND_SUCCESS,
+    GROUP_INVITE_SEND_FAIL,
+    GROUP_INVITE_USERS_SEARCH_REQUEST,
+    GROUP_INVITE_USERS_SEARCH_SUCCESS,
+    GROUP_INVITE_USERS_SEARCH_FAIL,
+    GROUP_INVITE_ACCEPT_REQUEST,
+    GROUP_INVITE_ACCEPT_SUCCESS,
+    GROUP_INVITE_ACCEPT_FAIL,
 } from "../constants/groupConstants";
 
 export const deleteGroupInvite = (id) => async (dispatch, getState) => {
@@ -422,3 +431,106 @@ export const createGroupSettle =
             });
         }
     };
+
+export const sendGroupInvite =
+    (groupId, friendId) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: GROUP_INVITE_SEND_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            await axios.post(
+                `/api/groups/${groupId}/invite/${friendId}/`,
+                {},
+                config
+            );
+
+            dispatch({ type: GROUP_INVITE_SEND_SUCCESS });
+        } catch (err) {
+            dispatch({
+                type: GROUP_INVITE_SEND_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };
+
+export const getGroupUserSearchToInvite =
+    (groupId, keyword) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: GROUP_INVITE_USERS_SEARCH_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.get(
+                `/api/groups/${groupId}/user-search/?keyword=${keyword}`,
+                config
+            );
+
+            dispatch({
+                type: GROUP_INVITE_USERS_SEARCH_SUCCESS,
+                payload: data,
+            });
+        } catch (err) {
+            dispatch({
+                type: GROUP_INVITE_USERS_SEARCH_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };
+
+export const acceptGroupInvite = (groupId) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: GROUP_INVITE_ACCEPT_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(
+            `/api/groups/invitations/${groupId}/accept/`,
+            {},
+            config
+        );
+
+        dispatch({ type: GROUP_INVITE_ACCEPT_SUCCESS });
+    } catch (err) {
+        dispatch({
+            type: GROUP_INVITE_ACCEPT_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};

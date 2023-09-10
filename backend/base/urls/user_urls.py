@@ -12,6 +12,8 @@ urlpatterns = [
     path('groups-debt-credit/', views.getUserGroupDebtCredit,
          name='user-groups-debt-credit'),
     path('search-users/', views.searchUsers, name='search-users'),
+    path('get-friend-invite-groups/', views.getFriendInviteGroups,
+         name='get_friend_invite_groups'),
 
     path('profile/update/', views.updateUserProfile, name='users-profile-update'),
     path('delete/<str:pk>/', views.adminDeleteUser, name='admin-user-delete'),

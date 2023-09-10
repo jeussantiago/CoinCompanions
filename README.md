@@ -187,8 +187,8 @@ Frontend
 
 #### Current Progress:
 
--   [ ] Dahsboard Screen > Pending notifications functionality: accept group invitation
--   [ ] Friends Screen > Friend Options functionality: add friend to group
+-   [x] Dahsboard Screen > Pending notifications functionality: accept group invitation
+-   [x] Friends Screen > Friend Options functionality: add friend to group
 -   [ ] figure out to generally reroute the user if they are not logged in
 -   [x] Friends Screen: add columns to see how how much people owe you and how much you owe people
 
@@ -220,7 +220,14 @@ Frontend
 -   [x] rework debts and credits api to get all debts and credits but formatted to group same user together
 -   [x] see friends debts and credits
 
--   [ ] settle with friend
+-   [x] settle with friend from FriendsScreen
+-   [x] create api to serach for groups I am in and friend is not in
+-   [x] invite friend to group from Friends Screen (list out the groups you are in and your friend is not in)
+-   [x] invite user to group from IndividualGroups Screen (search box for searching users)
+-   [x] accept group invitation
+-   [x] fixed user friend search bug for users who originally dont have any friends
+
+-   [ ] if its the first time a user visits a group, and they already have expense, create a popup for them to select what expenses to add themselves to. Or maybe just give them a prompt if they want to be added to all expenses that are typisTypeSettle=false (type: expense) and isEvenlySplit=true
 
 ---
 

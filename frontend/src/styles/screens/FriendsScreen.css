@@ -54,9 +54,7 @@
 }
 
 /* ------------- FriendsCreditDebt.js ------------------ */
-.owe-component-container {
-    /* border: 1px solid red; */
-}
+
 .owe-container {
     padding: 20px 10px;
     margin-bottom: 12px;
@@ -67,6 +65,7 @@
 }
 
 .left-container {
+    height: 100%;
     border-right: 1px solid #5a5a5a;
     padding-right: 10px;
 }

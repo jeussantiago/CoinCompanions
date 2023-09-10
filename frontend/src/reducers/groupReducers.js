@@ -43,6 +43,17 @@ import {
     GROUP_SETTLE_CREATE_SUCCESS,
     GROUP_SETTLE_CREATE_FAIL,
     GROUP_SETTLE_CREATE_RESET,
+    GROUP_INVITE_SEND_REQUEST,
+    GROUP_INVITE_SEND_SUCCESS,
+    GROUP_INVITE_SEND_FAIL,
+    GROUP_INVITE_SEND_RESET,
+    GROUP_INVITE_USERS_SEARCH_REQUEST,
+    GROUP_INVITE_USERS_SEARCH_SUCCESS,
+    GROUP_INVITE_USERS_SEARCH_FAIL,
+    GROUP_INVITE_ACCEPT_REQUEST,
+    GROUP_INVITE_ACCEPT_SUCCESS,
+    GROUP_INVITE_ACCEPT_FAIL,
+    GROUP_INVITE_ACCEPT_RESET,
 } from "../constants/groupConstants";
 
 export const groupInviteDeclineReducer = (state = {}, action) => {
@@ -257,6 +268,66 @@ export const groupSettleCreateReducer = (state = {}, action) => {
             return { loading: false, success: false, error: action.payload };
 
         case GROUP_SETTLE_CREATE_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupInviteSendReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_INVITE_SEND_REQUEST:
+            return { loading: true };
+
+        case GROUP_INVITE_SEND_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_INVITE_SEND_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case GROUP_INVITE_SEND_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupUserSearchToInviteReducer = (
+    state = { userFriendNotMemberGroupSearchResults: [] },
+    action
+) => {
+    switch (action.type) {
+        case GROUP_INVITE_USERS_SEARCH_REQUEST:
+            return { loading: true, userFriendNotMemberGroupSearchResults: [] };
+
+        case GROUP_INVITE_USERS_SEARCH_SUCCESS:
+            return {
+                loading: false,
+                userFriendNotMemberGroupSearchResults: action.payload,
+            };
+
+        case GROUP_INVITE_USERS_SEARCH_FAIL:
+            return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const groupInviteAcceptReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_INVITE_ACCEPT_REQUEST:
+            return { loading: true };
+
+        case GROUP_INVITE_ACCEPT_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_INVITE_ACCEPT_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case GROUP_INVITE_ACCEPT_RESET:
             return {};
 
         default:

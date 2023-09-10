@@ -100,12 +100,13 @@ def searchUsers(request):
     query = request.query_params.get('query', '')
     current_user = request.user
 
-    user_friends = []
     # Try to get the user's friends from the UserFriends model - empty list if doesn't have friends
     try:
         user_friends = UserFriends.objects.get(user=current_user).friends.all()
     except UserFriends.DoesNotExist:
-        pass
+        # If UserFriends doesn't exist, create it for the user
+        user_friends = UserFriends.objects.create(
+            user=current_user).friends.all()
 
      # Get users who have sent a friend request to the current user
     friend_requests_received = FriendRequest.objects.filter(
@@ -521,3 +522,31 @@ def getUserGroupDebtCredit(request):
         }
 
     return Response(group_debt_credit, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getFriendInviteGroups(request):
+    '''
+    query_parameter: ?friend_user_id
+
+    Gets a list of groups that the User is in. The list of groups excludes:
+    1. groups that the friend is also a member off
+    2. groups where the friend is already invited to
+    '''
+    user = request.user
+
+    # Get the friend_user_id from the query parameters
+    friend_user_id = request.query_params.get('friend_user_id', user.id)
+
+    if friend_user_id is None:
+        return Response({"error": "friend_user_id is required as a query parameter."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Get groups that you are in but your friend is not
+    groups = Group.objects.filter(members=user).exclude(
+        Q(members=friend_user_id) | Q(
+            groupinvitation__invitee=friend_user_id, groupinvitation__accepted=False)
+    )
+
+    serializer = GroupSerializer(groups, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
