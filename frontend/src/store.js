@@ -33,6 +33,8 @@ import {
     groupInviteSendReducer,
     groupUserSearchToInviteReducer,
     groupInviteAcceptReducer,
+    groupNewUserInvitationReducer,
+    groupNewUserAddToExistingExpensesReducer,
 } from "./reducers/groupReducers";
 
 const reducer = combineReducers({
@@ -65,6 +67,8 @@ const reducer = combineReducers({
     groupSettleCreate: groupSettleCreateReducer,
     groupInviteSend: groupInviteSendReducer,
     groupUserSearchToInvite: groupUserSearchToInviteReducer,
+    groupNewUserInvitation: groupNewUserInvitationReducer,
+    groupNewUserAddToExistingExpenses: groupNewUserAddToExistingExpensesReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

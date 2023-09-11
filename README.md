@@ -14,9 +14,9 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 -   [x] routes to the different locations in the app
 -   [x] logout button
--   [ ] implement functional part of logout button
+-   [x] implement functional part of logout button
 -   [x] responsive to size
--   [ ] visible on all screens except the Home/Login/Registration screen
+-   [x] visible on all screens except the Home/Login/Registration screen
 
 #### USER AUTHORIZATION & AUTHENTICATION
 
@@ -47,17 +47,6 @@ Backend
     -   [x] if user accepts, they become friends: delete friend request
     -   [x] if user declines, delete friend request (maybe notify user but probably not)
 -   [x] remove friend
-
-Frontend
-
--   [ ] can search users by email frontend
-    -   will be able to see if can add user as friend or 'pending' if friend request sent already
-        (could also just not make the pending user visible)
--   [ ] other user sees all friend request each with a button to accept or decline
-    -   [ ] on accept, both users become friend
-    -   [ ] on decline, friend request deleted
--   [ ] view to see all user's friends
--   [ ] delete friend: 3 dots then popup that confirms if user wants to delete the friend
 
 #### TRIP & EXPENSES
 
@@ -109,20 +98,20 @@ Backend
 
 Frontend
 
--   [ ] can search people to add to trip from friends list and email (exclude the people who are already in the trip)
--   [ ] create Group
--   [ ] invite users to Groups using friends list or email
--   [ ] user have a list of groups they are invited to
--   [ ] can accept or decline group
+-   [x] can search people to add to trip from friends list and email (exclude the people who are already in the trip)
+-   [x] create Group
+-   [x] invite users to Groups using friends list or email
+-   [x] user have a list of groups they are invited to
+-   [x] can accept or decline group
 
-    -   [ ] decline deletes group invitation
+    -   [x] decline deletes group invitation
     -   [ ] accept takes user to another page where they will select which expenses to add themselves into
         -   User can only add themselves into expenses that are specified to be evenly distributted
             (reason: if an expense is manually calculated, we can assume that a user spent time to figure out how much each person owes whether it be through raw data or by percentages)
 
--   [ ] update Group name
--   [ ] create expense
--   [ ] update expense
+-   [x] update Group name
+-   [x] create expense
+-   [x] update expense
 
     Expenses splitting optionss:
 
@@ -134,7 +123,7 @@ Frontend
 
     -   this will be useful for the people invited later on after items are added
 
--   [ ] settle up button
+-   [x] settle up button
 
 #### User Profile
 
@@ -192,10 +181,10 @@ Frontend
 -   [ ] figure out to generally reroute the user if they are not logged in
 -   [x] Friends Screen: add columns to see how how much people owe you and how much you owe people
 
--   [ ] Group Screens
+-   [x] Group Screens
 -   [x] create group
 -   [x] modify group name
--   [ ] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
+-   [x] invite users to group based on friends list or search bar (wont be able to see people who are already in grou or inivited)
 -   [x] add expenses
 -   [x] modify expenses
 -   [x] add a feature to evenly split expense
@@ -227,7 +216,9 @@ Frontend
 -   [x] accept group invitation
 -   [x] fixed user friend search bug for users who originally dont have any friends
 
--   [ ] if its the first time a user visits a group, and they already have expense, create a popup for them to select what expenses to add themselves to. Or maybe just give them a prompt if they want to be added to all expenses that are typisTypeSettle=false (type: expense) and isEvenlySplit=true
+-   [x] if its the first time a user visits a group, and they already have expense, create a popup for them to select what expenses to add themselves to. Or maybe just give them a prompt if they want to be added to all expenses that are typisTypeSettle=false (type: expense) and isEvenlySplit=true
+    -   would need to slightly rework api to account for this since we don't need a list anymore and we would just be changing everything
+-   [ ] user profile update (only allowed to udpate info if not user_id 1 or guest_user_id)
 
 ---
 

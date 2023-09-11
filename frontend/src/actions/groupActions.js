@@ -45,6 +45,12 @@ import {
     GROUP_INVITE_ACCEPT_REQUEST,
     GROUP_INVITE_ACCEPT_SUCCESS,
     GROUP_INVITE_ACCEPT_FAIL,
+    GROUP_USER_NEW_INVITATION_REQUEST,
+    GROUP_USER_NEW_NVITATION_SUCCESS,
+    GROUP_USER_NEW_NVITATION_FAIL,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_REQUEST,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_SUCCESS,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_FAIL,
 } from "../constants/groupConstants";
 
 export const deleteGroupInvite = (id) => async (dispatch, getState) => {
@@ -534,3 +540,72 @@ export const acceptGroupInvite = (groupId) => async (dispatch, getState) => {
         });
     }
 };
+
+export const getGroupNewUserInvitation =
+    (groupId) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: GROUP_USER_NEW_INVITATION_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.get(
+                `/api/groups/${groupId}/has-accepted-invitation/`,
+                config
+            );
+
+            dispatch({ type: GROUP_USER_NEW_NVITATION_SUCCESS, payload: data });
+        } catch (err) {
+            dispatch({
+                type: GROUP_USER_NEW_NVITATION_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };
+
+export const addNewUserToGroupExpenses =
+    (groupId, decision) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: GROUP_USER_NEW_ADD_TO_EXPENSES_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            await axios.post(
+                `/api/groups/${groupId}/update-expenses-for-new-user/`,
+                {
+                    addNewUserToAllEvenlySplitExpenses: decision,
+                },
+                config
+            );
+
+            dispatch({ type: GROUP_USER_NEW_ADD_TO_EXPENSES_SUCCESS });
+        } catch (err) {
+            dispatch({
+                type: GROUP_USER_NEW_ADD_TO_EXPENSES_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };

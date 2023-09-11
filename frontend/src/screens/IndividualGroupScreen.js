@@ -6,14 +6,19 @@ import { Row, Col, Button } from "react-bootstrap";
 import "../styles/screens/GroupsScreens.css";
 import Message from "../components/Message";
 import AlertMessage from "../components/AlertMessage";
-import { getGroupDetails } from "../actions/groupActions";
+import {
+    getGroupDetails,
+    getGroupNewUserInvitation,
+} from "../actions/groupActions";
 import UpdateNamePopup from "../components/IndividualGroupScreenComponents/UpdateNamePopup";
 import ExpenseList from "../components/IndividualGroupScreenComponents/ExpenseList";
 import GroupCreditDebt from "../components/IndividualGroupScreenComponents/GroupCreditDebt";
 import InviteUsersPopup from "../components/IndividualGroupScreenComponents/InviteUsersPopup";
+import NewUserInGroupPopup from "../components/IndividualGroupScreenComponents/NewUserInGroupPopup";
 import {
     GROUP_DETAILS_RESET,
     GROUP_NAME_UPDATE_RESET,
+    GROUP_USER_NEW_NVITATION_RESET,
 } from "../constants/groupConstants";
 
 /**
@@ -39,6 +44,9 @@ function IndividualGroupScreen() {
     const [alertMessage, setAlertMessage] = useState("");
     const [alertVariant, setAlertVariant] = useState("");
     const [showInviteUserPopup, setShowInviteUserPopup] = useState(false);
+    const [showUpdateNamePopup, setShowUpdateNamePopup] = useState(false);
+    const [showNewUserPopup, setShowNewUserPopup] = useState(false);
+
     // group id
     const { id } = useParams();
     const navigate = useNavigate();
@@ -59,12 +67,16 @@ function IndividualGroupScreen() {
     const groupNameUpdate = useSelector((state) => state.groupNameUpdate);
     const { success: groupNameUpdateSuccess } = groupNameUpdate;
 
-    const [showUpdateNamePopup, setShowUpdateNamePopup] = useState(false);
+    // new user in group
+    const groupNewUserInvitation = useSelector(
+        (state) => state.groupNewUserInvitation
+    );
+    const { newUserInvitation } = groupNewUserInvitation;
 
+    // update name popup
     const openShowUpdateNamePopup = () => {
         setShowUpdateNamePopup(true);
     };
-
     const closeShowUpdateNamePopup = () => {
         setShowUpdateNamePopup(false);
     };
@@ -73,10 +85,17 @@ function IndividualGroupScreen() {
     const openInviteUserPopup = () => {
         setShowInviteUserPopup(true);
     };
-
     // Function to close the inviting users popup
     const closeInviteUserPopup = () => {
         setShowInviteUserPopup(false);
+    };
+
+    // new user popup
+    const openNewUserPopup = () => {
+        setShowNewUserPopup(true);
+    };
+    const closeNewUserPopup = () => {
+        setShowNewUserPopup(false);
     };
 
     const handleShowAlert = useCallback((message, variant) => {
@@ -126,8 +145,19 @@ function IndividualGroupScreen() {
     }, [dispatch, handleShowAlert, groupNameUpdateSuccess]);
 
     useEffect(() => {
+        if (newUserInvitation && newUserInvitation.hasAcceptedInvitation) {
+            openNewUserPopup();
+            dispatch({ type: GROUP_USER_NEW_NVITATION_RESET });
+        }
+    }, [dispatch, newUserInvitation]);
+
+    useEffect(() => {
         dispatch(getGroupDetails(id));
     }, [dispatch, id, groupNameUpdateSuccess]);
+
+    useEffect(() => {
+        dispatch(getGroupNewUserInvitation(id));
+    }, [dispatch, id]);
 
     return (
         <div className="route-container screen-container">
@@ -199,6 +229,11 @@ function IndividualGroupScreen() {
             <InviteUsersPopup
                 show={showInviteUserPopup}
                 onClose={closeInviteUserPopup}
+                groupId={id}
+            />
+            <NewUserInGroupPopup
+                show={showNewUserPopup}
+                onClose={closeNewUserPopup}
                 groupId={id}
             />
             {showAlert && (

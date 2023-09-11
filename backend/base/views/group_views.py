@@ -586,14 +586,17 @@ def getSimplifiedDebt(request, group_id):
 @permission_classes([IsAuthenticated])
 def updateExpensesForNewUser(request, group_id):
     '''
-    This function can only be called if the expense is originally Evenly Split because 
-    it will set all the user's for the expense to have the same amount
+    Adds the new user to the already existing expenses of the group
 
-    request data: key="expense_details" is an array of expense_ids found in group(group_id) 
-    that wish to be updated to include the new_user in the payment
+    request data: key="add_new_user_to_all_evenly_split_expenses" is a bool that decides if the user
+    wants to add themselves to all the expenses that are labeled as evenly split
+
+    if false: the user will be added to all expenses with 0
+    if true: the user will be added to all expenses as 0 but the expenses labeled as evenly split will have
+    a new calculated amount with the new user added to the details
 
     {
-        "expense_ids": [15,14]
+        "add_new_user_to_all_evenly_split_expenses": True
     }
     '''
     try:
@@ -603,33 +606,32 @@ def updateExpensesForNewUser(request, group_id):
         if new_user not in group.members.all():
             return Response({"error": f"User with ID {request.user.id} is not a member of this group"}, status=status.HTTP_400_BAD_REQUEST)
 
-        '''
-        check the invitiation to the group
-        - if no invitation exists
-            - thats means that the user is trying again after using this api
-            - can only use this api once after a user joins a group for the first time
-            - return 
-        - otherwise
-            - can continue to code to create new data
-            - delete the invitation
-        '''
+        # Check if the user has an invitation to the group
+        # If no invitation exists, return an error
+        invitation = GroupInvitation.objects.filter(
+            group=group, invitee=new_user).first()
+        if not invitation:
+            return Response({"error": f"No invitation found for user with ID {new_user.id} in group {group_id}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Delete the invitation since it's being used
+        invitation.delete()
 
         # add user to all expenses with a value of 0
-        expenses = Expense.objects.filter(group=group)
-
+        expenses = Expense.objects.filter(group=group, isTypeSettle=False)
         for expense in expenses:
             ExpenseDetail.objects.create(
                 expense=expense, user=new_user, amount_owed=0)
 
-        # update expenses for ids specified
-        expense_ids = request.data.get('expense_ids', [])
-        for expense_id in expense_ids:
-            expense = Expense.objects.get(id=expense_id, group=group)
-
-            expense_details = ExpenseDetail.objects.filter(expense=expense)
-            amount = expense.amount / len(expense_details)
-            # update amount_owed for all users in expense (this includes the new user)
-            expense_details.update(amount_owed=amount)
+        # Check if the request specifies adding the new user to all evenly split expenses
+        add_new_user_to_all_evenly_split_expenses = request.data.get(
+            'addNewUserToAllEvenlySplitExpenses', False)
+        if add_new_user_to_all_evenly_split_expenses:
+            expenses = Expense.objects.filter(group=group, isEvenlySplit=True)
+            for expense in expenses:
+                expense_details = ExpenseDetail.objects.filter(expense=expense)
+                amount = expense.amount / len(expense_details)
+                # update amount_owed for all users in expense (this includes the new user)
+                expense_details.update(amount_owed=amount)
 
         return Response({"message": f"User with ID {new_user.id} added to group {group_id}'s expenses"}, status=status.HTTP_201_CREATED)
 
@@ -821,3 +823,19 @@ def searchUsersToInvite(request, group_id):
 
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def hasAcceptedInvitation(request, group_id):
+    '''
+    checks if there exist an 'accepted' invitation to the group
+    returns bool
+    '''
+    user = request.user
+
+    # Check if the user has an accepted invitation to the group
+    invitation_exists = GroupInvitation.objects.filter(
+        group_id=group_id, invitee=user, accepted=True).exists()
+
+    return Response({"hasAcceptedInvitation": invitation_exists}, status=status.HTTP_200_OK)

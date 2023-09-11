@@ -14,6 +14,7 @@ import {
     GROUP_EXPENSES_DELETE_RESET,
     GROUP_SETTLE_CREATE_RESET,
     GROUP_EXPENSES_DETAILS_UPDATE_RESET,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_RESET,
 } from "../../constants/groupConstants";
 
 function ExpenseList({ groupDetails }) {
@@ -57,6 +58,12 @@ function ExpenseList({ groupDetails }) {
     // group expense created
     const groupExpenseCreate = useSelector((state) => state.groupExpenseCreate);
     const { success: groupExpenseCreateSuccess } = groupExpenseCreate;
+    // new user added to expenses
+    const groupNewUserAddToExistingExpenses = useSelector(
+        (state) => state.groupNewUserAddToExistingExpenses
+    );
+    const { success: groupNewUserAddToExistingExpensesSuccess } =
+        groupNewUserAddToExistingExpenses;
 
     // Function to toggle the visibility of the ExpenseDetailPopup
     const openExpensePopup = (expense) => {
@@ -143,6 +150,19 @@ function ExpenseList({ groupDetails }) {
         }
     }, [dispatch, handleShowAlert, groupExpenseDeleteSuccess]);
 
+    // new user added to expenses
+    useEffect(() => {
+        if (groupNewUserAddToExistingExpensesSuccess) {
+            handleShowAlert("Decision applied to expenses", "success");
+            dispatch({ type: GROUP_USER_NEW_ADD_TO_EXPENSES_RESET });
+        } else if (groupNewUserAddToExistingExpensesSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to apply decision to expenses",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, groupNewUserAddToExistingExpensesSuccess]);
+
     useEffect(() => {
         dispatch(getGroupExpenses(id, currentPage, itemsPerPage));
     }, [
@@ -154,6 +174,7 @@ function ExpenseList({ groupDetails }) {
         groupExpenseCreateSuccess,
         groupExpenseDetailUpdateSuccess,
         groupExpenseDeleteSuccess,
+        groupNewUserAddToExistingExpensesSuccess,
     ]);
 
     return (

@@ -9,89 +9,6 @@ import SettlePopup from "../IndividualGroupScreenComponents/SettlePopup";
 import { getUserCredits, getUserDebts } from "../../actions/userActions";
 import { GROUP_SETTLE_CREATE_RESET } from "../../constants/groupConstants";
 
-// const creditsData = [
-//     {
-//         id: 11,
-//         name: "david",
-//         email: "david@email.com",
-//         total_amount: 703.32,
-//         credits_group_breakdown: [
-//             {
-//                 amount: 100.0,
-//                 group_id: 7,
-//                 group_name: "second",
-//             },
-//             {
-//                 amount: 603.32,
-//                 group_id: 6,
-//                 group_name: "another group ",
-//             },
-//         ],
-//     },
-//     {
-//         id: 10,
-//         name: "charlie",
-//         email: "charlie@email.com",
-//         total_amount: 286.36,
-//         credits_group_breakdown: [
-//             {
-//                 amount: 286.36,
-//                 group_id: 6,
-//                 group_name: "another group ",
-//             },
-//         ],
-//     },
-// ];
-// const creditsData = [];
-
-// const debtsData = [
-//     {
-//         id: 1,
-//         name: "Jeus",
-//         email: "jeus@email.com",
-//         total_amount: 286.36,
-//         debts_group_breakdown: [
-//             {
-//                 amount: 286.36,
-//                 group_id: 6,
-//                 group_name: "another group ",
-//             },
-//             {
-//                 amount: 100.0,
-//                 group_id: 7,
-//                 group_name: "second",
-//             },
-//         ],
-//     },
-//     {
-//         id: 3,
-//         name: "tim",
-//         email: "tim@email.com",
-//         total_amount: 124.96,
-//         debts_group_breakdown: [
-//             {
-//                 amount: 124.96,
-//                 group_id: 6,
-//                 group_name: "another group ",
-//             },
-//         ],
-//     },
-// ];
-
-// const debtsData = [];
-
-/**
- *
- * create action and reducers to get data of creditsData and debtsData
- * /api/users/credit and /api/users/debt respectively <<<<<<<
- *
- * Then when successful, watch for the state(which I have commented out
- * and throw a successful alert message)
- *
- * once alert message finished, RESET the redux constant
- *
- */
-
 const FriendsCreditDebt = () => {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
@@ -173,7 +90,7 @@ const FriendsCreditDebt = () => {
     return (
         <div className="owe-component-container">
             {/* Left Box - Users you owe */}
-            <Row className="owe-container ">
+            <Row className="owe-container">
                 <Col md={6} className="p-0">
                     <div className="left-container">
                         <div className="text-center">
@@ -184,7 +101,7 @@ const FriendsCreditDebt = () => {
                         ) : userDebtsError ? (
                             <Message variant="danger">{userDebtsError}</Message>
                         ) : userDebt.length === 0 ? (
-                            <div>No one owes you money</div>
+                            <div>You don't owe anyone money</div>
                         ) : (
                             <Accordion className="m-0">
                                 {userDebt.map((user) => (
@@ -255,7 +172,7 @@ const FriendsCreditDebt = () => {
                                 {userCreditsError}
                             </Message>
                         ) : userCredit.length === 0 ? (
-                            <div>You don't owe anyone</div>
+                            <div>No one owes you money</div>
                         ) : (
                             <Accordion>
                                 {userCredit.map((user) => (

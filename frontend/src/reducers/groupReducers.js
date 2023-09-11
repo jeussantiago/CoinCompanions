@@ -54,6 +54,14 @@ import {
     GROUP_INVITE_ACCEPT_SUCCESS,
     GROUP_INVITE_ACCEPT_FAIL,
     GROUP_INVITE_ACCEPT_RESET,
+    GROUP_USER_NEW_INVITATION_REQUEST,
+    GROUP_USER_NEW_NVITATION_SUCCESS,
+    GROUP_USER_NEW_NVITATION_FAIL,
+    GROUP_USER_NEW_NVITATION_RESET,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_REQUEST,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_SUCCESS,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_FAIL,
+    GROUP_USER_NEW_ADD_TO_EXPENSES_RESET,
 } from "../constants/groupConstants";
 
 export const groupInviteDeclineReducer = (state = {}, action) => {
@@ -328,6 +336,50 @@ export const groupInviteAcceptReducer = (state = {}, action) => {
             return { loading: false, error: action.payload, success: false };
 
         case GROUP_INVITE_ACCEPT_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupNewUserInvitationReducer = (
+    state = { newUserInvitation: {} },
+    action
+) => {
+    switch (action.type) {
+        case GROUP_USER_NEW_INVITATION_REQUEST:
+            return { loading: true, newUserInvitation: {} };
+
+        case GROUP_USER_NEW_NVITATION_SUCCESS:
+            return { loading: false, newUserInvitation: action.payload };
+
+        case GROUP_USER_NEW_NVITATION_FAIL:
+            return { loading: false, error: action.payload };
+
+        case GROUP_USER_NEW_NVITATION_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupNewUserAddToExistingExpensesReducer = (
+    state = {},
+    action
+) => {
+    switch (action.type) {
+        case GROUP_USER_NEW_ADD_TO_EXPENSES_REQUEST:
+            return { loading: true };
+
+        case GROUP_USER_NEW_ADD_TO_EXPENSES_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_USER_NEW_ADD_TO_EXPENSES_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case GROUP_USER_NEW_ADD_TO_EXPENSES_RESET:
             return {};
 
         default:

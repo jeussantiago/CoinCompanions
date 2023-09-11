@@ -29,7 +29,6 @@ function PendingInvitesPopup({ show, onClose }) {
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertVariant, setAlertVariant] = useState("");
-
     const [activeTab, setActiveTab] = useState("pendingFriendRequests");
 
     // list of user's pending friend request
@@ -142,6 +141,7 @@ function PendingInvitesPopup({ show, onClose }) {
         if (groupInviteAcceptSuccess) {
             handleShowAlert("Accepted group invite", "success");
             dispatch({ type: GROUP_INVITE_ACCEPT_RESET });
+            // OPEN MODAL TO ASK USER TO ADDED TO EXPENSES
         } else if (groupInviteAcceptSuccess === false) {
             handleShowAlert(
                 "Error occurred while trying to accept group invite",

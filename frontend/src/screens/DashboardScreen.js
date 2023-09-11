@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 
 import "../styles/screens/DashboardScreen.css";
 import PendingInvitesPopup from "../components/DashboardScreenComponents/PendingInvitesPopup";
+import FriendsSummary from "../components/DashboardScreenComponents/FriendsSummary";
 
 function DashboardScreen() {
     const navigate = useNavigate();
@@ -39,6 +40,7 @@ function DashboardScreen() {
                     Pending Invites
                 </Button>
             </div>
+            <FriendsSummary />
             <PendingInvitesPopup
                 show={showPendingInvitesPopup}
                 onClose={closePendingInvitesPopup}
