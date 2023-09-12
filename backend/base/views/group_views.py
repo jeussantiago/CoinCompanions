@@ -633,6 +633,8 @@ def updateExpensesForNewUser(request, group_id):
                 # update amount_owed for all users in expense (this includes the new user)
                 expense_details.update(amount_owed=amount)
 
+        calculateSimplifiedDebts(group)
+
         return Response({"message": f"User with ID {new_user.id} added to group {group_id}'s expenses"}, status=status.HTTP_201_CREATED)
 
     except Group.DoesNotExist:

@@ -115,7 +115,10 @@ const FriendsCreditDebt = () => {
                                                 <div className="px-3">
                                                     Total Amount:{" "}
                                                     <span className="text-secondary">
-                                                        ${user.total_amount}
+                                                        $
+                                                        {user.total_amount.toFixed(
+                                                            2
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
@@ -133,7 +136,10 @@ const FriendsCreditDebt = () => {
                                                         <div>
                                                             Amount:{" "}
                                                             <span className="text-secondary">
-                                                                ${debt.amount}
+                                                                $
+                                                                {debt.amount.toFixed(
+                                                                    2
+                                                                )}
                                                             </span>
                                                             <Button
                                                                 className="btn btn-secondary"
@@ -186,7 +192,10 @@ const FriendsCreditDebt = () => {
                                                 <div className="px-3">
                                                     Total Amount:{" "}
                                                     <span className="text-primary">
-                                                        ${user.total_amount}
+                                                        $
+                                                        {user.total_amount.toFixed(
+                                                            2
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
@@ -204,7 +213,10 @@ const FriendsCreditDebt = () => {
                                                         <div>
                                                             Amount:{" "}
                                                             <span className="text-primary">
-                                                                ${credit.amount}
+                                                                $
+                                                                {credit.amount.toFixed(
+                                                                    2
+                                                                )}
                                                             </span>
                                                         </div>
                                                     </div>

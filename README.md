@@ -217,8 +217,19 @@ Frontend
 -   [x] fixed user friend search bug for users who originally dont have any friends
 
 -   [x] if its the first time a user visits a group, and they already have expense, create a popup for them to select what expenses to add themselves to. Or maybe just give them a prompt if they want to be added to all expenses that are typisTypeSettle=false (type: expense) and isEvenlySplit=true
+
     -   would need to slightly rework api to account for this since we don't need a list anymore and we would just be changing everything
+
+-   [x] dahsboard: friends owe
+-   [x] dashboard: groups owe
+-   [x] dashboard: total owe
+-   [x] notificastion indicator for pending invites
+-   [x] BUG: when someone gets added to the group, it does not recalculating the debt
+-   [x] BUG: when you go into groupList. The users that are not part of an group or if no group they are part of has no expenses, GroupList.js throws a bug when it cant read total_credit (can try Ema)
+
+-   [ ] create a button to delete a group. Only the user who created the group can delete the group (not sure if I have the creator noted in the models. Might have to add that in.)
 -   [ ] user profile update (only allowed to udpate info if not user_id 1 or guest_user_id)
+-   [ ] Format friends screen
 
 ---
 

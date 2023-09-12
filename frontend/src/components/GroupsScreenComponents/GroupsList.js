@@ -62,6 +62,8 @@ function GroupsList() {
         dispatch(getUsersGroupsTotalCreditDebit());
     }, [dispatch, groupCreateSuccess]);
 
+    console.log(userGroupsTotalCreditDebit);
+
     return (
         <div>
             {groupListLoading || userGroupsTotalCreditDebitLoading ? (
@@ -174,13 +176,18 @@ function GroupsList() {
                                                                             {userGroupsTotalCreditDebit[
                                                                                 group
                                                                                     .id
+                                                                            ] &&
+                                                                            userGroupsTotalCreditDebit[
+                                                                                group
+                                                                                    .id
                                                                             ]
                                                                                 .total_credit
                                                                                 ? userGroupsTotalCreditDebit[
                                                                                       group
                                                                                           .id
-                                                                                  ]
-                                                                                      .total_credit
+                                                                                  ].total_credit.toFixed(
+                                                                                      2
+                                                                                  )
                                                                                 : 0}
                                                                         </strong>
                                                                     </div>
@@ -204,13 +211,18 @@ function GroupsList() {
                                                                             {userGroupsTotalCreditDebit[
                                                                                 group
                                                                                     .id
+                                                                            ] &&
+                                                                            userGroupsTotalCreditDebit[
+                                                                                group
+                                                                                    .id
                                                                             ]
                                                                                 .total_debt
                                                                                 ? userGroupsTotalCreditDebit[
                                                                                       group
                                                                                           .id
-                                                                                  ]
-                                                                                      .total_debt
+                                                                                  ].total_debt.toFixed(
+                                                                                      2
+                                                                                  )
                                                                                 : 0}
                                                                         </strong>
                                                                     </div>
