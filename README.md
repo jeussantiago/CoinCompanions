@@ -105,7 +105,7 @@ Frontend
 -   [x] can accept or decline group
 
     -   [x] decline deletes group invitation
-    -   [ ] accept takes user to another page where they will select which expenses to add themselves into
+    -   [x] accept takes user to another page where they will select which expenses to add themselves into
         -   User can only add themselves into expenses that are specified to be evenly distributted
             (reason: if an expense is manually calculated, we can assume that a user spent time to figure out how much each person owes whether it be through raw data or by percentages)
 
@@ -129,9 +129,9 @@ Frontend
 
 Frontend
 
--   [ ] user profile - user name, email - can't see password
--   [ ] update user name, email, and password (password wont be shown but will leave a textfield for it)
--   [ ] conditional to not be able to update the guest users information (will have red text if the current user == 1(guest user), no updates will process -> something like "Guest users cannot update existing information")
+-   [x] user profile - user name, email - can't see password
+-   [x] update user name, email, and password (password wont be shown but will leave a textfield for it)
+-   [x] conditional to not be able to update the guest users information (will have red text if the current user == 1(guest user), no updates will process -> something like "Guest users cannot update existing information")
 
 #### Settle Up
 
@@ -178,7 +178,6 @@ Frontend
 
 -   [x] Dahsboard Screen > Pending notifications functionality: accept group invitation
 -   [x] Friends Screen > Friend Options functionality: add friend to group
--   [ ] figure out to generally reroute the user if they are not logged in
 -   [x] Friends Screen: add columns to see how how much people owe you and how much you owe people
 
 -   [x] Group Screens
@@ -189,7 +188,7 @@ Frontend
 -   [x] modify expenses
 -   [x] add a feature to evenly split expense
 -   [x] settle up
--   [ ] if new user joins group and there are already expenses then add user to all expenses (dont add user to settle up expenses - method to stop this is probably add a "isEvenlyDistributed" key in model. Can only add self to entries that are evenly distributed)
+-   [x] if new user joins group and there are already expenses then add user to all expenses (dont add user to settle up expenses - method to stop this is probably add a "isEvenlyDistributed" key in model. Can only add self to entries that are evenly distributed)
 
 -   [x] add isEvenlySplit to update expense API
 -   [x] add isEvenlySplit to create expense API
@@ -227,9 +226,18 @@ Frontend
 -   [x] BUG: when someone gets added to the group, it does not recalculating the debt
 -   [x] BUG: when you go into groupList. The users that are not part of an group or if no group they are part of has no expenses, GroupList.js throws a bug when it cant read total_credit (can try Ema)
 
--   [ ] create a button to delete a group. Only the user who created the group can delete the group (not sure if I have the creator noted in the models. Might have to add that in.)
--   [ ] user profile update (only allowed to udpate info if not user_id 1 or guest_user_id)
--   [ ] Format friends screen
+-   [x] user profile update (only allowed to udpate info if not user_id 1/staff user - can call it 'guest user')
+-   [x] create a button to delete a group. Only the creator of the group can delete the group (not sure if I have the creator noted in the models. Might have to add that in.)
+-   [x] Format friends screen
+-   [x] format rest of app
+-   [x] add env variables for guest login
+
+-   [ ] reroute the user if they aren't logged in for all screens except homescreen
+-   [ ] remove unused variables
+-   [ ] google login (if decide not to add, remove button from frontend or just have the button login using guest account)
+-   [ ] google registration
+-   [ ] paypal payment
+-   [ ] add charts to individuals groups page (if don't add, remove box that exist there)
 
 ---
 

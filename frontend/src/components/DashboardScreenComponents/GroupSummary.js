@@ -81,7 +81,7 @@ function GroupSummary() {
         <div className="dashboard-section-container">
             <h4>Groups Summary</h4>
             <Row className="dashboard-section-box-container">
-                <Col md={6} className="dashboard-section-box-container-col">
+                <Col md={6} className="dashboard-section-box-container-col ">
                     <div>
                         <h6>Groups you owe</h6>
                     </div>
@@ -93,7 +93,9 @@ function GroupSummary() {
                                 {userGroupsTotalCreditDebitError}
                             </Message>
                         ) : userDebtList.length === 0 ? (
-                            <div>You don't owe any group money</div>
+                            <h6 className="py-3 text-center">
+                                You don't owe any group money
+                            </h6>
                         ) : (
                             <div className="m-0">
                                 {userDebtList
@@ -131,9 +133,11 @@ function GroupSummary() {
                                 {userGroupsTotalCreditDebitError}
                             </Message>
                         ) : userCreditList.length === 0 ? (
-                            <div>No group owes you</div>
+                            <h6 className="py-3 text-center">
+                                No group owes you
+                            </h6>
                         ) : (
-                            <div className="m-0">
+                            <div className="m-0 ">
                                 {userCreditList
                                     .slice(
                                         0,

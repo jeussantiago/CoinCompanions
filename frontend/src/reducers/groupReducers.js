@@ -62,6 +62,10 @@ import {
     GROUP_USER_NEW_ADD_TO_EXPENSES_SUCCESS,
     GROUP_USER_NEW_ADD_TO_EXPENSES_FAIL,
     GROUP_USER_NEW_ADD_TO_EXPENSES_RESET,
+    GROUP_DELETE_REQUEST,
+    GROUP_DELETE_SUCCESS,
+    GROUP_DELETE_FAIL,
+    GROUP_DELETE_RESET,
 } from "../constants/groupConstants";
 
 export const groupInviteDeclineReducer = (state = {}, action) => {
@@ -380,6 +384,25 @@ export const groupNewUserAddToExistingExpensesReducer = (
             return { loading: false, error: action.payload, success: false };
 
         case GROUP_USER_NEW_ADD_TO_EXPENSES_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};
+
+export const groupDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_DELETE_REQUEST:
+            return { loading: true };
+
+        case GROUP_DELETE_SUCCESS:
+            return { loading: false, success: true };
+
+        case GROUP_DELETE_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case GROUP_DELETE_RESET:
             return {};
 
         default:

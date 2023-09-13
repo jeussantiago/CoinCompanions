@@ -51,6 +51,9 @@ import {
     GROUP_USER_NEW_ADD_TO_EXPENSES_REQUEST,
     GROUP_USER_NEW_ADD_TO_EXPENSES_SUCCESS,
     GROUP_USER_NEW_ADD_TO_EXPENSES_FAIL,
+    GROUP_DELETE_REQUEST,
+    GROUP_DELETE_SUCCESS,
+    GROUP_DELETE_FAIL,
 } from "../constants/groupConstants";
 
 export const deleteGroupInvite = (id) => async (dispatch, getState) => {
@@ -609,3 +612,32 @@ export const addNewUserToGroupExpenses =
             });
         }
     };
+
+export const deleteGroup = (groupId) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: GROUP_DELETE_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.delete(`/api/groups/${groupId}/delete/`, config);
+
+        dispatch({ type: GROUP_DELETE_SUCCESS });
+    } catch (err) {
+        dispatch({
+            type: GROUP_DELETE_FAIL,
+            payload:
+                err.response && err.response.data.detail
+                    ? err.response.data.detail
+                    : err.message,
+        });
+    }
+};

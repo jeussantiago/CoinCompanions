@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -33,6 +33,16 @@ function LoginForm({ toggleHomeComponentOnRight }) {
         });
     };
 
+    const handleGuestLogin = (e) => {
+        e.preventDefault();
+        dispatch(
+            login(
+                process.env.REACT_APP_GUEST_EMAIL,
+                process.env.REACT_APP_GUEST_PASS
+            )
+        );
+    };
+
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(form.email, form.password));
@@ -43,23 +53,28 @@ function LoginForm({ toggleHomeComponentOnRight }) {
             <div>
                 <img src={logo} alt="Logo" className="home-screen-logo-image" />
             </div>
-            <div className="login-registration-header">
+            <div className="login-registration-header text-dark-emphasis">
                 <h1>Welcome!</h1>
                 Don't have an account yet?{" "}
                 <span
                     onClick={toggleHomeComponentOnRight}
-                    className="move-home-box-link fw-bolder border-bottom border-dark"
+                    className="move-home-box-link text-dark fw-bolder border-bottom border-dark"
                 >
                     Register
                 </span>
             </div>
             <div className="other-sign-in-options-container">
+                <p className="text-center text-dark-emphasis">
+                    Don't feel like creating a new account? Try out our app with
+                    a guest account
+                </p>
                 <Button
                     type="submit"
-                    variant="light"
+                    variant="dark"
+                    onClick={handleGuestLogin}
                     className="w-100 rounded-pill mt-2 fw-bold"
                 >
-                    Google
+                    Guest login
                 </Button>
             </div>
             <div className="separator-container">
@@ -117,16 +132,6 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                 <Row className="py-3">
                     <Col>{loading && <h3>Loading ...</h3>}</Col>
                 </Row>
-            </div>
-
-            <div className="guest-account-conntainer">
-                <p>
-                    Don't feel like creating a new account? Sign in with our
-                    guest account to try the app:
-                </p>
-                <p>
-                    E: jeus@email.com <br /> P: hellofresh
-                </p>
             </div>
         </div>
     );

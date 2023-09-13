@@ -71,6 +71,12 @@ def updateUserProfile(request):
     :return: newly updated user data with new token auth
     """
     user = request.user
+
+    # This project doesn't allow staff accounts to update their data so that users who want to
+    # try out the project can just use a staff account
+    if user.is_staff:
+        return Response({"error": "Staff members are not allowed to update their profiles."}, status=status.HTTP_403_FORBIDDEN)
+
     # since the data has changed, you want to get a new auth token
     serializer = UserSerializerWithToken(user, many=False)
 

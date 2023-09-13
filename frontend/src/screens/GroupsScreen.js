@@ -28,10 +28,10 @@ function GroupsScreen() {
     };
 
     return (
-        <div className="route-container screen-container">
+        <div className="route-container screen-container py-4">
             <Row>
-                <div className="d-flex flex-row justify-content-between align-items-center">
-                    <h1>Groups</h1>
+                <div className="d-flex flex-row justify-content-between align-items-center mb-3">
+                    <h3>Groups</h3>
                     <Button onClick={openCreateGroupPopup}>Create Group</Button>
                 </div>
                 <Row className="p-0 m-0">

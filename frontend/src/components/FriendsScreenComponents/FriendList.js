@@ -78,12 +78,14 @@ function FriendList() {
     }, [dispatch, userFriendDeleteSuccess]);
 
     return (
-        <div>
-            <div className="d-flex flex-row justify-content-between align-items-center">
-                <h3>Friends List</h3>
+        <div className="">
+            <div className="d-flex flex-column mb-4 text-center">
+                <h3 className="mb-3">Friends List</h3>
 
-                <div>
-                    <Button onClick={openSearchFriendPopup}>Add friend</Button>
+                <div className="d-flex flex-row">
+                    <Button onClick={openSearchFriendPopup} className="w-100">
+                        Add friend
+                    </Button>
                 </div>
             </div>
             <div className="friend-list-container">
@@ -101,10 +103,8 @@ function FriendList() {
                                 .map((friend) => (
                                     <Col
                                         key={friend.id}
-                                        sm={6}
-                                        md={4}
-                                        lr={3}
-                                        xl={3}
+                                        sm={4}
+                                        md={12}
                                         className="friend-list-friend-box-container"
                                     >
                                         <div className="friend-list-friend-box rounded-pill mb-1">

@@ -179,6 +179,7 @@ function ExpenseList({ groupDetails }) {
 
     return (
         <div className="expense-list">
+            <h4>Expenses</h4>
             <Row>
                 <Button onClick={openCreateExpensePopup}>Add Expense</Button>
             </Row>
@@ -190,7 +191,7 @@ function ExpenseList({ groupDetails }) {
             ) : groupExpensesList &&
               groupExpensesList.expenses &&
               groupExpensesList.expenses.length === 0 ? (
-                <p>No expenses</p>
+                <h4 className="py-5 text-center">No expenses</h4>
             ) : (
                 <div className="">
                     <Row className="d-flex flex-row justify-content-center py-3">

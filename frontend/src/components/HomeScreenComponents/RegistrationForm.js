@@ -48,29 +48,29 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
 
     return (
         <div className="d-flex flex-column justify-content-center align-items-center ">
-            <div className="login-registration-header">
+            <div className="login-registration-header text-dark-emphasis mb-3">
                 <h1>Join Us!</h1>
                 Already have an account?{" "}
                 <span
                     onClick={toggleHomeComponentOnRight}
-                    className="move-home-box-link fw-bolder border-bottom border-dark"
+                    className="move-home-box-link text-dark fw-bolder border-bottom border-dark"
                 >
                     Sign In
                 </span>
             </div>
-            <div className="other-sign-in-options-container">
+            {/* <div className="other-sign-in-options-container">
                 <Button
                     type="submit"
-                    variant="light"
+                    variant="dark"
                     className="w-100 rounded-pill mt-2 fw-bold"
                 >
                     Google
                 </Button>
-            </div>
+            </div> */}
             <div className="separator-container">
                 <div className="line left-line"></div>
-                <div className="text">Or sign up with</div>
-                <div className="line right-line"></div>
+                {/* <div className="text">Or sign up with</div>
+                <div className="line right-line"></div> */}
             </div>
             <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">

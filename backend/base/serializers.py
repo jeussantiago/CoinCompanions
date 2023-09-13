@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name']
+        fields = ['id', 'username', 'email', 'name', 'is_staff']
 
     def get_name(self, obj):
         name = obj.first_name
@@ -24,7 +24,7 @@ class UserSerializerWithToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'name', 'token']
+        fields = ['id', 'username', 'email', 'name', 'is_staff', 'token']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
@@ -66,6 +66,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class GroupSerializerForGetUserGroupsView(serializers.ModelSerializer):
     most_recent_expense = serializers.SerializerMethodField()
+    # creator = UserSerializer(many=False)
 
     class Meta:
         model = Group

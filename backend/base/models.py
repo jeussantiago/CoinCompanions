@@ -20,6 +20,7 @@ class UserFriends(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=255)
     members = models.ManyToManyField(User, related_name='group_members')
+    creator = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
 
     def __str__(self):
         return self.name

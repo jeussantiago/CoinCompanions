@@ -16,6 +16,7 @@ import {
     userCreditsReducer,
     userDebtsReducer,
     userFriendNotMemberGroupSearchReducer,
+    userUpdateProfileReducer,
 } from "./reducers/userReducers";
 import {
     groupInviteDeclineReducer,
@@ -35,6 +36,7 @@ import {
     groupInviteAcceptReducer,
     groupNewUserInvitationReducer,
     groupNewUserAddToExistingExpensesReducer,
+    groupDeleteReducer,
 } from "./reducers/groupReducers";
 
 const reducer = combineReducers({
@@ -51,6 +53,7 @@ const reducer = combineReducers({
     userCredits: userCreditsReducer,
     userDebts: userDebtsReducer,
     userFriendNotMemberGroupSearch: userFriendNotMemberGroupSearchReducer,
+    userUpdateProfile: userUpdateProfileReducer,
 
     groupInviteDecline: groupInviteDeclineReducer,
     groupInviteAccept: groupInviteAcceptReducer,
@@ -69,6 +72,7 @@ const reducer = combineReducers({
     groupUserSearchToInvite: groupUserSearchToInviteReducer,
     groupNewUserInvitation: groupNewUserInvitationReducer,
     groupNewUserAddToExistingExpenses: groupNewUserAddToExistingExpensesReducer,
+    groupDelete: groupDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

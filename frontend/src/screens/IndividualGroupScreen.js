@@ -21,23 +21,6 @@ import {
     GROUP_USER_NEW_NVITATION_RESET,
 } from "../constants/groupConstants";
 
-/**
- *
- * Expense Edit <<<<<<<
- *      able to see how much each person paid
- *      decide to split it by:
- *          - raw numbers
- *          - percentage
- *          - evenly split
- * - [ ] add a feature to evenly split expense
- *
- * RIGHT SIDE:
- * list all the users and their debt to each person or how much they are owed from certain people
- *
- * search bar to invite other users to group
- *
- *
- */
 function IndividualGroupScreen() {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
@@ -160,7 +143,7 @@ function IndividualGroupScreen() {
     }, [dispatch, id]);
 
     return (
-        <div className="route-container screen-container">
+        <div className="route-container screen-container  py-4">
             <div>
                 {groupDetailsLoading ? (
                     <div>Loading...</div>

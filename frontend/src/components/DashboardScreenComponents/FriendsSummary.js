@@ -49,7 +49,9 @@ function FriendsSummary() {
                         ) : userDebtsError ? (
                             <Message variant="danger">{userDebtsError}</Message>
                         ) : userDebt.length === 0 ? (
-                            <div>You don't owe anyone money</div>
+                            <h6 className="py-3 text-center">
+                                You don't owe anyone money
+                            </h6>
                         ) : (
                             <div className="m-0">
                                 {userDebt
@@ -85,7 +87,9 @@ function FriendsSummary() {
                                 {userCreditsError}
                             </Message>
                         ) : userCredit.length === 0 ? (
-                            <div>No one owes you</div>
+                            <h6 className="py-3 text-center">
+                                No one owes you
+                            </h6>
                         ) : (
                             <div className="m-0">
                                 {userCredit

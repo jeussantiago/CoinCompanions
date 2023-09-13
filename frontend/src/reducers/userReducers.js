@@ -42,6 +42,10 @@ import {
     USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_REQUEST,
     USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_SUCCESS,
     USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL,
+    USER_PROFILE_UPDATE_REQUEST,
+    USER_PROFILE_UPDATE_SUCCESS,
+    USER_PROFILE_UPDATE_FAIL,
+    USER_PROFILE_UPDATE_RESET,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -279,6 +283,25 @@ export const userFriendNotMemberGroupSearchReducer = (
 
         case USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL:
             return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+};
+
+export const userUpdateProfileReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_PROFILE_UPDATE_REQUEST:
+            return { loading: true };
+
+        case USER_PROFILE_UPDATE_SUCCESS:
+            return { loading: false, success: true };
+
+        case USER_PROFILE_UPDATE_FAIL:
+            return { loading: false, error: action.payload, success: false };
+
+        case USER_PROFILE_UPDATE_RESET:
+            return {};
 
         default:
             return state;

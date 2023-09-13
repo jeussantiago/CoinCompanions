@@ -37,7 +37,7 @@ def createGroup(request):
     if not group_name:
         return Response({"error": "Group name is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-    group = Group.objects.create(name=group_name)
+    group = Group.objects.create(name=group_name, creator=request.user)
     group.members.add(request.user)
 
     serializer = GroupSerializer(group)
@@ -841,3 +841,20 @@ def hasAcceptedInvitation(request, group_id):
         group_id=group_id, invitee=user, accepted=True).exists()
 
     return Response({"hasAcceptedInvitation": invitation_exists}, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def deleteGroup(request, group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return Response({'error': 'Group not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Check if the user making the request is the creator of the group
+    if request.user != group.creator:
+        return Response({'error': 'You do not have permission to delete this group'}, status=status.HTTP_403_FORBIDDEN)
+
+    # Proceed with deleting the group
+    group.delete()
+    return Response({'message': 'Group deleted successfully'}, status=status.HTTP_204_NO_CONTENT)

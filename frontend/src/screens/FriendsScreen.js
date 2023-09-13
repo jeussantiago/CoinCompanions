@@ -1,6 +1,6 @@
 import React from "react";
 // import { useDispatch, useSelector } from "react-redux";
-// import { Col, Row, Button, Container } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 import "../styles/screens/FriendsScreen.css";
 // import Message from "../components/Message";
@@ -34,12 +34,15 @@ import FriendsCreditDebt from "../components/FriendsScreenComponents/FriendsCred
 
 function FriendsScreen() {
     return (
-        <div className="route-container screen-container d-flex flex-column">
-            {/* <div>who owes</div> */}
-            <FriendsCreditDebt />
-            <FriendList />
-            {/* <div className="flex-grow-1">
-            </div> */}
+        <div className="route-container screen-container d-flex flex-column py-4">
+            <Row>
+                <Col>
+                    <FriendsCreditDebt />
+                </Col>
+                <Col sm={12} md={3}>
+                    <FriendList />
+                </Col>
+            </Row>
         </div>
     );
 }

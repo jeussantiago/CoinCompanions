@@ -11,6 +11,7 @@ urlpatterns = [
     path('invitations/<int:invitation_id>/decline/',
          views.declineGroupInvitation, name='decline-group-invitation'),
 
+    path('<int:group_id>/delete/', views.deleteGroup, name='delete_group'),
     path('<int:group_id>/has-accepted-invitation/',
          views.hasAcceptedInvitation, name='has-accepted-invitation'),
     path('<int:group_id>/user-search/', views.searchUsersToInvite,

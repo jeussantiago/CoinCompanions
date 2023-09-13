@@ -88,10 +88,13 @@ const FriendsCreditDebt = () => {
     }, [dispatch, groupSettleCreateSuccess]);
 
     return (
-        <div className="owe-component-container">
+        <div className="owe-component-container ">
+            <div className="d-flex flex-column mb-2 ">
+                <h3>Friends Payment Breakdown</h3>
+            </div>
             {/* Left Box - Users you owe */}
-            <Row className="owe-container">
-                <Col md={6} className="p-0">
+            <Row className="owe-container w-100">
+                <Col md={12} lg={6} className="p-0 ">
                     <div className="left-container">
                         <div className="text-center">
                             <h5 className="text-secondary">Users you owe</h5>
@@ -101,7 +104,9 @@ const FriendsCreditDebt = () => {
                         ) : userDebtsError ? (
                             <Message variant="danger">{userDebtsError}</Message>
                         ) : userDebt.length === 0 ? (
-                            <div>You don't owe anyone money</div>
+                            <h5 className="py-3 text-center">
+                                You don't owe anyone money
+                            </h5>
                         ) : (
                             <Accordion className="m-0">
                                 {userDebt.map((user) => (
@@ -166,7 +171,7 @@ const FriendsCreditDebt = () => {
                 </Col>
 
                 {/* Right Box - Users owe you */}
-                <Col md={6} className="p-0">
+                <Col md={12} lg={6} className="p-0">
                     <div className="right-container">
                         <div className="text-center">
                             <h5 className="text-primary">Users owe you</h5>
@@ -178,9 +183,11 @@ const FriendsCreditDebt = () => {
                                 {userCreditsError}
                             </Message>
                         ) : userCredit.length === 0 ? (
-                            <div>No one owes you money</div>
+                            <h5 className="py-3 text-center">
+                                No one owes you money
+                            </h5>
                         ) : (
-                            <Accordion>
+                            <Accordion className="">
                                 {userCredit.map((user) => (
                                     <Accordion.Item
                                         key={user.id}

@@ -40,6 +40,9 @@ import {
     USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_REQUEST,
     USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_SUCCESS,
     USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL,
+    USER_PROFILE_UPDATE_REQUEST,
+    USER_PROFILE_UPDATE_SUCCESS,
+    USER_PROFILE_UPDATE_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -454,6 +457,43 @@ export const getUserFriendNotMemberGroupSearch =
         } catch (err) {
             dispatch({
                 type: USER_FRIEND_NOT_MEMBER_GROUP_SEARCH_FAIL,
+                payload:
+                    err.response && err.response.data.detail
+                        ? err.response.data.detail
+                        : err.message,
+            });
+        }
+    };
+
+export const updateUserProfile =
+    (newProfileData) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: USER_PROFILE_UPDATE_REQUEST });
+
+            const {
+                userLogin: { userInfo },
+            } = getState();
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+
+            const { data } = await axios.put(
+                `/api/users/profile/update/`,
+                newProfileData,
+                config
+            );
+
+            dispatch({ type: USER_PROFILE_UPDATE_SUCCESS });
+            // new user data, need to update states
+            dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+            localStorage.setItem("userInfo", JSON.stringify(data));
+        } catch (err) {
+            dispatch({
+                type: USER_PROFILE_UPDATE_FAIL,
                 payload:
                     err.response && err.response.data.detail
                         ? err.response.data.detail

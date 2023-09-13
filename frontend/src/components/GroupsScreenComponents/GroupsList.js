@@ -1,20 +1,36 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import "../../styles/screens/GroupsScreens.css";
 import AlertMessage from "../AlertMessage";
-import { GROUP_CREATE_RESET } from "../../constants/groupConstants";
+import Message from "../Message";
+import DeleteGroupConfirmationPopup from "./DeleteGroupConfirmationPopup";
+import {
+    GROUP_CREATE_RESET,
+    GROUP_DELETE_RESET,
+} from "../../constants/groupConstants";
 import { getGroupsList } from "../../actions/groupActions";
 import { getUsersGroupsTotalCreditDebit } from "../../actions/userActions";
-import Message from "../Message";
 
+/**
+ * Delete group button is not directly within Link because it conflicts with
+ * the attributes of Link. So we made it look its position was there
+ *
+ */
 function GroupsList() {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertVariant, setAlertVariant] = useState("");
+    const [showDeleteGroupConfirmation, setShowDeleteGroupConfirmation] =
+        useState(false);
+    const [seletectedGroupId, setSelectedGroupId] = useState(null);
+    const [selectedGroupName, setSelectedGroupName] = useState(null);
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
     const groupLists = useSelector((state) => state.groupLists);
     const {
@@ -22,7 +38,6 @@ function GroupsList() {
         loading: groupListLoading,
         groupList,
     } = groupLists;
-
     const usersGroupsTotalDebtCredit = useSelector(
         (state) => state.usersGroupsTotalDebtCredit
     );
@@ -36,6 +51,22 @@ function GroupsList() {
     const groupCreate = useSelector((state) => state.groupCreate);
     const { success: groupCreateSuccess } = groupCreate;
 
+    // delete group
+    const groupDelete = useSelector((state) => state.groupDelete);
+    const { success: groupDeleteSuccess } = groupDelete;
+
+    const openDeletegroupConfirmationPopup = (groupId, groupName) => {
+        setSelectedGroupId(groupId);
+        setSelectedGroupName(groupName);
+        setShowDeleteGroupConfirmation(true);
+    };
+
+    const closeDeletegroupConfirmationPopup = () => {
+        setShowDeleteGroupConfirmation(false);
+        setSelectedGroupId(null);
+        setSelectedGroupName(null);
+    };
+
     const handleShowAlert = useCallback((message, variant) => {
         setAlertMessage(message);
         setAlertVariant(variant);
@@ -45,6 +76,7 @@ function GroupsList() {
         }, 3000);
     }, []);
 
+    // group create
     useEffect(() => {
         if (groupCreateSuccess) {
             handleShowAlert("Created new group", "success");
@@ -56,13 +88,23 @@ function GroupsList() {
             );
         }
     }, [dispatch, handleShowAlert, groupCreateSuccess]);
+    //group delete
+    useEffect(() => {
+        if (groupDeleteSuccess) {
+            handleShowAlert("Deleted group", "success");
+            dispatch({ type: GROUP_DELETE_RESET });
+        } else if (groupDeleteSuccess === false) {
+            handleShowAlert(
+                "Error occurred while trying to delete group",
+                "danger"
+            );
+        }
+    }, [dispatch, handleShowAlert, groupDeleteSuccess]);
 
     useEffect(() => {
         dispatch(getGroupsList());
         dispatch(getUsersGroupsTotalCreditDebit());
-    }, [dispatch, groupCreateSuccess]);
-
-    console.log(userGroupsTotalCreditDebit);
+    }, [dispatch, groupCreateSuccess, groupDeleteSuccess]);
 
     return (
         <div>
@@ -79,7 +121,7 @@ function GroupsList() {
             ) : (
                 <div>
                     {groupList.map((group) => (
-                        <div className="" key={group.id}>
+                        <div className="group-container" key={group.id}>
                             <Link
                                 to={`/groups/${group.id}`}
                                 className="text-decoration-none"
@@ -89,15 +131,19 @@ function GroupsList() {
                                     style={{ cursor: "pointer" }}
                                 >
                                     <Card.Body>
-                                        <h3 className="text-capitalize mb-3">
-                                            {group.name}
-                                        </h3>
+                                        <div className="d-flex flex-row justify-content-between align-items-center ">
+                                            <div>
+                                                <h3 className="text-capitalize mb-3">
+                                                    {group.name}
+                                                </h3>
+                                            </div>
+                                        </div>
                                         <div className="card-body-most-recent-expense">
                                             <Row>
                                                 <Col md={8} className="">
                                                     {group.most_recent_expense
                                                         .length === 0 ? (
-                                                        <div className="mb-2">
+                                                        <div className="mb-3">
                                                             No expenses yet
                                                         </div>
                                                     ) : (
@@ -156,7 +202,10 @@ function GroupsList() {
                                                 </Col>
                                                 {group.most_recent_expense
                                                     .length !== 0 ? (
-                                                    <Col md={4} className="">
+                                                    <Col
+                                                        md={4}
+                                                        className="mt-0 mt-md-4"
+                                                    >
                                                         <Row>
                                                             <Col
                                                                 sm={6}
@@ -241,9 +290,30 @@ function GroupsList() {
                                     </Card.Body>
                                 </Card>
                             </Link>
+                            {userInfo && userInfo.id === group.creator && (
+                                <Button
+                                    onClick={() =>
+                                        openDeletegroupConfirmationPopup(
+                                            group.id,
+                                            group.name
+                                        )
+                                    }
+                                    className="delete-button bg-secondary border-secondary"
+                                >
+                                    <i className="fa-solid fa-trash-can"></i>
+                                </Button>
+                            )}
                         </div>
                     ))}
                 </div>
+            )}
+            {selectedGroupName && seletectedGroupId && (
+                <DeleteGroupConfirmationPopup
+                    show={showDeleteGroupConfirmation}
+                    onClose={closeDeletegroupConfirmationPopup}
+                    groupName={selectedGroupName}
+                    groupId={seletectedGroupId}
+                />
             )}
             {showAlert && (
                 <AlertMessage message={alertMessage} variant={alertVariant} />
