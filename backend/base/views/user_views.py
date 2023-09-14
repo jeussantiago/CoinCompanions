@@ -10,6 +10,11 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from collections import defaultdict
 
+# from google.oauth2 import id_token
+# from google.auth.transport import requests as google_requests
+# from rest_framework.authtoken.models import Token
+# pip install google-auth google-auth-oauthlib google-auth-httplib2
+
 from base.serializers import UserSerializer, UserSerializerWithToken, FriendRequestSerializer, GroupSerializer, DebtSerializer, ExpenseSerializer, GroupSerializerForGetUserGroupsView
 from django.contrib.auth.models import User
 from base.models import FriendRequest, UserFriends, Group, Debt, Expense
@@ -56,8 +61,45 @@ def registerUser(request):
 
     except:
         # matching emails, can't create object if email/username already exists
-        message = {'detail': 'User with this email already exists'}
+        message = {'message': 'User with this email already exists'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['POST'])
+# def google_login(request):
+#     '''
+#     uses token authentication rather than JWT atuhentication
+#     '''
+
+#     # Receive the ID token from the frontend
+#     id_token_from_frontend = request.data.get('idToken')
+
+#     try:
+#         # Verify the Google ID token
+#         id_info = id_token.verify_oauth2_token(
+#             id_token_from_frontend, google_requests.Request())
+
+#         # Extract user data from the verified token
+#         user_data = {
+#             "first_name": id_info.get("name"),
+#             "email": id_info.get("email"),
+#         }
+
+#         # Check if a user with the given email exists in your database
+#         user, created = User.objects.get_or_create(email=user_data['email'])
+
+#         # new user
+#         if created:
+#             user.name = user_data['name']
+#             user.username = user_data['email']
+#             user.set_unusable_password()  # Set an unusable password for token auth
+#             user.save()
+
+#         serializer = UserSerializer(user)
+#         return Response(serializer.data)
+
+#     except ValueError as e:
+#         return Response({'message': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])

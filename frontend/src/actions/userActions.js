@@ -80,6 +80,40 @@ export const login = (email, password) => async (dispatch) => {
     }
 };
 
+// export const googleLogin =
+//     ({ tokenId }) =>
+//     async (dispatch) => {
+//         try {
+//             dispatch({ type: USER_LOGIN_REQUEST });
+
+//             const config = {
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//             };
+
+//             // Perform the Google Login and obtain the token here
+//             const response = await axios.post(
+//                 "/api/users/google-login",
+//                 { idToken: tokenId },
+//                 config
+//             ); /* Your Google Login API Call Here */
+
+//             // Assuming the response contains user data, set it in Redux
+//             dispatch({ type: USER_LOGIN_SUCCESS, payload: response.data });
+
+//             localStorage.setItem("userInfo", JSON.stringify(response.data));
+//         } catch (err) {
+//             dispatch({
+//                 type: USER_LOGIN_FAIL,
+//                 payload:
+//                     err.response && err.response.data.detail
+//                         ? err.response.data.detail
+//                         : err.message,
+//             });
+//         }
+//     };
+
 export const logout = () => (dispatch) => {
     localStorage.removeItem("userInfo");
     dispatch({ type: USER_LOGOUT });

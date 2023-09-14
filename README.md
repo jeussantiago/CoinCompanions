@@ -239,6 +239,13 @@ Frontend
 -   [ ] paypal payment
 -   [ ] add charts to individuals groups page (if don't add, remove box that exist there)
 
+-   added totken authentication to settings.py -> REST_FRAMEWORK
+-   [ ] pip install google auth in user_views at the top
+-   npm install react-google-login
+-   pip install google-auth google-auth-oauthlib google-auth-httplib2
+-   create project in google projects api
+-   add CLIENT_ID to env file
+
 ---
 
 # Simplify Debt Algorithm Implementation

@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.getUsers, name='allusers'),
     path('login', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('register', views.registerUser, name='register'),
+    #     path('google-login', views.google_login, name='google_login'),
     path('profile/', views.getUserProfile, name='users-profile'),
     path('groups/', views.getUserGroups, name='user-groups'),
     path('debt/', views.getUserDebt, name='owed-amount'),
