@@ -241,7 +241,7 @@ Frontend
 
 -   added totken authentication to settings.py -> REST_FRAMEWORK
 -   [ ] pip install google auth in user_views at the top
--   npm install react-google-login
+-   npm install react-google-login gapi-script
 -   pip install google-auth google-auth-oauthlib google-auth-httplib2
 -   create project in google projects api
 -   add CLIENT_ID to env file
