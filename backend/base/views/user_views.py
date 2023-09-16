@@ -10,11 +10,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from collections import defaultdict
 
-# from google.oauth2 import id_token
-# from google.auth.transport import requests as google_requests
-# from rest_framework.authtoken.models import Token
-# pip install google-auth google-auth-oauthlib google-auth-httplib2
-
 from base.serializers import UserSerializer, UserSerializerWithToken, FriendRequestSerializer, GroupSerializer, DebtSerializer, ExpenseSerializer, GroupSerializerForGetUserGroupsView
 from django.contrib.auth.models import User
 from base.models import FriendRequest, UserFriends, Group, Debt, Expense
@@ -215,13 +210,6 @@ def getUsers(request):
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
-
-# @api_view(['GET'])
-# def firstAPI(request):
-#     # trips = Trip.objects.all()
-#     # serializer = TripSerializer(trips, many=True)
-#     # return Response(serializer.data)
-#     return Response('hello there')
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

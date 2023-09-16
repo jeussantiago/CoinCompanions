@@ -14,11 +14,6 @@ import {
 import { getGroupsList } from "../../actions/groupActions";
 import { getUsersGroupsTotalCreditDebit } from "../../actions/userActions";
 
-/**
- * Delete group button is not directly within Link because it conflicts with
- * the attributes of Link. So we made it look its position was there
- *
- */
 function GroupsList() {
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
@@ -290,6 +285,7 @@ function GroupsList() {
                                     </Card.Body>
                                 </Card>
                             </Link>
+                            {/* Delete group button is not directly within Link because it conflicts with the attributes of Link. So we made it look like its position was there */}
                             {userInfo && userInfo.id === group.creator && (
                                 <Button
                                     onClick={() =>

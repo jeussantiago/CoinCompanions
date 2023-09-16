@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 import { deleteGroup } from "../../actions/groupActions";

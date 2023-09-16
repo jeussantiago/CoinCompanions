@@ -6,7 +6,6 @@
 
 /* Welcome information */
 .login-registration-header {
-    /* margin-bottom: 50px; */
     text-align: center;
 }
 
@@ -33,15 +32,15 @@
 }
 
 .left-line {
-    margin-right: 10px; /* Space between line and text */
+    margin-right: 10px;
 }
 
 .right-line {
-    margin-left: 10px; /* Space between line and text */
+    margin-left: 10px;
 }
 
 .text {
-    padding: 0 10px; /* Space between text and lines */
+    padding: 0 10px;
 }
 
 /* Form*/
@@ -50,7 +49,6 @@
     margin: 10px 0;
     width: 70%;
     max-width: 400px;
-    /* border: 3px solid red; */
 }
 
 .move-home-box-link {
@@ -69,7 +67,6 @@
 /* Error */
 
 .login-registration-form .message {
-    /* padding-bottom: 50px; */
     width: 100%;
     border-radius: 21px;
     padding: 8px 0;

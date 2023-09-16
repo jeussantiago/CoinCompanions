@@ -9,6 +9,7 @@ import GroupsScreen from "./screens/GroupsScreen";
 import IndividualGroupScreen from "./screens/IndividualGroupScreen";
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import NotFoundRoute from "./screens/NotFoundRoute";
 
 function App() {
     const userLogin = useSelector((state) => state.userLogin);
@@ -47,6 +48,7 @@ function App() {
                             element={<SettingsScreen />}
                             exact
                         />
+                        <Route path="*" element={<NotFoundRoute />} />
                     </Routes>
                 </main>
             </div>

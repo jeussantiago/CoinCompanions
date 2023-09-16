@@ -3,18 +3,6 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addNewUserToGroupExpenses } from "../../actions/groupActions";
 
-/**
- * when you enter the individualGrup Screen, call api to check if user has an invitation to the group, with accepted=bool
- * not having one means false
- *
- * call api with action. call reducer.
- * if True, open popup modal
- *
- * modal calling api will delete the the invitation so shouldnt be an issue
- * if accept: pass into action group_id and True
- * if decline: pass into action group_id and False
- */
-
 function NewUserInGroupPopup({ show, onClose, groupId }) {
     const dispatch = useDispatch();
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -58,19 +58,8 @@ function RegistrationForm({ toggleHomeComponentOnRight }) {
                     Sign In
                 </span>
             </div>
-            {/* <div className="other-sign-in-options-container">
-                <Button
-                    type="submit"
-                    variant="dark"
-                    className="w-100 rounded-pill mt-2 fw-bold"
-                >
-                    Google
-                </Button>
-            </div> */}
             <div className="separator-container">
                 <div className="line left-line"></div>
-                {/* <div className="text">Or sign up with</div>
-                <div className="line right-line"></div> */}
             </div>
             <div className="login-registration-form">
                 <Form onSubmit={submitHandler} id="login-form">

@@ -1,22 +1,13 @@
-/* .card-body-most-recent-expense {
-    border-left: 1px solid grey; */
-/* padding-left: 50px;
-} */
 /* ---------------- GroupList.js ------------------ */
 
 .card-body-most-recent-expense li {
-    /* border: 1px solid green; */
-    /* padding-left: 25px; */
     list-style: none;
-    /* padding-bottom: 10px; */
 }
 
 .list-wrapper {
     position: relative;
-    /* border: 1px solid green; */
 }
 .list-item-wrapper {
-    /* margin-top: 10px; */
     position: relative;
 }
 .list-bullet {
@@ -37,7 +28,6 @@
     display: table-row;
     vertical-align: middle;
     margin-left: 10px;
-    /* border: 1px solid green; */
 }
 .list-title {
     margin-bottom: 10px;
@@ -68,7 +58,6 @@
     border-radius: 10px;
     height: 100%;
     max-width: 300px;
-    /* padding: 8px 16px; */
 }
 
 .group-container {
@@ -138,9 +127,9 @@
 }
 
 .disabled {
-    background-color: #f2f2f2; /* Light grey background */
-    color: #999; /* Grey text color */
-    pointer-events: none; /* Disable pointer events */
+    background-color: #f2f2f2;
+    color: #999;
+    pointer-events: none;
     border: 4px solid #f2f2f2;
     border-radius: 10px;
 }

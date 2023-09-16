@@ -226,9 +226,6 @@ def createExpense(request, group_id):
         if len(expense_details) == 0:
             return Response({"error": "At least one user must be specified in expense_details"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if total amount == amount user payed
-        # total_amount_owed = 0
-
         for detail in expense_details:
             user_id = detail.get('user')
             amount_owed = detail.get('amount_owed')
@@ -243,13 +240,7 @@ def createExpense(request, group_id):
             except User.DoesNotExist:
                 return Response({"error": f"User with ID {user_id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-            # total_amount_owed += amount_owed
-
-        # if total_amount_owed != amount:
-        #     return Response({"error": "Total amount_owed must equal the expense amount"}, status=status.HTTP_400_BAD_REQUEST)
-
         # Data safe to manipulate
-
         # Create the expense
         expense_data = {
             'group': group,
@@ -329,9 +320,6 @@ def updateExpense(request, group_id, expense_id):
         # Update associated expense details
         expense_details = request.data.get('expense_details', [])
 
-        # Check if the data is safe
-        # total_amount_owed = 0
-
         for detail in expense_details:
             user_id = detail.get('user')
 
@@ -339,17 +327,12 @@ def updateExpense(request, group_id, expense_id):
             if amount_owed is None:
                 return Response({"error": "Amount owed is required for each expense detail"}, status=status.HTTP_400_BAD_REQUEST)
 
-            # total_amount_owed += amount_owed
-
             try:
                 user = User.objects.get(id=user_id)
                 if user not in group.members.all():
                     return Response({"error": f"User with ID {user_id} is not a member of this group"}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 return Response({"error": f"User with ID {user_id} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        # if total_amount_owed != new_amount:
-        #     return Response({"error": "Total amount owed must equal the expense amount"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Data safe now to save update
         expense.save()
@@ -475,11 +458,6 @@ def calculateSimplifiedDebtsWithNetBalances(balances):
         # Calculate the settlement amount
         settlement_amount = min(-debt_amount, credit_amount)
 
-        # Update balances - used to see the net balance of the users, but doesn't affect
-        # actual values in algorithm
-        # balances[debtor] += settlement_amount
-        # balances[creditor] -= settlement_amount
-
         # Append the transaction to the debt list
         transaction = {
             "creditor": {
@@ -503,7 +481,6 @@ def calculateSimplifiedDebtsWithNetBalances(balances):
         else:
             sorted_balances[right] = (creditor, new_credit_balance)
 
-    # print(balances)
     return transactions
 
 

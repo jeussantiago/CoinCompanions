@@ -7,7 +7,6 @@ import { login } from "../../actions/userActions";
 import Message from "../Message";
 import logo from "../../images/small-logo.png";
 import "../../styles/components/LoginRegistrationForm.css";
-import GoogleLoginButton from "./GoogleLoginButton";
 
 function LoginForm({ toggleHomeComponentOnRight }) {
     const navigate = useNavigate();
@@ -69,7 +68,6 @@ function LoginForm({ toggleHomeComponentOnRight }) {
                     Don't feel like creating a new account? Try out our app with
                     a guest account
                 </p>
-                <GoogleLoginButton />
                 <Button
                     type="submit"
                     variant="dark"

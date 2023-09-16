@@ -110,7 +110,6 @@ function CreateExpensePopup({ show, onClose, groupDetails }) {
     };
 
     const handleClose = () => {
-        // dispatch({ type: GROUP_EXPENSES_CREATE_RESET });
         onClose();
     };
 
@@ -123,22 +122,8 @@ function CreateExpensePopup({ show, onClose, groupDetails }) {
         }, 3000);
     }, []);
 
-    // useEffect(() => {
-    //     if (groupExpenseCreateSuccess) {
-    //         // tells ExpenseList.js to update the list
-    //         handleExpenseCreate();
-    //         handleShowAlert("Successfully created expense", "success");
-    //     } else if (groupExpenseCreateSuccess === false) {
-    //         handleShowAlert(
-    //             "Error occurred while trying to create success",
-    //             "danger"
-    //         );
-    //     }
-    // }, [groupExpenseCreateSuccess, handleShowAlert, handleExpenseCreate]);
-
     useEffect(() => {
         // reset the values if a user creates an expense
-
         // Initialize userAmounts with initial data from members
         const initialUserAmounts = {};
         members.forEach((user) => {

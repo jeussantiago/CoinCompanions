@@ -119,7 +119,6 @@ function ExpenseDetailPopup({ show, onClose, expense }) {
     };
 
     const handleClose = () => {
-        // dispatch({ type: GROUP_EXPENSES_DETAILS_UPDATE_RESET });
         onClose();
     };
 

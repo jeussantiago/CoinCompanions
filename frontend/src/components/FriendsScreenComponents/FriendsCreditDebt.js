@@ -18,9 +18,6 @@ const FriendsCreditDebt = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedGroupId, setSelectedGroupId] = useState(null);
 
-    // console.log(selectedUser);
-    // console.log(selectedGroupId);
-
     // User's total credit breakdown
     const userCredits = useSelector((state) => state.userCredits);
     const {

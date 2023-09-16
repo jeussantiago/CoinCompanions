@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
-// import AlertMessage from "../AlertMessage";
-// import { GROUP_CREATE_RESET } from "../../constants/groupConstants";
 import { createGroup } from "../../actions/groupActions";
 
 function CreateGroupPopup({ show, onClose }) {

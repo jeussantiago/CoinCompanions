@@ -22,6 +22,9 @@ import {
 } from "../constants/groupConstants";
 
 function IndividualGroupScreen() {
+    // group id
+    const { id } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
@@ -29,10 +32,6 @@ function IndividualGroupScreen() {
     const [showInviteUserPopup, setShowInviteUserPopup] = useState(false);
     const [showUpdateNamePopup, setShowUpdateNamePopup] = useState(false);
     const [showNewUserPopup, setShowNewUserPopup] = useState(false);
-
-    // group id
-    const { id } = useParams();
-    const navigate = useNavigate();
 
     // get the current user details
     const userLogin = useSelector((state) => state.userLogin);
@@ -93,7 +92,7 @@ function IndividualGroupScreen() {
     // NAVIGATE THE USER AWAY IF THEY ARE NOT PART OF THIS GROUP
     useEffect(() => {
         // finished getting data and group id doesn't exist
-        //user not a member
+        // user not a member
         if (
             !groupDetailsLoading &&
             (groupDetailsError ||
@@ -142,87 +141,96 @@ function IndividualGroupScreen() {
         dispatch(getGroupNewUserInvitation(id));
     }, [dispatch, id]);
 
+    useEffect(() => {
+        if (!userInfo) {
+            navigate("/");
+        }
+    }, [navigate, userInfo]);
+
     return (
-        <div className="route-container screen-container  py-4">
-            <div>
-                {groupDetailsLoading ? (
-                    <div>Loading...</div>
-                ) : groupDetailsError ? (
-                    <Message variant="danger">{groupDetailsError}</Message>
-                ) : (
-                    groupDetail && (
-                        <div>
-                            <div className="group-name-container">
-                                <div className="d-flex flex-row justify-content-between align-items-center ">
-                                    <div className="d-flex flex-row">
-                                        <div
-                                            className="clickable"
-                                            onClick={openShowUpdateNamePopup}
-                                        >
-                                            <h1 className="pr-2">
-                                                {groupDetail.name}
-                                            </h1>
+        userInfo && (
+            <div className="route-container screen-container  py-4">
+                <div>
+                    {groupDetailsLoading ? (
+                        <div>Loading...</div>
+                    ) : groupDetailsError ? (
+                        <Message variant="danger">{groupDetailsError}</Message>
+                    ) : (
+                        groupDetail && (
+                            <div>
+                                <div className="group-name-container mb-4">
+                                    <div className="d-flex flex-row justify-content-between align-items-center ">
+                                        <div className="d-flex flex-row">
+                                            <div
+                                                className="clickable"
+                                                onClick={
+                                                    openShowUpdateNamePopup
+                                                }
+                                            >
+                                                <h1 className="pr-2">
+                                                    {groupDetail.name}
+                                                </h1>
+                                            </div>
+                                            <div
+                                                className="clickable"
+                                                onClick={
+                                                    openShowUpdateNamePopup
+                                                }
+                                            >
+                                                <i className="fa-solid fa-pen-to-square"></i>
+                                            </div>
                                         </div>
-                                        <div
-                                            className="clickable"
-                                            onClick={openShowUpdateNamePopup}
+                                        <Button
+                                            onClick={() =>
+                                                openInviteUserPopup()
+                                            }
                                         >
-                                            <i className="fa-solid fa-pen-to-square"></i>
-                                        </div>
+                                            Invite User
+                                        </Button>
                                     </div>
-                                    <Button
-                                        onClick={() => openInviteUserPopup()}
-                                    >
-                                        Invite User
-                                    </Button>
+                                    <UpdateNamePopup
+                                        show={showUpdateNamePopup}
+                                        onClose={closeShowUpdateNamePopup}
+                                        currentGroupName={groupDetail.name}
+                                        groupId={id}
+                                    />
                                 </div>
-                                <UpdateNamePopup
-                                    show={showUpdateNamePopup}
-                                    onClose={closeShowUpdateNamePopup}
-                                    currentGroupName={groupDetail.name}
-                                    groupId={id}
-                                />
+                                <div className="group-body">
+                                    <Row>
+                                        <Col md={12} lg={9} className="">
+                                            <ExpenseList
+                                                groupDetails={groupDetail}
+                                            />
+                                        </Col>
+                                        <Col md={12} lg={3} className="">
+                                            <GroupCreditDebt
+                                                groupDetails={groupDetail}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </div>
                             </div>
-                            <div className="group-body">
-                                <Row className="mb-4">
-                                    <Col
-                                        md={12}
-                                        className="border border-primary"
-                                    >
-                                        charts
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={12} lg={9} className="">
-                                        <ExpenseList
-                                            groupDetails={groupDetail}
-                                        />
-                                    </Col>
-                                    <Col md={12} lg={3} className="">
-                                        <GroupCreditDebt
-                                            groupDetails={groupDetail}
-                                        />
-                                    </Col>
-                                </Row>
-                            </div>
-                        </div>
-                    )
+                        )
+                    )}
+                </div>
+                <InviteUsersPopup
+                    show={showInviteUserPopup}
+                    onClose={closeInviteUserPopup}
+                    groupId={id}
+                />
+                <NewUserInGroupPopup
+                    show={showNewUserPopup}
+                    onClose={closeNewUserPopup}
+                    groupId={id}
+                />
+                {showAlert && (
+                    <AlertMessage
+                        message={alertMessage}
+                        variant={alertVariant}
+                    />
                 )}
             </div>
-            <InviteUsersPopup
-                show={showInviteUserPopup}
-                onClose={closeInviteUserPopup}
-                groupId={id}
-            />
-            <NewUserInGroupPopup
-                show={showNewUserPopup}
-                onClose={closeNewUserPopup}
-                groupId={id}
-            />
-            {showAlert && (
-                <AlertMessage message={alertMessage} variant={alertVariant} />
-            )}
-        </div>
+        )
     );
 }
 

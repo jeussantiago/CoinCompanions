@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +49,6 @@ function SideBar() {
     }, []);
 
     const logoutHandler = () => {
-        // console.log("loggin out");
         dispatch(logout());
         navigate("/");
     };

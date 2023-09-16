@@ -1,9 +1,6 @@
-/* ------------- FriendsScreen.js ------------------ */
-
 /* ------------- FriendList.js ------------------ */
 
 .friend-list-container {
-    /* border: 1px solid black; */
     padding: 12px 24px;
     background-color: white;
     border-radius: 16px;
@@ -17,30 +14,25 @@
 }
 
 .friend-list-friend-box {
-    /* border: 1px solid black; */
     padding: 3px 5px;
     background-color: white;
     border: 1px solid #78c2ad;
     color: black;
 }
 .friend-box-name {
-    /* border: 1px solid red; */
     font-size: 18px;
     text-transform: capitalize;
     margin-left: 10px;
 }
 
 .friend-option-button-container {
-    /* border: 1px solid red; */
     margin-right: 12px;
 }
 .friend-option-button {
-    /* border: 1px solid blue; */
     cursor: pointer;
 }
 .view-all-button {
     cursor: pointer;
-    /* border: 1px solid blue; */
     padding: 6px 4px;
     font-size: 14px;
     color: grey;
@@ -49,7 +41,7 @@
 /* ------------- searchFriendPopup.js ------------------ */
 
 .search-results-container {
-    max-height: 200px; /* Adjust as needed */
+    max-height: 200px;
     overflow-y: scroll;
 }
 
@@ -58,7 +50,6 @@
 .owe-container {
     padding: 20px 10px;
     margin-bottom: 12px;
-    /* border: 0.3px solid #c6c6c6; */
     border-radius: 5px;
     box-shadow: 0 1px 2px #c6c6c6;
     background-color: white;
@@ -75,21 +66,10 @@
 .left-container .btn {
     margin-left: 10px;
     padding: 4px 8px;
-    /* height: 50%; */
     font-size: 12px;
 }
 
-/* ------------- smaller sizes------------------ */
-/* @media (max-width: 1200px) {
-    .friends-screen-container {
-        min-width: 70vw;
-    }
-} */
-
 @media (max-width: 992px) {
-    /* .friends-screen-container {
-        min-width: 55vw;
-    } */
     .left-container {
         border-right: none;
         padding-right: 0px;

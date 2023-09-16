@@ -25,15 +25,11 @@ Backend
 -   [x] JWT atuhorization
 -   [x] user registration backend
 -   [x] user login backend
--   [ ] google registration
--   [ ] google login
 
 Frontend
 
 -   [x] user registration
--   [ ] google registration
 -   [x] user login
--   [ ] google login
 -   [x] user logout
 
 #### USER FRIENDS
@@ -135,10 +131,6 @@ Frontend
 
 #### Settle Up
 
--   [ ] add Paypal authorization
--   [ ] save paypal linked to user account if authenticated
--   [ ] add paypal send from one person to another
-
 ## BUILD:
 
 -   add friends
@@ -232,19 +224,14 @@ Frontend
 -   [x] format rest of app
 -   [x] add env variables for guest login
 
--   [ ] reroute the user if they aren't logged in for all screens except homescreen
--   [ ] remove unused variables
--   [ ] google login (if decide not to add, remove button from frontend or just have the button login using guest account)
--   [ ] google registration
--   [ ] paypal payment
--   [ ] add charts to individuals groups page (if don't add, remove box that exist there)
+-   [x] reroute the user if they aren't logged in for all screens except homescreen
+-   [x] for all other pages that dont have content, put a 404 image and a back button to the dashboard
+-   [x] remove unused variables (frontend)
+-   [x] remove unused variables (backend)
 
--   added totken authentication to settings.py -> REST_FRAMEWORK
--   [ ] pip install google auth in user_views at the top
--   npm install react-google-login gapi-script
--   pip install google-auth google-auth-oauthlib google-auth-httplib2
--   create project in google projects api
--   add CLIENT_ID to env file
+-   [ ] combine front end and backend so that backend uses front end files
+-   [ ] setup AWS RDS (database)
+-   [ ] setup AWS S3 buckets to store static files/images
 
 ---
 

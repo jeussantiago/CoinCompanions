@@ -37,7 +37,6 @@ function InviteUsersPopup({ show, onClose, groupId }) {
     };
 
     const handleInviteToGroup = (userInviteId) => {
-        // console.log("invitng to group", groupId, "user:", userInviteId);
         dispatch(sendGroupInvite(groupId, userInviteId));
     };
 

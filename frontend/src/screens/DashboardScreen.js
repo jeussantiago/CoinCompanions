@@ -46,28 +46,30 @@ function DashboardScreen() {
     }, [navigate, userInfo]);
 
     return (
-        <div className="route-container screen-container py-4">
-            <div className="d-flex flex-row justify-content-between align-items-center mb-3">
-                <h1>Hello, {userInfo.name}</h1>
-                <Button onClick={openPendingInvitesPopup}>
-                    {((groupRequestList && groupRequestList.length > 0) ||
-                        (friendRequestList &&
-                            friendRequestList.length > 0)) && (
-                        <span className="notification-red-dot text-secondary me-1">
-                            <i className="fa-solid fa-circle-exclamation"></i>
-                        </span>
-                    )}
-                    Pending Invites
-                </Button>
+        userInfo && (
+            <div className="route-container screen-container py-4">
+                <div className="d-flex flex-row justify-content-between align-items-center mb-3">
+                    <h1>Hello, {userInfo.name}</h1>
+                    <Button onClick={openPendingInvitesPopup}>
+                        {((groupRequestList && groupRequestList.length > 0) ||
+                            (friendRequestList &&
+                                friendRequestList.length > 0)) && (
+                            <span className="notification-red-dot text-secondary me-1">
+                                <i className="fa-solid fa-circle-exclamation"></i>
+                            </span>
+                        )}
+                        Pending Invites
+                    </Button>
+                </div>
+                <TotalSummary />
+                <FriendsSummary />
+                <GroupSummary />
+                <PendingInvitesPopup
+                    show={showPendingInvitesPopup}
+                    onClose={closePendingInvitesPopup}
+                />
             </div>
-            <TotalSummary />
-            <FriendsSummary />
-            <GroupSummary />
-            <PendingInvitesPopup
-                show={showPendingInvitesPopup}
-                onClose={closePendingInvitesPopup}
-            />
-        </div>
+        )
     );
 }
 

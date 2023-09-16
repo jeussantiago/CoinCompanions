@@ -1,17 +1,10 @@
 // GoogleLoginButton.js
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-// import { googleLogin } from "../../actions/userActions";
+import React from "react";
 import { Button } from "react-bootstrap";
-// dispatch(googleLogin(response.profileObj.tokenId))
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-// console.log("client_id: ", CLIENT_ID);
 function GoogleLoginButton() {
     // Your Google API Client ID
-
-    // const userLogin = useSelector((state) => state.userLogin);
-    // const { userInfo } = userLogin;
 
     window.onload = () => {
         // Load and initialize gapi
@@ -41,14 +34,6 @@ function GoogleLoginButton() {
             });
     };
 
-    // const onSignIn = (googleUser) => {
-    //     var profile = googleUser.getBasicProfile();
-    //     console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    //     console.log("Name: " + profile.getName());
-    //     console.log("Image URL: " + profile.getImageUrl());
-    //     console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
-    // };
-
     return (
         <div>
             <Button
@@ -59,9 +44,6 @@ function GoogleLoginButton() {
             >
                 Google
             </Button>
-            {/* <div className="g-signin2" data-onsuccess={onSignIn}>
-                google sign in from site
-            </div> */}
         </div>
     );
 }

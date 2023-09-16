@@ -1,18 +1,7 @@
 body {
-    /* margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; */
     background-color: #f6f8fe;
     color: black;
 }
-
-/* code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
-}  */
 
 .message {
     padding-bottom: 5px;
@@ -21,7 +10,6 @@ body {
 }
 
 .main-content {
-    /* flex-grow: 1; */
     overflow-y: auto;
 }
 
@@ -30,11 +18,24 @@ body {
 }
 
 .screen-container {
-    /* border: 1px solid black; */
     width: 100%;
 }
 
 .home-screen {
     padding: 0 20px;
     height: 100%;
+}
+
+.page-not-found-screen {
+    position: relative;
+}
+.page-not-found-screen img {
+    object-fit: contain;
+}
+
+.page-not-found-image {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 25px;
 }
