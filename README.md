@@ -229,7 +229,7 @@ Frontend
 -   [x] remove unused variables (frontend)
 -   [x] remove unused variables (backend)
 
--   [ ] combine front end and backend so that backend uses front end files (configure settings)
+-   [x] combine front end and backend so that backend uses front end files (configure settings)
 -   [ ] setup AWS RDS (database)
 -   [ ] setup AWS S3 buckets to store static files/images
 
