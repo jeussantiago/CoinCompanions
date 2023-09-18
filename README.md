@@ -230,8 +230,12 @@ Frontend
 -   [x] remove unused variables (backend)
 
 -   [x] combine front end and backend so that backend uses front end files (configure settings)
--   [ ] setup AWS RDS (database)
+-   [x] create rds database
+-   [x] create S3 database
+-   [ ] check on IAM user (i think its fine)
 -   [ ] setup AWS S3 buckets to store static files/images
+-   [ ] connect RDS (database)
+-   [ ] connect S3 bucket
 
 ---
 
