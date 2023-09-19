@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "https://coincompanion-bucket.s3.amazonaws.com/static/css/main.455eb8fc.css",
+    "main.js": "https://coincompanion-bucket.s3.amazonaws.com/static/js/main.149e487a.js",
+    "static/js/787.cda612ba.chunk.js": "https://coincompanion-bucket.s3.amazonaws.com/static/js/787.cda612ba.chunk.js",
+    "static/media/friends-diving.png": "https://coincompanion-bucket.s3.amazonaws.com/static/media/friends-diving.dd06cd0fd342b7d3cdc7.png",
+    "static/media/page-not-found.png": "https://coincompanion-bucket.s3.amazonaws.com/static/media/page-not-found.644ceef86ef2c2f88e1e.png",
+    "index.html": "https://coincompanion-bucket.s3.amazonaws.com/index.html",
+    "main.455eb8fc.css.map": "https://coincompanion-bucket.s3.amazonaws.com/static/css/main.455eb8fc.css.map",
+    "main.149e487a.js.map": "https://coincompanion-bucket.s3.amazonaws.com/static/js/main.149e487a.js.map",
+    "787.cda612ba.chunk.js.map": "https://coincompanion-bucket.s3.amazonaws.com/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.455eb8fc.css",
+    "static/js/main.149e487a.js"
+  ]
+}

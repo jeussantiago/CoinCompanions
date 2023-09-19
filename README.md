@@ -232,10 +232,14 @@ Frontend
 -   [x] combine front end and backend so that backend uses front end files (configure settings)
 -   [x] create rds database
 -   [x] create S3 database
--   [ ] check on IAM user (i think its fine)
--   [ ] setup AWS S3 buckets to store static files/images
--   [ ] connect RDS (database)
--   [ ] connect S3 bucket
+
+-   [x] check on IAM user (i think its fine)
+-   [x] setup AWS S3 buckets to store static files/images
+-   [x] connect RDS (database)
+-   [x] connect S3 bucket
+-   [x] not getting favicon for tab logo
+
+-   [ ] fill AWS database with random users and stuff just to fill it out, just in case someone visits it then they can play around
 
 ---
 
