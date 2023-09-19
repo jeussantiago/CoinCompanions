@@ -238,9 +238,9 @@ Frontend
 -   [x] connect RDS (database)
 -   [x] connect S3 bucket
 -   [x] not getting favicon for tab logo
+-   [x] fix exposed env for IAm USer and database
 
 -   [ ] fill AWS database with random users and stuff just to fill it out, just in case someone visits it then they can play around
--   [ ] fix exposed env
 
 ---
 
