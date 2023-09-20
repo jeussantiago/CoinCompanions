@@ -1,0 +1,8 @@
+**/.env
+# Django 
+db.sqlite3
+
+# frontend file will be added by frontend/Dockerfile.frontend
+frontend/
+
+.vscode
