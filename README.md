@@ -6,10 +6,10 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 ## Table of Contents
 
-[Technologies](##Technologies)
-[Model Diagram](##Models-Diagram)
-[Simplify Debt Algorithm Implementation](#Simplify-Debt-Algorithm-Implementation)
-[Re-Create](##Re-create:)
+-   [Technologies](##Technologies)
+-   [Model Diagram](##Models-Diagram)
+-   [Simplify Debt Algorithm Implementation](#Simplify-Debt-Algorithm-Implementation)
+-   [Re-Create](##Re-create:)
 
 ## Technologies
 
@@ -56,9 +56,9 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 # Simplify Debt Algorithm Implementation
 
-This repository contains an implementation of the Simplify Debt Algorithm in Python, along with an explanation of the algorithm, its implementation details, and an analysis of its time and space complexity.
+This repository contains an implementation of the Simplify Debt Algorithm in Python, along with an explanation of the algorithm, its implementation details, an analysis of its time and space complexity, and issues with the algorithm.
 
-## Table of Contents
+## Algorithm Table of Contents
 
 -   [Introduction](#introduction)
 -   [Algorithm Explanation](#algorithm-explanation)
@@ -196,18 +196,21 @@ However, with our algorithm, the min number of transactions comes out to 6 becau
 ## Re-create
 
 1. In root of terminal:
-   '''
-   pip install -r requirements.txt
-   '''
+
+    $ pip install -r requirements.txt
+
 2. Enter frontend folder in terminal:
-   '''
-   npm install
-   '''
+
+    $ npm install
+
 3. Create an env file in the frontend folder. The values are:
+
     - PUBLIC_URL=AWS S3 bucket
     - REACT_APP_GUEST_EMAIL=super user username
     - REACT_APP_GUEST_PASS=super user password
+
 4. Create an env file in the backend folder. The values are:
+
     - AWS_DATABASE_NAME=AWS_RDS_POSTGRES_DATABASE_NAME
     - AWS_DATABASE_USER=AWS_RDS_POSTGRES_DATABASE_USERNAME
     - AWS_DATABASE_PASS=AWS_RDS_POSTGRES_DATABASE_PASSWORD
@@ -216,11 +219,11 @@ However, with our algorithm, the min number of transactions comes out to 6 becau
     - AWS_IAM_ACCESS_KEY=AWS_IAM_ACCESS_KEY
     - AWS_IAM_SECRET_ACCESS_KEY=AWS_IAM_SECRET_ACCESS_KEY
     - AWS_STORAGE_BUCKET_NAME=AWS_S3_BUCKET_NAME
+
 5. In terminal while still in frontend folder:
-   '''
-   npm run build
-   '''
+
+    $ npm run build
+
 6. Go back to root of project in terminal. You should now be able to run both the frontend and backend on port 8000:
-   '''
-   python manage.py runserver
-   '''
+
+    $ python manage.py runserver
