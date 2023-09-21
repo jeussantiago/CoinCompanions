@@ -182,14 +182,14 @@ We notice that if we match up a pair of collector who is owed $8 and a debtor wh
 
 The min number of transactions here is 4.
 
-However, with our algorithm, the min number of transactions comes out to 6 because it converges towards the center. It fulfills the needs of those on the outer before moving closer to the center. The steps would follow:
-[-10, -8, -8, 1, 8, 8, 9]
-[-1, -8, -8, 1, 8, 8] ; steps=1
-[-8, -8, 1, 8, 7] ; steps=2
-[-1, -8, 1, 8] ; steps=3
-[-8, 1, 7] ; steps=4
-[-1, 1] ; steps=5
-[] ; steps=6
+However, with our algorithm, the min number of transactions comes out to 6 because it converges towards the center. It fulfills the needs of those on the outer before moving closer to the center. The steps would follow: <br>
+[-10, -8, -8, 1, 8, 8, 9] <br>
+[-1, -8, -8, 1, 8, 8] ; steps=1 <br>
+[-8, -8, 1, 8, 7] ; steps=2 <br>
+[-1, -8, 1, 8] ; steps=3 <br>
+[-8, 1, 7] ; steps=4 <br>
+[-1, 1] ; steps=5 <br>
+[] ; steps=6 <br>
 
 ---
 
@@ -221,6 +221,17 @@ However, with our algorithm, the min number of transactions comes out to 6 becau
     - AWS_STORAGE_BUCKET_NAME=AWS_S3_BUCKET_NAME
 
 5. In terminal while still in frontend folder:
+
+    $ mkdir -p a/b/c/d
+    $ cd a/b/c/d
+    $ bd b
+    $ ls
+    c
+    $ cd c/d
+    $ bd 2
+    $ ls
+    $ npm run build
+    c
 
     $ npm run build
 
