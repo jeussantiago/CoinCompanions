@@ -193,6 +193,10 @@ steps=6 ; [] <br>
 
 ## Recreate
 
+To recreate this project, you will need an AWS RDS postgres database, an AWS S3 bucket, and a AWS IAM user. If you created the cloud items, go to the numbered steps. If you do not want to make this project a cloud project, then read on.
+
+If you do not want to create the AWS itmes and make this project cloud based, I have left commented out the portion of the code which will stop this project from being cloud based. If you wish for that, go into backend/settings.py. In the DATABASES variable, comment out the postgres database and uncomment the sqlite3 databse. Then you can scroll to the bottom where you will find " STATIC_URL = 'static/' " and " STATICFILES_DIRS = [ BASE_DIR / 'frontend/build/static' ]". Uncomment these two variables. Finally, comment out everything below those two variables. When following the instructions, don't follow the first step of step 4 and all of step 5.
+
 1. Clone the project
 
 2. In root of the project in the terminal:
