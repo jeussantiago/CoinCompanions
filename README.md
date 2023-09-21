@@ -4,6 +4,32 @@ This app is similar to Splitwise. Users can create groups for their different tr
 
 One issue with splitwise, which many users, even myself, have encountered is that if a trip is already in progress wherein expenses already exist, if a new user is added, the cost per user will not be recalculated. This becomes rather annoying as trips can have tens or even hundreds of expenses. Do you really expect users to manually update each expense? This app tries to solve that issue
 
+## Technologies
+
+<div align="center">
+	<table>
+		<tr>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" alt="JavaScript" title="JavaScript"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png" alt="React" title="React"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/187896150-cc1dcb12-d490-445c-8e4d-1275cd2388d6.png" alt="Redux" title="Redux"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/183898674-75a4a1b1-f960-4ea9-abcb-637170a00a75.png" alt="CSS" title="CSS"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/183898054-b3d693d4-dafb-4808-a509-bab54cf5de34.png" alt="Bootstrap" title="Bootstrap"/></code></td>
+		</tr>
+		<tr>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/183423507-c056a6f9-1ba8-4312-a350-19bcbc5a8697.png" alt="Python" title="Python"/></code></td>
+            <td><code><img width="50" src="https://github.com/marwin1991/profile-technology-icons/assets/62091613/9bf5650b-e534-4eae-8a26-8379d076f3b4" alt="Django" title="Django"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/192107858-fe19f043-c502-4009-8c47-476fc89718ad.png" alt="REST" title="REST"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/192109061-e138ca71-337c-4019-8d42-4792fdaa7128.png" alt="Postman" title="Postman"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/117208740-bfb78400-adf5-11eb-97bb-09072b6bedfc.png" alt="PostgreSQL" title="PostgreSQL"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/183896132-54262f2e-6d98-41e3-8888-e40ab5a17326.png" alt="AWS" title="AWS"/></code></td>
+		</tr>
+        <tr>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/192108372-f71d70ac-7ae6-4c0d-8395-51d8870c2ef0.png" alt="Git" title="Git"/></code></td>
+			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/192108374-8da61ba1-99ec-41d7-80b8-fb2f7c0a4948.png" alt="GitHub" title="GitHub"/></code></td>
+        </tr>
+	</table>
+</div>
+
 ## USERS:
 
 -   jeus ; jeus@email.com ; hellofresh (admin)
@@ -11,9 +37,13 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 ## Re-create:
 
 1. In root of terminal:
-   -> pip install -r requirements.txt
+   '''
+   pip install -r requirements.txt
+   '''
 2. Enter frontend folder in terminal:
-   -> npm install
+   '''
+   npm install
+   '''
 3. Create an env file in the frontend folder. The values are:
     - PUBLIC_URL=AWS S3 bucket
     - REACT_APP_GUEST_EMAIL=super user username
@@ -28,9 +58,13 @@ One issue with splitwise, which many users, even myself, have encountered is tha
     - AWS_IAM_SECRET_ACCESS_KEY=AWS_IAM_SECRET_ACCESS_KEY
     - AWS_STORAGE_BUCKET_NAME=AWS_S3_BUCKET_NAME
 5. In terminal while still in frontend folder:
-   -> npm run build
+   '''
+   npm run build
+   '''
 6. Go back to root of project in terminal. You should now be able to run both the frontend and backend on port 8000:
-   -> python manage.py runserver
+   '''
+   python manage.py runserver
+   '''
 
 #### Sidebar
 
