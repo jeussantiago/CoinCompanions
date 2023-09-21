@@ -37,6 +37,10 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 	</table>
 </div>
 
+## Models Diagram
+
+![Alt text](/frontend/src/images/model_diagram.png "Visual representation of my models")
+
 ## USERS:
 
 -   jeus ; jeus@email.com ; hellofresh (admin)
