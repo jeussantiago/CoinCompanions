@@ -8,7 +8,29 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 -   jeus ; jeus@email.com ; hellofresh (admin)
 
-## TO DO:
+## Re-create:
+
+1. In root of terminal:
+   -> pip install -r requirements.txt
+2. Enter frontend folder in terminal:
+   -> npm install
+3. Create an env file in the frontend folder. The values are:
+    - PUBLIC_URL=AWS S3 bucket
+    - REACT_APP_GUEST_EMAIL=super user username
+    - REACT_APP_GUEST_PASS=super user password
+4. Create an env file in the backend folder. The values are:
+    - AWS_DATABASE_NAME=AWS_RDS_POSTGRES_DATABASE_NAME
+    - AWS_DATABASE_USER=AWS_RDS_POSTGRES_DATABASE_USERNAME
+    - AWS_DATABASE_PASS=AWS_RDS_POSTGRES_DATABASE_PASSWORD
+    - AWS_DATABASE_HOST=AWS_RDS_POSTGRES_DATABASE_HOST
+    - AWS_DATABASE_PORT=AWS_RDS_POSTGRES_DATABASE_PORT
+    - AWS_IAM_ACCESS_KEY=AWS_IAM_ACCESS_KEY
+    - AWS_IAM_SECRET_ACCESS_KEY=AWS_IAM_SECRET_ACCESS_KEY
+    - AWS_STORAGE_BUCKET_NAME=AWS_S3_BUCKET_NAME
+5. In terminal while still in frontend folder:
+   -> npm run build
+6. Go back to root of project in terminal. You should now be able to run both the frontend and backend on port 8000:
+   -> python manage.py runserver
 
 #### Sidebar
 
@@ -375,6 +397,13 @@ We notice that if we match up a pair of collector who is owed $8 and a debtor wh
 
 The min number of transactions here is 4.
 
-However, with our algorithm, the min number of transactions comes out to 6 because it converges towards the center. It fulfills the needs of those on the outer before moving closer to the center..
+However, with our algorithm, the min number of transactions comes out to 6 because it converges towards the center. It fulfills the needs of those on the outer before moving closer to the center. The steps would follow:
+[-10, -8, -8, 1, 8, 8, 9]
+[-1, -8, -8, 1, 8, 8] ; steps=1
+[-8, -8, 1, 8, 7] ; steps=2
+[-1, -8, 1, 8] ; steps=3
+[-8, 1, 7] ; steps=4
+[-1, 1] ; steps=5
+[] ; steps=6
 
 ---
