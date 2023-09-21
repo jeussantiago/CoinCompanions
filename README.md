@@ -48,10 +48,6 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 ![Alt text](/frontend/src/images/model_diagram.png "Visual representation of my models")
 
-## USERS:
-
--   jeus ; jeus@email.com ; hellofresh
-
 ---
 
 # Simplify Debt Algorithm Implementation
@@ -212,9 +208,9 @@ npm install
 
 4. Create an env file in the frontend folder. The values are:
 
-    - PUBLIC_URL=AWS S3 bucket
-    - REACT_APP_GUEST_EMAIL=super user username
-    - REACT_APP_GUEST_PASS=super user password
+    - PUBLIC_URL=AWS_S3_bucket_url (favicon location in bucket)
+    - REACT_APP_GUEST_EMAIL=Guest_user_username (could be superuser or anyone)
+    - REACT_APP_GUEST_PASS=Guest_user_password (could be superuser or anyone)
 
 5. Create an env file in the backend folder. The values are:
 
