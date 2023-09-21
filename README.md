@@ -6,10 +6,10 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 ## Table of Contents
 
--   [Technologies](##Technologies)
--   [Model Diagram](##Models-Diagram)
+-   [Technologies](#Technologies)
+-   [Model Diagram](#Models-Diagram)
 -   [Simplify Debt Algorithm Implementation](#Simplify-Debt-Algorithm-Implementation)
--   [Recreate](##Recreate)
+-   [Recreate](#Recreate)
 
 ## Technologies
 
