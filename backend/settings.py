@@ -127,18 +127,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('AWS_DATABASE_NAME'),
-        'USER': env('AWS_DATABASE_USER'),
-        'PASSWORD': env('AWS_DATABASE_PASS'),
-        'HOST': env('AWS_DATABASE_HOST'),
-        'PORT': env('AWS_DATABASE_PORT')
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': env('AWS_DATABASE_NAME'),
+    #     'USER': env('AWS_DATABASE_USER'),
+    #     'PASSWORD': env('AWS_DATABASE_PASS'),
+    #     'HOST': env('AWS_DATABASE_HOST'),
+    #     'PORT': env('AWS_DATABASE_PORT')
+    # }
 }
 
 
@@ -180,35 +180,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 AWS_S3_FILE_OVERWRITE = False
 
-# STATIC_URL = 'static/'
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend/build/static'
+]
+MEDIA_ROOT = 'static/media'
+
+# aws settings
+# AWS_ACCESS_KEY_ID = env('AWS_IAM_ACCESS_KEY')
+# AWS_SECRET_ACCESS_KEY = env('AWS_IAM_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_REGION_NAME=env('AWS_S3_REGION_NAME')
+# # s3 static settings
+# AWS_LOCATION = 'static/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'frontend/build/static'
 # ]
 
-
-# aws settings
-AWS_ACCESS_KEY_ID = env('AWS_IAM_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = env('AWS_IAM_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_REGION_NAME=env('AWS_S3_REGION_NAME')
-# s3 static settings
-AWS_LOCATION = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'frontend/build/static'
-]
-
-PUBLIC_MEDIA_LOCATION = 'static'
-# MEDIA_URL = '/media/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
-MEDIA_ROOT = 'static/media'
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage"
-    }
-}
+# PUBLIC_MEDIA_LOCATION = 'static'
+# # MEDIA_URL = '/media/'
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+# 
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
+#     },
+#     "staticfiles": {
+#         "BACKEND": "storages.backends.s3boto3.S3StaticStorage"
+#     }
+# }
