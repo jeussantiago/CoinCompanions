@@ -4,6 +4,8 @@ This app is similar to Splitwise. Users can create groups for their different tr
 
 One issue with splitwise, which many users, even myself, have encountered is that if a trip is already in progress wherein expenses already exist, if a new user is added, the cost per user will not be recalculated. This becomes rather annoying as trips can have tens or even hundreds of expenses. Do you really expect users to manually update each expense? This app tries to solve that issue
 
+Note: when using the demo, please give a second whenever you press a button as I am using free tier to handle the databases which slows down data gathering while using APIs.
+
 ## Table of Contents
 
 -   [Technologies](#Technologies)
