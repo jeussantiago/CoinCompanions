@@ -6,6 +6,8 @@ One issue with splitwise, which many users, even myself, have encountered is tha
 
 Note: when using the demo, please give a second whenever you press a button as I am using free tier to handle the databases which slows down data gathering while using APIs.
 
+Demo: https://coincompanion-df3e4361c1c8.herokuapp.com/
+
 ## Table of Contents
 
 -   [Technologies](#Technologies)
