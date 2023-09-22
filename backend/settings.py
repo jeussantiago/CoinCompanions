@@ -102,6 +102,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -180,6 +185,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 AWS_S3_FILE_OVERWRITE = False
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'frontend/build/static'
@@ -191,7 +197,7 @@ MEDIA_ROOT = 'static/media'
 # AWS_SECRET_ACCESS_KEY = env('AWS_IAM_SECRET_ACCESS_KEY')
 # AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-# AWS_S3_REGION_NAME=env('AWS_S3_REGION_NAME')
+# AWS_S3_REGION_NAME='us-east-2'
 # # s3 static settings
 # AWS_LOCATION = 'static/'
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -201,9 +207,9 @@ MEDIA_ROOT = 'static/media'
 # ]
 
 # PUBLIC_MEDIA_LOCATION = 'static'
-# # MEDIA_URL = '/media/'
-# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
-# 
+# MEDIA_URL = '/media/'
+# # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+# MEDIA_ROOT = 'static/media'
 # STORAGES = {
 #     "default": {
 #         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
