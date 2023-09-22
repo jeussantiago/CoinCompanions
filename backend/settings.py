@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oc#e3wa+=7o00i^$ysvwzs1uxi6ml%=bc#vqewr&m22y^$w85-'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -127,18 +127,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
     # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': env('AWS_DATABASE_NAME'),
-    #     'USER': env('AWS_DATABASE_USER'),
-    #     'PASSWORD': env('AWS_DATABASE_PASS'),
-    #     'HOST': env('AWS_DATABASE_HOST'),
-    #     'PORT': env('AWS_DATABASE_PORT')
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('AWS_DATABASE_NAME'),
+        'USER': env('AWS_DATABASE_USER'),
+        'PASSWORD': env('AWS_DATABASE_PASS'),
+        'HOST': env('AWS_DATABASE_HOST'),
+        'PORT': env('AWS_DATABASE_PORT')
+    }
 }
 
 
