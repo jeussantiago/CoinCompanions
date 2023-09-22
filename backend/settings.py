@@ -201,6 +201,7 @@ STATICFILES_DIRS = [
 
 PUBLIC_MEDIA_LOCATION = 'static/media'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+MEDIA_ROOT = 'static/images'
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
